@@ -10,10 +10,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import com.caisl.loadinghelper.LoadingHelper;
 import com.caisl.loadinghelper.sample.R;
-import com.caisl.loadinghelper.sample.lce.title.TitleAdapter;
-import com.caisl.loadinghelper.sample.lce.title.TitleConfig;
+import com.caisl.loadinghelper.sample.adapter.TitleAdapter;
+import com.caisl.loadinghelper.sample.adapter.TitleConfig;
+import com.caisl.loadinghelper.sample.practise.fragment.LoadingFragment;
 
-import static com.caisl.loadinghelper.LoadingHelper.VIEW_TYPE_TITLE;
+import static com.caisl.loadinghelper.sample.adapter.TimeoutAdapter.VIEW_TYPE_TIMEOUT;
 
 /**
  * @author caisl
@@ -26,7 +27,7 @@ public class ViewPagerActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_tab_layout);
     LoadingHelper loadingHelper = new LoadingHelper(this);
-    loadingHelper.registerAdapter(VIEW_TYPE_TITLE, new TitleAdapter(TitleConfig.Type.BACK));
+    loadingHelper.registerTitleAdapter(new TitleAdapter("ViewPager(timeout)", TitleConfig.Type.BACK));
     loadingHelper.addTitleView();
 
     TabLayout tabLayout = findViewById(R.id.tab_layout);
@@ -43,7 +44,7 @@ public class ViewPagerActivity extends AppCompatActivity {
 
     @Override
     public Fragment getItem(int i) {
-      return new EmptyFragment();
+      return LoadingFragment.newInstance(VIEW_TYPE_TIMEOUT);
     }
 
     @Override

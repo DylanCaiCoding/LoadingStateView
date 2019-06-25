@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.caisl.loadinghelper.sample">
+
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.INTERNET"/>
 
   <application
@@ -20,10 +22,10 @@
     </activity>
     <activity android:name="com.caisl.loadinghelper.sample.practise.ActErrorActivity"/>
     <activity android:name="com.caisl.loadinghelper.sample.practise.FragmentEmptyActivity"/>
-    <activity android:name="com.caisl.loadinghelper.sample.practise.ViewTimeoutActivity"/>
+    <activity android:name="com.caisl.loadinghelper.sample.practise.ViewPlaceholderActivity"/>
     <activity android:name="com.caisl.loadinghelper.sample.practise.ViewPagerActivity"/>
     <activity android:name="com.caisl.loadinghelper.sample.practise.RecyclerViewActivity"/>
-    <activity android:name="com.caisl.loadinghelper.sample.practise.mvp.MVPLoadActivity"/>
+    <activity android:name=".practise.SearchTitleActivity"/>
   </application>
 
 </manifest>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <View
+    android:layout_width="36dp"
+    android:layout_height="36dp"
+    android:id="@+id/textView6"
+    android:layout_marginTop="16dp"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginStart="16dp"
+    android:background="@color/loading_placeholder_view_color"/>
+
+  <View
+    android:layout_width="48dp"
+    android:layout_height="16dp"
+    android:id="@+id/textView7"
+    app:layout_constraintTop_toTopOf="@+id/textView6"
+    app:layout_constraintStart_toEndOf="@+id/textView6"
+    android:layout_marginStart="16dp"
+    android:background="@color/loading_placeholder_view_color"/>
+
+  <View
+    android:layout_width="0dp"
+    android:layout_height="16dp"
+    android:id="@+id/textView8"
+    android:layout_marginTop="12dp"
+    app:layout_constraintTop_toBottomOf="@+id/textView7"
+    app:layout_constraintStart_toStartOf="@+id/textView7"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginEnd="16dp"
+    android:background="@color/loading_placeholder_view_color"/>
+
+  <View
+    android:layout_width="0dp"
+    android:layout_height="16dp"
+    android:id="@+id/textView9"
+    android:layout_marginTop="8dp"
+    app:layout_constraintTop_toBottomOf="@+id/textView8"
+    app:layout_constraintStart_toStartOf="@+id/textView8"
+    app:layout_constraintEnd_toEndOf="@+id/textView8"
+    android:background="@color/loading_placeholder_view_color"
+    android:layout_marginBottom="16dp"
+    app:layout_constraintBottom_toBottomOf="parent"/>
+</android.support.constraint.ConstraintLayout>

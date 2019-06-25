@@ -1,3 +1,5 @@
+# LoadingHelper
+
 ## 简介
 
 - 深度解耦加载中、加载成功、加载失败、无数据的视图，可拓展自定义视图
@@ -7,6 +9,16 @@
 - 可动态更新视图样式
 - 可为视图动态增加功能方法
 - 可结合大部分第三方控件使用
+
+## 示例
+
+Activity(error)|Fragment(empty)|View(placeholder)
+:---:|:---:|:---:
+![](gif/activity_error.gif)|![](gif/fragment_empty.gif)|![](gif/normal_activity.gif)
+
+ViewPager(timeout)|RecyclerView(cool loading)|CustomTitle(search)
+:---:|:---:|:---:
+![](gif/viewpager_timeout.gif)|![](gif/recyclerview_cool_loading.gif)|![](gif/custom_title_search.gif)
 
 ## 使用
 
@@ -111,12 +123,8 @@ public class TitleConfig {
 public class TitleAdapter extends LoadingHelper.Adapter<TitleViewHolder> {
   private TitleConfig mConfig;
 
-  public void setConfig(TitleConfig config) {
+  public TitleAdapter(TitleConfig config) {
     mConfig = config;
-  }
-
-  public TitleConfig getConfig() {
-    return mConfig;
   }
 
   @Override
@@ -136,24 +144,23 @@ public class TitleAdapter extends LoadingHelper.Adapter<TitleViewHolder> {
 注册 Adapter，调用 addTitleView() 或 addHeaderView(int viewType) 增加标题栏
 
 ```
-LoadingHelper.getDefault().registerAdapter(VIEW_TYPE_TITLE,new TitleAdapter());
-
-final TitleAdapter adapter = loadingHelper.getAdapter(VIEW_TYPE_TITLE);
 final TitleConfig config = new TitleConfig();
 config.setTitleText("标题");
 config.setType(TitleConfig.Type.BACK);
-adapter.setConfig(config);
+loadingHelper.registerTitleAdapter(new TitleAdapter(config));
 loadingHelper.addTitleView();
 ```
 
 #### 动态更新数据
 
-调用 notifyDataSetChanged()，会执行 Adapter.onBindViewHolder(...)
+调用 notifyDataSetChanged()，会执行 Adapter#onBindViewHolder(holder)
 
 ```
-TitleAdapter adapter = loadingHelper.getAdapter(VIEW_TYPE_TITLE);
-adapter.getConfig().setTitleText("正在加载中...");
-adapter.notifyDataSetChanged();
+ErrorAdapter mErrorAdapter = new ErrorAdapter(mErrorConfig);
+loadingHelper.registerAdapter(VIEW_TYPE_ERROR, mErrorAdapter);
+
+mErrorConfig.setErrorText("服务器繁忙");
+mErrorAdapter.notifyDataSetChanged();
 ```
 
 #### 动态增加功能方法（拓展功能，使其不局限于显示视图）
@@ -202,3 +209,21 @@ boolean titleLoading = holder.getMethodReturnValue("isTitleLoading");
 
 - [luckbilly/Gloading](https://github.com/luckybilly/Gloading) 
 - [drakeet/MultiType](https://github.com/drakeet/MultiType) 
+
+## LICENSE
+
+```
+Copyright (C) 2019. caisl
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

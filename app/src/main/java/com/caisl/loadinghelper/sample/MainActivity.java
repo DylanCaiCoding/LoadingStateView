@@ -1,25 +1,27 @@
 package com.caisl.loadinghelper.sample;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.caisl.loadinghelper.LoadingHelper;
+import com.caisl.loadinghelper.sample.adapter.TitleAdapter;
 import com.caisl.loadinghelper.sample.practise.*;
-import com.caisl.loadinghelper.sample.practise.mvp.MVPLoadActivity;
 
 /**
  * @author caisl
  * @since 2019/6/20
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Runnable{
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    final LoadingHelper loadingHelper = new LoadingHelper(this);
+    LoadingHelper loadingHelper = new LoadingHelper(this);
+    loadingHelper.registerTitleAdapter(new TitleAdapter("about", this));
     loadingHelper.addTitleView();
   }
 
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void onViewTimeoutClick(View view) {
-    startActivity(new Intent(this, ViewTimeoutActivity.class));
+    startActivity(new Intent(this, ViewPlaceholderActivity.class));
   }
 
   public void onViewPagerClick(View view) {
@@ -44,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void onMVPActivityClick(View view) {
-    startActivity(new Intent(this, MVPLoadActivity.class));
+    startActivity(new Intent(this, SearchTitleActivity.class));
+  }
+
+  @Override
+  public void run() {
+    Uri uri = Uri.parse("https://github.com/CaiShenglang/LoadingHelper");
+    Intent intent = new Intent("android.intent.action.VIEW",uri);
+    startActivity(intent);
   }
 }

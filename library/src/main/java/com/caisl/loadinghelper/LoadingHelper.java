@@ -2,12 +2,16 @@ package com.caisl.loadinghelper;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.LinearLayout;
 
+import java.io.*;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import static java.util.Objects.requireNonNull;
@@ -25,9 +29,9 @@ public final class LoadingHelper {
   public static final int VIEW_TYPE_EMPTY = -5;
 
   private static Default sDefault;
-  private LinearLayout mParent;
+  private LinearLayout mDecorView;
   private View mContentView;
-  private View mCurrentView;
+  private ViewHolder mCurrentViewHolder;
   private Runnable mRetryTask;
   private SparseArray<ViewHolder> mViewHolders;
   @NonNull
@@ -58,7 +62,7 @@ public final class LoadingHelper {
   public LoadingHelper(@NonNull View contentView, ContentAdapter contentAdapter) {
     mContentView = requireNonNull(contentView);
     mViewHolders = new SparseArray<>();
-    mAdapters = getDefault().mAdapters;
+    mAdapters = getDefault().mAdapters.clone();
     mAdapterDataEvent = new AdapterDataEvent() {
       @SuppressWarnings("unchecked")
       @Override
@@ -70,16 +74,20 @@ public final class LoadingHelper {
       registerAdapter(VIEW_TYPE_CONTENT, contentAdapter);
     }
 
-    mParent = new LinearLayout(contentView.getContext());
-    mParent.setOrientation(LinearLayout.VERTICAL);
-    ViewGroup container = (ViewGroup) contentView.getParent();
-    if (container != null) {
-      ViewGroup.LayoutParams lp = contentView.getLayoutParams();
-      int index = container.indexOfChild(contentView);
-      container.removeView(contentView);
-      container.addView(mParent, index, lp);
+    mDecorView = new LinearLayout(contentView.getContext());
+    mDecorView.setOrientation(LinearLayout.VERTICAL);
+    mDecorView.setLayoutParams(contentView.getLayoutParams());
+    ViewGroup parent = (ViewGroup) contentView.getParent();
+    if (parent != null) {
+      int index = parent.indexOfChild(contentView);
+      parent.removeView(contentView);
+      parent.addView(mDecorView, index);
     }
     showView(VIEW_TYPE_CONTENT);
+  }
+
+  public void registerTitleAdapter(@NonNull Adapter<?> adapter){
+    registerAdapter(VIEW_TYPE_TITLE,adapter);
   }
 
   public void registerAdapter(int viewType, @NonNull Adapter<?> adapter) {
@@ -103,7 +111,7 @@ public final class LoadingHelper {
   }
 
   public void addHeaderView(int viewType) {
-    mParent.addView(getView(viewType), 0);
+    mDecorView.addView(getView(viewType), 0);
   }
 
   public void showLoadingView() {
@@ -123,12 +131,20 @@ public final class LoadingHelper {
   }
 
   public void showView(int viewType) {
-    if (mCurrentView != null) {
-      mParent.removeView(mCurrentView);
+    if (mCurrentViewHolder == null) {
+      addView(viewType);
+    } else {
+      if (viewType != mCurrentViewHolder.viewType) {
+        mDecorView.removeView(mCurrentViewHolder.rootView);
+        addView(viewType);
+      }
     }
-    View view = getView(viewType);
-    mParent.addView(view);
-    mCurrentView = view;
+  }
+
+  private void addView(int viewType) {
+    ViewHolder viewHolder = getViewHolder(viewType);
+    mDecorView.addView(viewHolder.rootView);
+    mCurrentViewHolder = viewHolder;
   }
 
   public void executeMethod(int viewType, Object flag, Object... params) {
@@ -143,13 +159,14 @@ public final class LoadingHelper {
     mRetryTask = retryTask;
   }
 
-  @SuppressWarnings("unchecked")
-  public <T extends Adapter> T getAdapter(int viewType) {
-    return (T) mAdapters.getAdapter(viewType);
+
+  public LinearLayout getDecorView() {
+    return mDecorView;
   }
 
-  public LinearLayout getParent() {
-    return mParent;
+  @SuppressWarnings("unchecked")
+  private  <T extends Adapter> T getAdapter(int viewType) {
+    return (T) mAdapters.getAdapter(viewType);
   }
 
   @NonNull
@@ -171,7 +188,7 @@ public final class LoadingHelper {
       final ContentAdapter contentAdapter = (ContentAdapter) adapter;
       contentAdapter.onCreate(mContentView);
     }
-    ViewHolder viewHolder = adapter.onCreateViewHolder(LayoutInflater.from(mParent.getContext()), mParent);
+    ViewHolder viewHolder = adapter.onCreateViewHolder(LayoutInflater.from(mDecorView.getContext()), mDecorView);
     viewHolder.viewType = viewType;
     viewHolder.retryTask = mRetryTask;
     mViewHolders.append(viewType, viewHolder);
@@ -194,7 +211,7 @@ public final class LoadingHelper {
     }
   }
 
-  public static abstract class Adapter<VH extends LoadingHelper.ViewHolder> {
+  public static abstract class Adapter<VH extends LoadingHelper.ViewHolder>{
     int viewType;
     AdapterDataEvent adapterDataEvent;
     HashMap<Object, Method> mMethods;
@@ -241,7 +258,7 @@ public final class LoadingHelper {
                                           @NonNull View contentView);
   }
 
-  public static class Adapters {
+  public static class Adapters implements Cloneable {
     private SparseArray<Adapter> mAdapters;
 
     public Adapters() {
@@ -275,6 +292,17 @@ public final class LoadingHelper {
         register(VIEW_TYPE_CONTENT, adapter);
       }
       return requireNonNull(adapter, "Adapter is unregistered");
+    }
+
+    public Adapters clone(){
+      Adapters clone = null;
+      try {
+        clone = (Adapters) super.clone();
+        clone.mAdapters = this.mAdapters.clone();
+      } catch (CloneNotSupportedException e) {
+        e.printStackTrace();
+      }
+      return clone;
     }
   }
 

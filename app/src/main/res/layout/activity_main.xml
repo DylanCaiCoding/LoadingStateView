@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
@@ -17,7 +16,8 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:onClick="onActivityErrorClick"
-    app:layout_constraintTop_toTopOf="parent"/>
+    app:layout_constraintTop_toTopOf="parent"
+    android:textAllCaps="false"/>
 
   <Button
     android:text="Fragment(empty)"
@@ -30,10 +30,11 @@
     app:layout_constraintStart_toStartOf="parent"
     android:layout_marginStart="8dp"
     app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginEnd="8dp"/>
+    android:layout_marginEnd="8dp"
+    android:textAllCaps="false"/>
 
   <Button
-    android:text="View(timeout)"
+    android:text="View(placeholder)"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:id="@+id/button3"
@@ -43,10 +44,11 @@
     app:layout_constraintStart_toStartOf="parent"
     android:layout_marginStart="8dp"
     app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginEnd="8dp"/>
+    android:layout_marginEnd="8dp"
+    android:textAllCaps="false"/>
 
   <Button
-    android:text="ViewPager + Fragment"
+    android:text="ViewPager(timeout)"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:id="@+id/button4"
@@ -56,10 +58,11 @@
     app:layout_constraintStart_toStartOf="parent"
     android:layout_marginStart="8dp"
     app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginEnd="8dp"/>
+    android:layout_marginEnd="8dp"
+    android:textAllCaps="false"/>
 
   <Button
-    android:text="RecyclerView(title loading)"
+    android:text="RecyclerView(cool loading)"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:id="@+id/button5"
@@ -69,10 +72,11 @@
     app:layout_constraintStart_toStartOf="parent"
     android:layout_marginStart="8dp"
     app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginEnd="8dp"/>
+    android:layout_marginEnd="8dp"
+    android:textAllCaps="false"/>
 
   <Button
-    android:text="MVP Activity(custom loading)"
+    android:text="CustomTitle(search)"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:id="@+id/button6"
@@ -82,5 +86,6 @@
     app:layout_constraintStart_toStartOf="parent"
     android:layout_marginStart="8dp"
     app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginEnd="8dp"/>
+    android:layout_marginEnd="8dp"
+    android:textAllCaps="false"/>
 </android.support.constraint.ConstraintLayout>
