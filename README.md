@@ -12,11 +12,11 @@
 
 ## 示例
 
-Activity(error)|Fragment(empty)|View(placeholder)
+[Activity(error)](https://github.com/CaiShenglang/LoadingHelper/blob/master/app/src/main/java/com/caisl/loadinghelper/sample/practise/ActErrorActivity.java)|[Fragment(empty)](https://github.com/CaiShenglang/LoadingHelper/blob/master/app/src/main/java/com/caisl/loadinghelper/sample/practise/FragmentEmptyActivity.java)|[View(placeholder)](https://github.com/CaiShenglang/LoadingHelper/blob/master/app/src/main/java/com/caisl/loadinghelper/sample/practise/ViewPlaceholderActivity.java)
 :---:|:---:|:---:
-![](gif/activity_error.gif)|![](gif/fragment_empty.gif)|![](gif/normal_activity.gif)
+![](gif/activity_error.gif)|![](gif/fragment_empty.gif)|![](gif/activity_error.gif)
 
-ViewPager(timeout)|RecyclerView(cool loading)|CustomTitle(search)
+[ViewPager(timeout)](https://github.com/CaiShenglang/LoadingHelper/blob/master/app/src/main/java/com/caisl/loadinghelper/sample/practise/ViewPagerActivity.java)|[RecyclerView(cool loading)](https://github.com/CaiShenglang/LoadingHelper/blob/master/app/src/main/java/com/caisl/loadinghelper/sample/practise/RecyclerViewActivity.java)|[CustomTitle(search)](https://github.com/CaiShenglang/LoadingHelper/blob/master/app/src/main/java/com/caisl/loadinghelper/sample/practise/SearchTitleActivity.java)
 :---:|:---:|:---:
 ![](gif/viewpager_timeout.gif)|![](gif/recyclerview_cool_loading.gif)|![](gif/custom_title_search.gif)
 
