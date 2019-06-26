@@ -1,19 +1,18 @@
 # LoadingHelper
 
-English | [中文](README_ZH_CN.md)
+[English](README.md) | 中文
 
-LoadingHelper is a highly expandable Android library for showing loading status view with the low-coupling way, it not only shows different view like loading, content, error, empty or customized view when loading network data or database data, but also supports for adding view to header, you can manager title view more easier in the activity or fragment. It supports to change view anytime and expand features of view, then you can do more things after view showed to cope with more demand. LoadingHelper is more flexible than other similar libraries.
+LoadingHelper 是一个用于显示加载视图的拓展性高、低耦合的 Android 库。不只是用于请求网络数据或本地数据时，显示加载中、加载成功、加载失败、无数据或自定义视图，还可以扩展视图的功能，使视图更灵活，以满足更多的需求，例如，你可以在初始化内容视图时做一些事情。为了在 Activity 或 Fragment 使用更方便，支持添加标题栏视图。
 
-## Feature
+- 深度解耦加载中、加载成功、加载失败、无数据的视图，可拓展自定义视图
+- 无需在 xml 文件增加代码
+- 可用于 Activity、Fragment、列表或指定的 View
+- 可动态管理标题栏视图
+- 可动态更新视图样式
+- 可为视图动态增加功能方法
+- 可结合大部分第三方控件使用
 
-- No need to modify the code of xml file.
-- Support for using in Activity, Fragment, View, ViewPager, RecyclerView.
-- Support for managing the title view.
-- Support for changing views anytime.
-- Support for expanding features of view.
-- Support for using with most third-party libraries.
-
-## Demo
+## 示例
 
 [Activity(error)](/app/src/main/java/com/caisl/loadinghelper/sample/practise/ActErrorActivity.java)|[Fragment(empty)](app/src/main/java/com/caisl/loadinghelper/sample/practise/FragmentEmptyActivity.java)|[View(placeholder)](app/src/main/java/com/caisl/loadinghelper/sample/practise/ViewPlaceholderActivity.java)
 :---:|:---:|:---:
@@ -23,13 +22,13 @@ LoadingHelper is a highly expandable Android library for showing loading status 
 :---:|:---:|:---:
 ![](gif/viewpager_timeout.gif)|![](gif/recyclerview_cool_loading.gif)|![](gif/custom_title_search.gif)
 
-[Click here](https://madeqr.com/loadinghelper) or scan QR code to download
+[点击这里](https://madeqr.com/loadinghelper) 或者扫描二维码下载
 
 ![QR code](img/app_download_qr_code.png)
 
-## Getting started
+## 使用
 
-in your project's build.gradle:
+在 project 的 build.gradle 添加以下代码
 
 ```
 allprojects {
@@ -40,7 +39,7 @@ allprojects {
 }
 ```
 
-in your module's build.gradle:
+在 module 的 build.gradle 添加依赖
 
 ```
 dependencies {
@@ -48,9 +47,9 @@ dependencies {
 }
 ```
 
-### Usage
+### 基础用法
 
-#### Step 1. Create a class extends LoadingHelper.Adapter&lt;VH extends ViewHolder&gt;, usage is similar to RecyclerView.Adapter, for example:
+继承 LoadingHelper.Adapter&lt;VH extends ViewHolder&gt;，用法与 RecyclerView.Adapter 类似
 
 ```
 public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHolder> {
@@ -68,50 +67,60 @@ public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHold
 }
 ```
 
-#### Step 2. Register your adapter with view type, for example:
+调用 registerAdapter(int viewType, LoadingHelper.Adapter adapter) 注册对应类型的 Adapter
 
 ```
+//全局注册
+LoadingHelper.getDefault().registerAdapter(VIEW_TYPE_LOADING, new LoadingAdapter());
+
+//单个页面或控件注册
 LoadingHelper loadingHelper = new LoadingHelper(this);
 loadingHelper.registerAdapter(VIEW_TYPE_LOADING, new LoadingAdapter());
-
-// if you want to register global adapter
-LoadingHelper.getDefault().registerAdapter(VIEW_TYPE_LOADING, new LoadingAdapter());
 ```
 
-#### Step 3. Show view by view type, for example:
+显示对应类型的视图
 
 ```
+//显示指定类型的视图
 loadingHelper.showView(viewType);
-loadingHelper.showLoadingView(); // view type is VIEW_TYPE_LOADING
-loadingHelper.showContentView(); // view type is VIEW_TYPE_CONTENT
-loadingHelper.showErrorView(); // view type is VIEW_TYPE_ERROR
-loadingHelper.showEmptyView(); // view type is VIEW_TYPE_EMPTY
+
+//对应类型 VIEW_TYPE_LOADING
+loadingHelper.showLoadingView();
+
+//对应类型 VIEW_TYPE_CONTENT
+loadingHelper.showContentView();
+
+//对应类型 VIEW_TYPE_ERROR
+loadingHelper.showErrorView();
+
+//对应类型 VIEW_TYPE_EMPTY
+loadingHelper.showEmptyView();
 ```
 
-When you need to add retry task.
+如需重新加载数据
 
 ```
 LoadingHelper.setRetryTask(new Runnable() {
   @Override
   public void run() {
-    // request data again
+    // 重新获取网路数据
   }
 });
 
 holder.retryTask.run();
 ```
 
-### More usage
+### 拓展用法
 
-#### Add title view
+#### 动态添加标题栏
 
-Create the adapter of title view，suggest incoming data for configuration.
+创建标题栏的 Adapter，建议传入数据进行配置
 
 ```
 public class TitleConfig {
   private String mTitleText;
   private Type mType;
-  // omit get set method
+  //省略 get set 方法
   public enum Type {
     BACK, NO_BACK
   }
@@ -132,54 +141,54 @@ public class TitleAdapter extends LoadingHelper.Adapter<TitleViewHolder> {
   @Override
   public void onBindViewHolder(@NonNull final TitleViewHolder holder) {
     if (mConfig != null) {
-      // change view according to configuration
+      // 根据配置更改视图
     }
   }
 }
 ```
 
-Register title adapter and add title view.
+注册 Adapter，调用 addTitleView() 或 addHeaderView(int viewType) 增加标题栏
 
 ```
 final TitleConfig config = new TitleConfig();
-config.setTitleText("title");
+config.setTitleText("标题");
 config.setType(TitleConfig.Type.BACK);
 loadingHelper.registerTitleAdapter(new TitleAdapter(config));
 loadingHelper.addTitleView();
 ```
 
-#### Change view after show view
+#### 动态更新数据
 
-Usage like RecyclerView.Adapter, for example:
+调用 notifyDataSetChanged()，会执行 Adapter#onBindViewHolder(holder)
 
 ```
-mErrorAdapter = new ErrorAdapter(mErrorConfig);
+ErrorAdapter mErrorAdapter = new ErrorAdapter(mErrorConfig);
 loadingHelper.registerAdapter(VIEW_TYPE_ERROR, mErrorAdapter);
 
-mErrorConfig.setErrorText("service is busy");
+mErrorConfig.setErrorText("服务器繁忙");
 mErrorAdapter.notifyDataSetChanged();
 ```
 
-#### Expand Features of view
+#### 动态增加功能方法（拓展功能，使其不局限于显示视图）
 
-Create a class implements LoadingHelper.Method<T,VH extends ViewHolder>, for example:
+实现 LoadingHelper.Method<T,VH extends ViewHolder> 接口，无返回值泛型传 Void，进行注册
 
 ```
-// no return value
+// 无返回值
 public class ShowTitleLoadingMethod implements LoadingHelper.Method<Void,TitleAdapter.TitleViewHolder> {
   @Override
   public Void execute(TitleAdapter.TitleViewHolder holder, Object... params) {
-    boolean show = (boolean) params[0]; // get param
-    // realize function
+    boolean show = (boolean) params[0]; // 获取参数
+    // 执行逻辑方法
     return null;
   }
 }
 
-// have a return value
+// 有返回值
 public class IsTitleLoadingMethod implements LoadingHelper.Method<Boolean,TitleAdapter.TitleViewHolder> {
   @Override
   public Boolean execute(TitleAdapter.TitleViewHolder holder, Object... params) {
-    // return the desired value
+    // 返回所需数值
   }
 }
 
@@ -188,19 +197,21 @@ LoadingHelper.getDefault()
   .registerMethod(VIEW_TYPE_TITLE,"isTitleLoading",new IsTitleLoadingMethod());
 ```
 
-Execute a method with or without a return value.
+用 LoadingHelper 或 ViewHolder 对象执行方法
 
 ```
-// execute method
+//执行无返回值方法
 loadingHelper.executeMethod(VIEW_TYPE_LOADING,"showTitleLoading",true);
 
-// get a return value
+//执行有返回值方法
 boolean titleLoading = holder.getMethodReturnValue("isTitleLoading");
 ```
 
-### Do something for content view
+### 其它使用技巧
 
-## Thanks
+这里只是抛砖引玉，在 Activity 使用时，ContentAdapter 会得到 Activity.setContentView() 的视图，这里可以像基类一样进行一些默认的配置。 基类上的方法也可以通过本库来管理，进行二次封装，如果想更改方法内的逻辑，可以不动基类的代码，注册个新的方法类替换原有的逻辑即可，想新增全局的方法也可以不在基类添加代码。也可以用于标题栏的管理，想用哪个就注册哪个，也可以传入参数进行动态配置管理。灵活性很高，应用场景能有很多
+
+## 感谢
 
 - [luckbilly/Gloading](https://github.com/luckybilly/Gloading) 
 - [drakeet/MultiType](https://github.com/drakeet/MultiType) 
