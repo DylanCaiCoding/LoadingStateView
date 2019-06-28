@@ -12,7 +12,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import com.caisl.loadinghelper.sample.R;
-import com.caisl.loadinghelper.sample.utils.DensityUtil;
+import com.caisl.loadinghelper.sample.utils.DensityUtils;
 import com.caisl.loadinghelper.sample.widget.LoadingRenderer;
 
 import java.lang.annotation.Retention;
@@ -117,12 +117,12 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
     private void init(Context context) {
         mMode = MODE_NORMAL;
 
-        mWidth = DensityUtil.dip2px(context, DEFAULT_WIDTH);
-        mHeight = DensityUtil.dip2px(context, DEFAULT_HEIGHT);
-        mTextSize = DensityUtil.dip2px(context, DEFAULT_TEXT_SIZE);
-        mStrokeWidth = DensityUtil.dip2px(context, DEFAULT_STROKE_WIDTH);
-        mCenterRadius = DensityUtil.dip2px(context, DEFAULT_CENTER_RADIUS);
-        mProgressCenterRadius = DensityUtil.dip2px(context, DEFAULT_PROGRESS_CENTER_RADIUS);
+        mWidth = DensityUtils.dip2px(context, DEFAULT_WIDTH);
+        mHeight = DensityUtils.dip2px(context, DEFAULT_HEIGHT);
+        mTextSize = DensityUtils.dip2px(context, DEFAULT_TEXT_SIZE);
+        mStrokeWidth = DensityUtils.dip2px(context, DEFAULT_STROKE_WIDTH);
+        mCenterRadius = DensityUtils.dip2px(context, DEFAULT_CENTER_RADIUS);
+        mProgressCenterRadius = DensityUtils.dip2px(context, DEFAULT_PROGRESS_CENTER_RADIUS);
 
         mProgressColor = DEFAULT_PROGRESS_COLOR;
         mProgressBgColor = DEFAULT_PROGRESS_BGCOLOR;

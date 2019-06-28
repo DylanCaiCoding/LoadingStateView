@@ -5,9 +5,10 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.EditText;
 import com.caisl.loadinghelper.LoadingHelper;
 import com.caisl.loadinghelper.sample.R;
+import com.caisl.loadinghelper.sample.utils.KeyboardUtils;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import static com.wuhenzhizao.titlebar.widget.CommonTitleBar.*;
@@ -44,15 +45,19 @@ public class SearchTitleAdapter extends LoadingHelper.Adapter<SearchTitleAdapter
       titleBar.setListener(new CommonTitleBar.OnTitleBarListener() {
         @Override
         public void onClicked(View v, int action, String extra) {
+          EditText editText;
           switch (action) {
             case ACTION_LEFT_BUTTON:
               ((Activity) rootView.getContext()).finish();
               break;
             case ACTION_SEARCH_DELETE:
-              titleBar.getCenterSearchEditText().setText("");
+              editText = titleBar.getCenterSearchEditText();
+              editText.setText("");
               break;
             case ACTION_SEARCH_SUBMIT:
-              String keyword = titleBar.getCenterSearchEditText().getText().toString();
+              editText = titleBar.getCenterSearchEditText();
+              String keyword = editText.getText().toString();
+              KeyboardUtils.hideKeyboard(rootView.getContext(),editText);
               if (onSearchListener != null) {
                 onSearchListener.onSearch(keyword);
               }

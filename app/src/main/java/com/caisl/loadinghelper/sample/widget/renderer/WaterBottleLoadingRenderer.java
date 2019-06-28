@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.*;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.animation.Interpolator;
-import com.caisl.loadinghelper.sample.utils.DensityUtil;
+import com.caisl.loadinghelper.sample.utils.DensityUtils;
 import com.caisl.loadinghelper.sample.widget.LoadingRenderer;
 
 import java.util.ArrayList;
@@ -65,15 +65,15 @@ public class WaterBottleLoadingRenderer extends LoadingRenderer {
     }
 
     private void init(Context context) {
-        mTextSize = DensityUtil.dip2px(context, DEFAULT_TEXT_SIZE);
+        mTextSize = DensityUtils.dip2px(context, DEFAULT_TEXT_SIZE);
 
-        mWidth = DensityUtil.dip2px(context, DEFAULT_WIDTH);
-        mHeight = DensityUtil.dip2px(context, DEFAULT_HEIGHT);
-        mStrokeWidth = DensityUtil.dip2px(context, DEFAULT_STROKE_WIDTH);
+        mWidth = DensityUtils.dip2px(context, DEFAULT_WIDTH);
+        mHeight = DensityUtils.dip2px(context, DEFAULT_HEIGHT);
+        mStrokeWidth = DensityUtils.dip2px(context, DEFAULT_STROKE_WIDTH);
 
-        mBottleWidth = DensityUtil.dip2px(context, DEFAULT_BOTTLE_WIDTH);
-        mBottleHeight = DensityUtil.dip2px(context, DEFAULT_BOTTLE_HEIGHT);
-        mWaterLowestPointToBottleneckDistance = DensityUtil.dip2px(context, WATER_LOWEST_POINT_TO_BOTTLENECK_DISTANCE);
+        mBottleWidth = DensityUtils.dip2px(context, DEFAULT_BOTTLE_WIDTH);
+        mBottleHeight = DensityUtils.dip2px(context, DEFAULT_BOTTLE_HEIGHT);
+        mWaterLowestPointToBottleneckDistance = DensityUtils.dip2px(context, WATER_LOWEST_POINT_TO_BOTTLENECK_DISTANCE);
 
         mBottleColor = DEFAULT_BOTTLE_COLOR;
         mWaterColor = DEFAULT_WATER_COLOR;

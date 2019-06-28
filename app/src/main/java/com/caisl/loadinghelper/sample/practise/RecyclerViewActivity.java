@@ -64,22 +64,17 @@ public class RecyclerViewActivity extends AppCompatActivity {
       return 10;
     }
 
-    class ImageViewHolder extends RecyclerView.ViewHolder {
+    class ImageViewHolder extends RecyclerView.ViewHolder implements LoadingHelper.OnRetryListener {
 
       private final LoadingHelper mLoadingHelper;
       ImageView mImageView;
       private String mUrl;
 
-      public ImageViewHolder(@NonNull View itemView) {
+      ImageViewHolder(@NonNull View itemView) {
         super(itemView);
         mLoadingHelper = new LoadingHelper(itemView.findViewById(R.id.loading_view));
         mLoadingHelper.registerAdapter(VIEW_TYPE_LOADING,new WaterLoadingAdapter());
-        mLoadingHelper.setRetryTask(new Runnable() {
-          @Override
-          public void run() {
-            showImage(mUrl);
-          }
-        });
+        mLoadingHelper.setOnRetryListener(this);
         mImageView = itemView.findViewById(R.id.image_view);
       }
 
@@ -102,6 +97,11 @@ public class RecyclerViewActivity extends AppCompatActivity {
               }
             })
             .into(mImageView);
+      }
+
+      @Override
+      public void onRetry() {
+        showImage(mUrl);
       }
     }
   }

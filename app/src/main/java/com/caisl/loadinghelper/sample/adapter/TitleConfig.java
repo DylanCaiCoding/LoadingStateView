@@ -1,6 +1,8 @@
 package com.caisl.loadinghelper.sample.adapter;
 
 
+import android.view.View;
+
 /**
  * @author caisl
  * @since 2019/4/9
@@ -10,7 +12,7 @@ public class TitleConfig {
   private String mTitleText;
   private Type mType;
   private String mRightText;
-  private Runnable mRightClickTask;
+  private View.OnClickListener mRightClickListener;
 
   public TitleConfig() {
   }
@@ -20,9 +22,9 @@ public class TitleConfig {
     mType = type;
   }
 
-  public TitleConfig(String rightText, Runnable rightClickTask) {
+  public TitleConfig(String rightText, View.OnClickListener rightClickListener) {
     mRightText = rightText;
-    mRightClickTask = rightClickTask;
+    mRightClickListener = rightClickListener;
   }
 
   public String getTitleText() {
@@ -49,12 +51,12 @@ public class TitleConfig {
     mRightText = rightText;
   }
 
-  public Runnable getRightClickTask() {
-    return mRightClickTask;
+  public View.OnClickListener getRightClickListener() {
+    return mRightClickListener;
   }
 
-  public void setRightClickTask(Runnable rightClickTask) {
-    mRightClickTask = rightClickTask;
+  public void setRightClickListener(View.OnClickListener rightClickListener) {
+    mRightClickListener = rightClickListener;
   }
 
   public enum Type {

@@ -28,7 +28,7 @@
       <ImageView
         android:layout_width="36dp"
         android:layout_height="36dp"
-        app:srcCompat="@drawable/ic_logo"
+        app:srcCompat="@drawable/ic_logo_core"
         android:id="@+id/imageView4"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toTopOf="parent"

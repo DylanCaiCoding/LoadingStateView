@@ -1,5 +1,6 @@
 package com.caisl.loadinghelper.sample.practise;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,7 @@ import com.caisl.loadinghelper.sample.utils.HttpUtils;
  * @author caisl
  * @since 2019/6/20
  */
-public class ActErrorActivity extends AppCompatActivity {
+public class ActErrorActivity extends AppCompatActivity implements LoadingHelper.OnRetryListener {
 
   private LoadingHelper mLoadingHelper;
 
@@ -22,15 +23,20 @@ public class ActErrorActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.layout_content);
     mLoadingHelper = new LoadingHelper(this);
-    mLoadingHelper.setRetryTask(new Runnable() {
+    mLoadingHelper.setOnRetryListener(new LoadingHelper.OnRetryListener() {
       @Override
-      public void run() {
-        loadSuccess();
+      public void onRetry() {
+
       }
     });
     mLoadingHelper.registerTitleAdapter(new TitleAdapter("Activity(error)", TitleConfig.Type.BACK));
     mLoadingHelper.addTitleView();
     loadFailure();
+  }
+
+  @Override
+  public void onRetry() {
+    loadSuccess();
   }
 
   private void loadSuccess() {

@@ -19,7 +19,7 @@ import static com.caisl.loadinghelper.sample.adapter.TimeoutAdapter.VIEW_TYPE_TI
  * @author caisl
  * @since 2019/6/20
  */
-public class LoadingFragment extends Fragment {
+public class LoadingFragment extends Fragment implements LoadingHelper.OnRetryListener {
 
   private LoadingHelper mLoadingHelper;
   private static final String KEY_VIEW_TYPE = "view type";
@@ -39,12 +39,7 @@ public class LoadingFragment extends Fragment {
     View view = inflater.inflate(R.layout.layout_content, container, false);
     mLoadingHelper = new LoadingHelper(view);
     mLoadingHelper.registerAdapter(VIEW_TYPE_TIMEOUT,new TimeoutAdapter());
-    mLoadingHelper.setRetryTask(new Runnable() {
-      @Override
-      public void run() {
-        loadSuccess();
-      }
-    });
+    mLoadingHelper.setOnRetryListener(this);
     return mLoadingHelper.getDecorView();
   }
 
@@ -55,6 +50,11 @@ public class LoadingFragment extends Fragment {
       mViewType = getArguments().getInt(KEY_VIEW_TYPE);
     }
     loadFailure();
+  }
+
+  @Override
+  public void onRetry() {
+    loadSuccess();
   }
 
   private void loadSuccess() {

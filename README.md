@@ -2,13 +2,14 @@
 
 English | [中文](README_ZH_CN.md)
 
-LoadingHelper is a highly expandable Android library for showing loading status view with the low-coupling way, it not only shows different view like loading, content, error, empty or customized view when loading network data or database data, but also supports for adding view to header, you can manager title view more easier in the activity or fragment. It supports to change view anytime and expand features of view, then you can do more things after view showed to cope with more demand. LoadingHelper is more flexible than other similar libraries.
+LoadingHelper is a highly expandable Android library for showing loading status view with the low-coupling way, it not only shows different view like **loading, content, error, empty or customized view** when loading network data or database data, but also supports for adding view to header, you can **manager title view** more easier in the activity or fragment. It supports to **change view anytime and expand features of view**, then you can do something after view showed to cope with more demand. **LoadingHelper is more flexible than other similar libraries**.
 
 ## Feature
 
 - No need to modify the code of xml file.
+- Only one Java file, 360 lines of code without comment statement.
 - Support for using in Activity, Fragment, View, ViewPager, RecyclerView.
-- Support for managing the title view.
+- Support for managing title view.
 - Support for changing views anytime.
 - Support for expanding features of view.
 - Support for using with most third-party libraries.
@@ -29,7 +30,7 @@ LoadingHelper is a highly expandable Android library for showing loading status 
 
 ## Getting started
 
-in your project's build.gradle:
+In your project's build.gradle:
 
 ```
 allprojects {
@@ -40,7 +41,7 @@ allprojects {
 }
 ```
 
-in your module's build.gradle:
+In your module's build.gradle:
 
 ```
 dependencies {
@@ -88,20 +89,20 @@ loadingHelper.showErrorView(); // view type is VIEW_TYPE_ERROR
 loadingHelper.showEmptyView(); // view type is VIEW_TYPE_EMPTY
 ```
 
-When you need to add retry task.
+When you need to retry load data.
 
 ```
-LoadingHelper.setRetryTask(new Runnable() {
+LoadingHelper.setOnRetryListener(new LoadingHelper.OnRetryListener() {
   @Override
-  public void run() {
+  public void onRetry() {
     // request data again
   }
 });
 
-holder.retryTask.run();
+holder.onRetryListener.onRetry();
 ```
 
-### More usage
+## Advanced usage
 
 #### Add title view
 
@@ -156,7 +157,8 @@ Usage like RecyclerView.Adapter, for example:
 mErrorAdapter = new ErrorAdapter(mErrorConfig);
 loadingHelper.registerAdapter(VIEW_TYPE_ERROR, mErrorAdapter);
 
-mErrorConfig.setErrorText("service is busy");
+mErrorConfig.setErrorText("Service is busy");
+// it will execute Adapter#onBindViewHolder(holder)
 mErrorAdapter.notifyDataSetChanged();
 ```
 
@@ -170,7 +172,7 @@ public class ShowTitleLoadingMethod implements LoadingHelper.Method<Void,TitleAd
   @Override
   public Void execute(TitleAdapter.TitleViewHolder holder, Object... params) {
     boolean show = (boolean) params[0]; // get param
-    // realize function
+    // realize feature
     return null;
   }
 }
@@ -199,6 +201,23 @@ boolean titleLoading = holder.getMethodReturnValue("isTitleLoading");
 ```
 
 ### Do something for content view
+
+```
+public class SimpleContentAdapter extends LoadingHelper.ContentAdapter<LoadingHelper.ContentViewHolder> {
+  @Override
+  public LoadingHelper.ContentViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent,
+                                                            @NonNull View contentView) {
+    return new LoadingHelper.ContentViewHolder(contentView);
+  }
+
+  @Override
+  public void onBindViewHolder(@NonNull LoadingHelper.ContentViewHolder holder) {
+    if (holder.activity != null) {
+      // 
+    }
+  }
+}
+```
 
 ## Thanks
 

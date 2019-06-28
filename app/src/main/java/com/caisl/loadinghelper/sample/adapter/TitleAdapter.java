@@ -34,10 +34,10 @@ public class TitleAdapter extends LoadingHelper.Adapter<TitleAdapter.TitleViewHo
   /**
    * add right button
    * @param rightText right button text
-   * @param rightClickTask right button click task
+   * @param rightClickListener right button click listener
    */
-  public TitleAdapter(String rightText, Runnable rightClickTask) {
-    this(new TitleConfig(rightText,rightClickTask));
+  public TitleAdapter(String rightText, View.OnClickListener rightClickListener) {
+    this(new TitleConfig(rightText,rightClickListener));
   }
 
   public TitleAdapter(TitleConfig config) {
@@ -60,8 +60,8 @@ public class TitleAdapter extends LoadingHelper.Adapter<TitleAdapter.TitleViewHo
     }else {
       holder.hideBackBtn();
     }
-    if (!TextUtils.isEmpty(mConfig.getRightText())&&mConfig.getRightClickTask()!=null){
-      holder.addRightBtn(mConfig.getRightText(),mConfig.getRightClickTask());
+    if (!TextUtils.isEmpty(mConfig.getRightText())&&mConfig.getRightClickListener()!=null){
+      holder.addRightBtn(mConfig.getRightText(),mConfig.getRightClickListener());
     }
   }
 
@@ -97,14 +97,9 @@ public class TitleAdapter extends LoadingHelper.Adapter<TitleAdapter.TitleViewHo
       mTitleBar.getCenterTextView().setText(title);
     }
 
-    void addRightBtn(String rightText, final Runnable rightClickTask) {
+    void addRightBtn(String rightText, final View.OnClickListener rightClickListener) {
       mTitleBar.getRightTextView().setText(rightText);
-      mTitleBar.getRightTextView().setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          rightClickTask.run();
-        }
-      });
+      mTitleBar.getRightTextView().setOnClickListener(rightClickListener);
     }
   }
 }

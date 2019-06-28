@@ -1,20 +1,23 @@
 package com.caisl.loadinghelper.sample;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.caisl.loadinghelper.LoadingHelper;
+import com.caisl.loadinghelper.sample.adapter.SimpleContentAdapter;
 import com.caisl.loadinghelper.sample.adapter.TitleAdapter;
+import com.caisl.loadinghelper.sample.adapter.TitleConfig;
 import com.caisl.loadinghelper.sample.practise.*;
 
 /**
  * @author caisl
  * @since 2019/6/20
  */
-public class MainActivity extends AppCompatActivity implements Runnable{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements Runnable{
   }
 
   @Override
-  public void run() {
+  public void onClick(View v) {
     Uri uri = Uri.parse("https://github.com/CaiShenglang/LoadingHelper");
-    Intent intent = new Intent("android.intent.action.VIEW",uri);
+    Intent intent = new Intent("android.intent.action.VIEW", uri);
     startActivity(intent);
   }
 }

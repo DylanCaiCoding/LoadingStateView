@@ -5,6 +5,7 @@ import com.caisl.loadinghelper.LoadingHelper;
 import com.caisl.loadinghelper.sample.adapter.EmptyAdapter;
 import com.caisl.loadinghelper.sample.adapter.ErrorAdapter;
 import com.caisl.loadinghelper.sample.adapter.LoadingAdapter;
+import com.caisl.loadinghelper.sample.adapter.SimpleContentAdapter;
 
 import static com.caisl.loadinghelper.LoadingHelper.*;
 

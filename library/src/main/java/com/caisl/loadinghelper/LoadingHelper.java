@@ -2,16 +2,12 @@ package com.caisl.loadinghelper;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.LinearLayout;
 
-import java.io.*;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import static java.util.Objects.requireNonNull;
@@ -32,7 +28,8 @@ public final class LoadingHelper {
   private LinearLayout mDecorView;
   private View mContentView;
   private ViewHolder mCurrentViewHolder;
-  private Runnable mRetryTask;
+  private Activity mActivity;
+  private OnRetryListener mOnRetryListener;
   private SparseArray<ViewHolder> mViewHolders;
   @NonNull
   private Adapters mAdapters;
@@ -52,7 +49,7 @@ public final class LoadingHelper {
   }
 
   public LoadingHelper(@NonNull Activity activity, ContentAdapter contentAdapter) {
-    this(((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0), contentAdapter);
+    this(activity, ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0), contentAdapter);
   }
 
   public LoadingHelper(@NonNull View contentView) {
@@ -60,14 +57,19 @@ public final class LoadingHelper {
   }
 
   public LoadingHelper(@NonNull View contentView, ContentAdapter contentAdapter) {
+    this(null, contentView, contentAdapter);
+  }
+
+  private LoadingHelper(Activity activity, @NonNull View contentView, ContentAdapter contentAdapter) {
+    mActivity = activity;
     mContentView = requireNonNull(contentView);
     mViewHolders = new SparseArray<>();
     mAdapters = getDefault().mAdapters.clone();
     mAdapterDataEvent = new AdapterDataEvent() {
       @SuppressWarnings("unchecked")
       @Override
-      public void notifyDataSetChanged(int viewType) {
-        getAdapter(viewType).onBindViewHolder(getViewHolder(viewType));
+      public void notifyDataSetChanged(Adapter adapter) {
+        adapter.onBindViewHolder(getViewHolder(mAdapters.getViewType(adapter)));
       }
     };
     if (contentAdapter != null) {
@@ -86,8 +88,8 @@ public final class LoadingHelper {
     showView(VIEW_TYPE_CONTENT);
   }
 
-  public void registerTitleAdapter(@NonNull Adapter<?> adapter){
-    registerAdapter(VIEW_TYPE_TITLE,adapter);
+  public void registerTitleAdapter(@NonNull Adapter<?> adapter) {
+    registerAdapter(VIEW_TYPE_TITLE, adapter);
   }
 
   public void registerAdapter(int viewType, @NonNull Adapter<?> adapter) {
@@ -155,17 +157,16 @@ public final class LoadingHelper {
     return getViewHolder(viewType).getMethodReturnValue(flag, params);
   }
 
-  public void setRetryTask(Runnable retryTask) {
-    mRetryTask = retryTask;
+  public void setOnRetryListener(OnRetryListener onRetryListener) {
+    mOnRetryListener = onRetryListener;
   }
-
 
   public LinearLayout getDecorView() {
     return mDecorView;
   }
 
   @SuppressWarnings("unchecked")
-  private  <T extends Adapter> T getAdapter(int viewType) {
+  private <T extends Adapter> T getAdapter(int viewType) {
     return (T) mAdapters.getAdapter(viewType);
   }
 
@@ -184,15 +185,18 @@ public final class LoadingHelper {
   @SuppressWarnings("unchecked")
   private void addViewHolder(int viewType) {
     final Adapter adapter = mAdapters.getAdapter(viewType);
+    ViewHolder viewHolder;
     if (adapter instanceof ContentAdapter) {
       final ContentAdapter contentAdapter = (ContentAdapter) adapter;
       contentAdapter.onCreate(mContentView);
     }
-    ViewHolder viewHolder = adapter.onCreateViewHolder(LayoutInflater.from(mDecorView.getContext()), mDecorView);
+    viewHolder = adapter.onCreateViewHolder(LayoutInflater.from(mDecorView.getContext()), mDecorView);
     viewHolder.viewType = viewType;
-    viewHolder.retryTask = mRetryTask;
+    viewHolder.onRetryListener = mOnRetryListener;
+    if (viewHolder instanceof ContentViewHolder) {
+      ((ContentViewHolder) viewHolder).activity = mActivity;
+    }
     mViewHolders.append(viewType, viewHolder);
-    adapter.viewType = viewType;
     adapter.adapterDataEvent = mAdapterDataEvent;
     adapter.onBindViewHolder(viewHolder);
   }
@@ -211,8 +215,7 @@ public final class LoadingHelper {
     }
   }
 
-  public static abstract class Adapter<VH extends LoadingHelper.ViewHolder>{
-    int viewType;
+  public static abstract class Adapter<VH extends LoadingHelper.ViewHolder> {
     AdapterDataEvent adapterDataEvent;
     HashMap<Object, Method> mMethods;
 
@@ -230,7 +233,7 @@ public final class LoadingHelper {
     }
 
     public void notifyDataSetChanged() {
-      adapterDataEvent.notifyDataSetChanged(viewType);
+      adapterDataEvent.notifyDataSetChanged(this);
     }
 
     HashMap<Object, Method> getMethods() {
@@ -241,7 +244,7 @@ public final class LoadingHelper {
     }
   }
 
-  public static abstract class ContentAdapter<VH extends LoadingHelper.ViewHolder> extends Adapter<VH> {
+  public static abstract class ContentAdapter<VH extends LoadingHelper.ContentViewHolder> extends Adapter<VH> {
     View mContentView;
 
     void onCreate(View contentView) {
@@ -280,9 +283,9 @@ public final class LoadingHelper {
       if (adapter == null && viewType == VIEW_TYPE_CONTENT) {
         adapter = new LoadingHelper.ContentAdapter() {
           @Override
-          public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent,
-                                                             @NonNull View contentView) {
-            return new LoadingHelper.ViewHolder(contentView);
+          public ContentViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent,
+                                                      @NonNull View contentView) {
+            return new ContentViewHolder(contentView);
           }
 
           @Override
@@ -294,7 +297,12 @@ public final class LoadingHelper {
       return requireNonNull(adapter, "Adapter is unregistered");
     }
 
-    public Adapters clone(){
+    public int getViewType(Adapter adapter) {
+      int index = mAdapters.indexOfValue(adapter);
+      return mAdapters.keyAt(index);
+    }
+
+    public Adapters clone() {
       Adapters clone = null;
       try {
         clone = (Adapters) super.clone();
@@ -309,8 +317,8 @@ public final class LoadingHelper {
   public static class ViewHolder {
     @NonNull
     public final View rootView;
-    public int viewType;
-    public Runnable retryTask;
+    public OnRetryListener onRetryListener;
+    int viewType;
     HashMap<Object, Method> methods;
 
     public ViewHolder(@NonNull View rootView) {
@@ -328,11 +336,23 @@ public final class LoadingHelper {
     }
   }
 
+  public static class ContentViewHolder extends ViewHolder {
+    public Activity activity;
+
+    public ContentViewHolder(@NonNull View rootView) {
+      super(rootView);
+    }
+  }
+
   public interface Method<T, VH extends ViewHolder> {
     T execute(VH holder, Object... params);
   }
 
+  public interface OnRetryListener {
+    void onRetry();
+  }
+
   interface AdapterDataEvent {
-    void notifyDataSetChanged(int viewType);
+    void notifyDataSetChanged(Adapter adapter);
   }
 }

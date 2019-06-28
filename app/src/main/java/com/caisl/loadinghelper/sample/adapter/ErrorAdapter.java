@@ -38,8 +38,8 @@ public class ErrorAdapter extends LoadingHelper.Adapter<ErrorAdapter.ErrorViewHo
       rootView.findViewById(R.id.btn_reload).setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          if (retryTask != null) {
-            retryTask.run();
+          if (onRetryListener != null) {
+            onRetryListener.onRetry();
           }
         }
       });

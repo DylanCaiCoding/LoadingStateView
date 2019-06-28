@@ -5,10 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import com.caisl.loadinghelper.LoadingHelper;
 import com.caisl.loadinghelper.sample.R;
-import com.caisl.loadinghelper.sample.adapter.PlaceholderAdapter;
-import com.caisl.loadinghelper.sample.adapter.TimeoutAdapter;
-import com.caisl.loadinghelper.sample.adapter.TitleAdapter;
-import com.caisl.loadinghelper.sample.adapter.TitleConfig;
+import com.caisl.loadinghelper.sample.adapter.*;
 import com.caisl.loadinghelper.sample.utils.HttpUtils;
 
 import static com.caisl.loadinghelper.sample.adapter.TimeoutAdapter.VIEW_TYPE_TIMEOUT;

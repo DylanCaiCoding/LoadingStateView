@@ -32,8 +32,8 @@ public class TimeoutAdapter extends LoadingHelper.Adapter<TimeoutAdapter.Timeout
       rootView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          if (retryTask != null) {
-            retryTask.run();
+          if (onRetryListener != null) {
+            onRetryListener.onRetry();
           }
         }
       });
