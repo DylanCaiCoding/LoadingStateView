@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.caisl.loadinghelper.sample"
+        applicationId "com.dylanc.loadinghelper.sample"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
@@ -38,6 +38,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'com.wuhenzhizao:titlebar:1.1.4'
 //    debugImplementation project(':library')
-//    releaseImplementation 'com.github.CaiShenglang:LoadingHelper:1.0.0-alpha'
+//    releaseImplementation 'com.github.DylanCaiCoding:LoadingHelper:1.0.0-alpha'
 
 }
