@@ -2,25 +2,25 @@
 
 English | [中文](README_ZH_CN.md)
 
-LoadingHelper is a highly expandable Android library for showing loading status view with the low-coupling way, it not only shows different view like **loading, content, error, empty or customized view** when loading network data or database data, but also supports for adding view to header, you can **manager title view** more easier in the activity or fragment. It supports to **change view anytime and expand features of view**, then you can do something after view showed to cope with more demand. **LoadingHelper is more flexible than other similar libraries**.
+LoadingHelper is a highly expandable Android library for showing loading status view with the low-coupling way, it not only shows different view like **loading, content, error, empty or customized view** when loading network data or database data, but also supports for adding view to header, you can **manager title view** more easier in the activity or fragment. It supports to **change view anytime**, then you can do something after view showed to cope with more demand. **LoadingHelper is more flexible than other similar libraries**.
 
 ## Feature
 
 - No need to modify the code of xml file.
-- Only one Java file, 360 lines of code without comment statement.
+- Less than 300 lines of code without comment statement.
 - Support for using in Activity, Fragment, View, ViewPager, RecyclerView.
 - Support for managing title view.
 - Support for changing views anytime.
-- Support for expanding features of view.
 - Support for using with most third-party libraries.
+- Support for decoupling the code of Activity's base class.
 
 ## Demo
 
-[Activity(error)](/app/src/main/java/com/caisl/loadinghelper/sample/practise/ActErrorActivity.java)|[Fragment(empty)](app/src/main/java/com/caisl/loadinghelper/sample/practise/FragmentEmptyActivity.java)|[View(placeholder)](app/src/main/java/com/caisl/loadinghelper/sample/practise/ViewPlaceholderActivity.java)
+[Activity(error)](/app/src/main/java/com/dylanc/loadinghelper/sample/practise/ActErrorActivity.java)|[Fragment(empty)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/FragmentEmptyActivity.java)|[View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/ViewPlaceholderActivity.java)
 :---:|:---:|:---:
 ![](gif/activity_error.gif)|![](gif/fragment_empty.gif)|![](gif/view_placeholder.gif)
 
-[ViewPager(timeout)](app/src/main/java/com/caisl/loadinghelper/sample/practise/ViewPagerActivity.java)|[RecyclerView(cool loading)](app/src/main/java/com/caisl/loadinghelper/sample/practise/RecyclerViewActivity.java)|[CustomTitle(search)](app/src/main/java/com/caisl/loadinghelper/sample/practise/SearchTitleActivity.java)
+[ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/ViewPagerActivity.java)|[RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/RecyclerViewActivity.java)|[CustomTitle(search)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/SearchTitleActivity.java)
 :---:|:---:|:---:
 ![](gif/viewpager_timeout.gif)|![](gif/recyclerview_cool_loading.gif)|![](gif/custom_title_search.gif)
 
@@ -45,7 +45,7 @@ In your module's build.gradle:
 
 ```
 dependencies {
-  implementation 'com.github.CaiShenglang:LoadingHelper:1.0.0-alpha'
+  implementation 'com.github.DylanCaiCoding:LoadingHelper:1.0.0-alpha'
 }
 ```
 
@@ -73,36 +73,36 @@ public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHold
 
 ```
 LoadingHelper loadingHelper = new LoadingHelper(this);
-loadingHelper.registerAdapter(VIEW_TYPE_LOADING, new LoadingAdapter());
+loadingHelper.register(ViewType.LOADING, new LoadingAdapter());
 
 // if you want to register global adapter
-LoadingHelper.getDefault().registerAdapter(VIEW_TYPE_LOADING, new LoadingAdapter());
+LoadingHelper.getDefault().register(ViewType.LOADING, new LoadingAdapter());
 ```
 
 #### Step 3. Show view by view type, for example:
 
 ```
 loadingHelper.showView(viewType);
-loadingHelper.showLoadingView(); // view type is VIEW_TYPE_LOADING
-loadingHelper.showContentView(); // view type is VIEW_TYPE_CONTENT
-loadingHelper.showErrorView(); // view type is VIEW_TYPE_ERROR
-loadingHelper.showEmptyView(); // view type is VIEW_TYPE_EMPTY
+loadingHelper.showLoadingView(); // view type is ViewType.LOADING
+loadingHelper.showContentView(); // view type is ViewType.CONTENT
+loadingHelper.showErrorView(); // view type is ViewType.ERROR
+loadingHelper.showEmptyView(); // view type is ViewType.EMPTY
 ```
 
-When you need to retry load data.
+When you need to reload data.
 
 ```
-LoadingHelper.setOnRetryListener(new LoadingHelper.OnRetryListener() {
+LoadingHelper.setOnReloadListener(new LoadingHelper.OnReloadListener() {
   @Override
-  public void onRetry() {
+  public void onReload() {
     // request data again
   }
 });
 
-holder.onRetryListener.onRetry();
+holder.getOnReloadListener.onReload();
 ```
 
-## Advanced usage
+### Advanced usage
 
 #### Add title view
 
@@ -145,89 +145,71 @@ Register title adapter and add title view.
 final TitleConfig config = new TitleConfig();
 config.setTitleText("title");
 config.setType(TitleConfig.Type.BACK);
-loadingHelper.registerTitleAdapter(new TitleAdapter(config));
+loadingHelper.register(ViewType.TITLE, new TitleAdapter(config));
 loadingHelper.addTitleView();
 ```
 
-#### Change view after show view
+#### Change view after view showed
 
-Usage like RecyclerView.Adapter, for example:
-
-```
-mErrorAdapter = new ErrorAdapter(mErrorConfig);
-loadingHelper.registerAdapter(VIEW_TYPE_ERROR, mErrorAdapter);
-
-mErrorConfig.setErrorText("Service is busy");
-// it will execute Adapter#onBindViewHolder(holder)
-mErrorAdapter.notifyDataSetChanged();
-```
-
-#### Expand Features of view
-
-Create a class implements LoadingHelper.Method<T,VH extends ViewHolder>, for example:
+Usage is similar to the RecyclerView.Adapter's, for example:
 
 ```
-// no return value
-public class ShowTitleLoadingMethod implements LoadingHelper.Method<Void,TitleAdapter.TitleViewHolder> {
+mTitleAdapter = new TitleAdapter(mTitleConfig);
+loadingHelper.register(ViewType.TITLE, mTitleAdapter);
+
+mTitleConfig.setTitleText("other title");
+mTitleAdapter.notifyDataSetChanged();
+```
+
+#### Decoupling the code of Activity's base class
+
+
+```
+public class SimpleContentAdapter extends LoadingHelper.ContentAdapter<SimpleContentAdapter.ViewHolder> {
   @Override
-  public Void execute(TitleAdapter.TitleViewHolder holder, Object... params) {
-    boolean show = (boolean) params[0]; // get param
-    // realize feature
-    return null;
-  }
-}
-
-// have a return value
-public class IsTitleLoadingMethod implements LoadingHelper.Method<Boolean,TitleAdapter.TitleViewHolder> {
-  @Override
-  public Boolean execute(TitleAdapter.TitleViewHolder holder, Object... params) {
-    // return the desired value
-  }
-}
-
-LoadingHelper.getDefault()
-  .registerMethod(VIEW_TYPE_TITLE,"showTitleLoading",new ShowTitleLoadingMethod());
-  .registerMethod(VIEW_TYPE_TITLE,"isTitleLoading",new IsTitleLoadingMethod());
-```
-
-Execute a method with or without a return value.
-
-```
-// execute method
-loadingHelper.executeMethod(VIEW_TYPE_LOADING,"showTitleLoading",true);
-
-// get a return value
-boolean titleLoading = holder.getMethodReturnValue("isTitleLoading");
-```
-
-### Do something for content view
-
-```
-public class SimpleContentAdapter extends LoadingHelper.ContentAdapter<LoadingHelper.ContentViewHolder> {
-  @Override
-  public LoadingHelper.ContentViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent,
-                                                            @NonNull View contentView) {
-    return new LoadingHelper.ContentViewHolder(contentView);
+  public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent,
+                                       @NonNull View contentView) {
+    return new ViewHolder(contentView);
   }
 
   @Override
-  public void onBindViewHolder(@NonNull LoadingHelper.ContentViewHolder holder) {
-    if (holder.activity != null) {
-      // 
+  public void onBindViewHolder(@NonNull ViewHolder holder) {
+
+  }
+
+  class ViewHolder extends LoadingHelper.ContentViewHolder {
+
+    ViewHolder(@NonNull View rootView) {
+      super(rootView);
+    }
+
+    @Override
+    public void onCreate(@Nullable Activity activity) {
+      super.onCreate(activity);
+      if (activity != null) {
+        // do what you want
+      }
     }
   }
 }
 ```
 
-## Thanks
-
-- [luckbilly/Gloading](https://github.com/luckybilly/Gloading) 
-- [drakeet/MultiType](https://github.com/drakeet/MultiType) 
-
-## LICENSE
+Creates a `LoadingHelper` with the Activity and the `ContentAdapter`.
 
 ```
-Copyright (C) 2019. caisl
+LoadingHelper loadingHelper = new LoadingHelper(this, new SimpleContentAdapter());
+```
+
+## Thanks
+
+- [luckbilly/Gloading](https://github.com/luckybilly/Gloading) Standing on the shoulders of giants to realize my idea.
+- [dinuscxj/LoadingDrawable](https://github.com/dinuscxj/LoadingDrawable) The cool loading effect in the demo.
+- [wuhenzhizao/android-titlebar](https://github.com/wuhenzhizao/android-titlebar) All title bars in the demo.
+
+## License
+
+```
+Copyright (C) 2019. Dylan Cai
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
