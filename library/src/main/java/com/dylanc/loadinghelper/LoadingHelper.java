@@ -57,8 +57,17 @@ public final class LoadingHelper {
    *
    * @param activity Activity
    */
-  public LoadingHelper(@NonNull Activity activity) {
+  public LoadingHelper(Activity activity) {
     this(activity, null);
+  }
+
+  /**
+   * Constructs a LoadingHelper with a content adapter,
+   *
+   * @param contentAdapter the adapter of creating content view
+   */
+  public LoadingHelper(ContentAdapter contentAdapter) {
+    this(null, null, contentAdapter);
   }
 
   /**
@@ -68,7 +77,7 @@ public final class LoadingHelper {
    * @param activity       the activity
    * @param contentAdapter the adapter of creating content view
    */
-  public LoadingHelper(@NonNull Activity activity, ContentAdapter contentAdapter) {
+  public LoadingHelper(Activity activity, ContentAdapter contentAdapter) {
     this(activity, ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0), contentAdapter);
   }
 
@@ -77,7 +86,7 @@ public final class LoadingHelper {
    *
    * @param contentView the content view
    */
-  public LoadingHelper(@NonNull View contentView) {
+  public LoadingHelper(View contentView) {
     this(contentView, null);
   }
 
@@ -87,13 +96,13 @@ public final class LoadingHelper {
    * @param contentView    the content view
    * @param contentAdapter the adapter of creating content view
    */
-  public LoadingHelper(@NonNull View contentView, ContentAdapter contentAdapter) {
+  public LoadingHelper(View contentView, ContentAdapter contentAdapter) {
     this(null, contentView, contentAdapter);
   }
 
-  private LoadingHelper(Activity activity, @NonNull View contentView, ContentAdapter contentAdapter) {
+  private LoadingHelper(Activity activity, View contentView, ContentAdapter contentAdapter) {
     mActivity = activity;
-    mContentView = requireNonNull(contentView);
+    mContentView = contentView;
     mViewHolders = new HashMap<>();
     mAdapters = getDefault().mAdapters.clone();
     if (contentAdapter != null) {
@@ -283,7 +292,7 @@ public final class LoadingHelper {
     }
 
     public abstract VH onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent,
-                                          @NonNull View contentView);
+                                          @Nullable View contentView);
   }
 
   /**
