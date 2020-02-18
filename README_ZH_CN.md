@@ -2,15 +2,18 @@
 
 [English](README.md) | 中文
 
-LoadingHelper 是一个用于管理加载视图的拓展性高、低耦合的 Android 库。不只是用于请求网络数据或本地数据时，显示加载中、加载成功、加载失败、无数据或自定义视图，还可以添加标题栏，方便在 Activity 或 Fragment 使用。
+[![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)
 
-- 深度解耦加载中、加载成功、加载失败、无数据的视图，可拓展自定义视图
-- 无需在 xml 文件增加代码
+`LoadingHelper` 是一个用于显示加载界面的高拓展性、低耦合的工具，只用了一个 200 行左右的 Kotlin 代码实现（不包含注释）。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
+
+- 无需在布局添加代码
+- 可添加自定义视图
 - 可用于 Activity、Fragment、列表或指定的 View
-- 可动态管理标题栏视图
+- 可管理标题栏和添加多个头部控件
+- 可设置重新请求数据的事件
 - 可动态更新视图样式
-- 可为视图动态增加功能方法
-- 可结合大部分第三方控件使用
+- 可结合绝大部分第三方控件使用
+- 可解耦内容视图的初始化
 
 ## 示例
 
@@ -22,38 +25,27 @@ LoadingHelper 是一个用于管理加载视图的拓展性高、低耦合的 An
 :---:|:---:|:---:
 ![](gif/viewpager_timeout.gif)|![](gif/recyclerview_cool_loading.gif)|![](gif/custom_title_search.gif)
 
-[点击这里](https://madeqr.com/loadinghelper) 或者扫描二维码下载
+点击或者扫描二维码下载
 
-![QR code](img/app_download_qr_code.png)
+[![QR code](img/app_download_qr_code.png)](https://madeqr.com/loadinghelper)
 
-## 使用
+## 开始使用
 
-在 project 的 build.gradle 添加以下代码
-
-```
-allprojects {
-  repositories {
-    ...
-    maven { url 'https://www.jitpack.io' }
-  }
-}
-```
-
-在 module 的 build.gradle 添加依赖
+在 `build.gradle` 添加依赖：
 
 ```
 dependencies {
-  implementation 'com.github.DylanCaiCoding:LoadingHelper:1.0.0-alpha'
+  implementation 'com.dylanc:loadinghelper:1.1.0'
 }
 ```
 
-### 用法
+### 基础用法
 
-继承 LoadingHelper.Adapter&lt;VH extends ViewHolder&gt;，用法与 RecyclerView.Adapter 类似：
+第一步，创建一个适配器继承  `LoadingHelper.Adapter<VH extends ViewHolder>`，写法与 `RecyclerView.Adapter` 类似。如果需要实现点击重新请求数据，可以在点击事件调用 holder.getOnReloadListener.onReload() 方法。
 
-```
+```java
 public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHolder> {
-  
+
   @NonNull
   @Override
   public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
@@ -67,142 +59,96 @@ public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHold
 }
 ```
 
-调用 register(int viewType, LoadingHelper.Adapter adapter) 注册对应类型的 Adapter：
+第二步，注册适配器，关联一个视图类型。有五个默认类型，也可以传任意类型数据进行注册。
 
-```
+```java
 LoadingHelper loadingHelper = new LoadingHelper(this);
 loadingHelper.register(ViewType.LOADING, new LoadingAdapter());
-
-// if you want to register global adapter
-LoadingHelper.getDefault().register(ViewType.LOADING, new LoadingAdapter());
+// 当需要支持点击重新请求数据时
+loadingHelper.setOnReloadListener(() -> {})
 ```
 
-显示对应类型的视图：
+如果想注册成全局的适配器，需要配置默认的适配器池。
 
-```
-loadingHelper.showView(viewType);
-loadingHelper.showLoadingView(); // view type is ViewType.LOADING
-loadingHelper.showContentView(); // view type is ViewType.CONTENT
-loadingHelper.showErrorView(); // view type is ViewType.ERROR
-loadingHelper.showEmptyView(); // view type is ViewType.EMPTY
-```
-
-如需重新加载数据：
-
-```
-LoadingHelper.setOnReloadListener(new LoadingHelper.OnReloadListener() {
-  @Override
-  public void onReload() {
-    // request data again
-  }
+```java
+LoadingHelper.setDefaultAdapterPool(adapterPool -> {
+  adapterPool.register(ViewType.LOADING, new LoadingAdapter());
+  return Unit.INSTANCE;
 });
+```
 
-holder.getOnReloadListener.onReload();
+第三步，显示对应类型的视图。
+
+```java
+loadingHelper.showView(viewType);
+loadingHelper.showLoadingView(); // 对应视图类型 ViewType.LOADING
+loadingHelper.showContentView(); // 对应视图类型 ViewType.CONTENT
+loadingHelper.showErrorView(); // 对应视图类型 ViewType.ERROR
+loadingHelper.showEmptyView(); // 对应视图类型 ViewType.EMPTY
+```
+
+**动态更新已显示视图**
+
+在显示了视图之后，可以对视图进行更改刷新。用法和 `RecyclerView.Adapter` 一样，调用 `notifyDataSetChanged()` 后，会执行适配器的 `onBindViewHolder()` 方法。
+
+```java
+ErrorAdapter errorAdapter = loadingHelper.getAdapter(ViewType.ERROR);
+errorAdapter.errorText = "服务器繁忙，请稍后重试";
+errorAdapter.notifyDataSetChanged();
 ```
 
 ### 高级用法
 
 #### 添加标题栏
 
-创建标题栏的 Adapter，建议传入数据进行配置。
+先创建好标题栏的适配器，想用哪个标题栏就注册哪个适配器，能添加多个头部，会在所有头部的下方进行 loading。
 
-```
-public class TitleConfig {
-  private String mTitleText;
-  private Type mType;
-  // omit get set method
-  public enum Type {
-    BACK, NO_BACK
-  }
-}
-
-public class TitleAdapter extends LoadingHelper.Adapter<TitleViewHolder> {
-  private TitleConfig mConfig;
-
-  public TitleAdapter(TitleConfig config) {
-    mConfig = config;
-  }
-
-  @Override
-  public TitleViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return new TitleViewHolder(new Toolbar(parent.getContext()));
-  }
-
-  @Override
-  public void onBindViewHolder(@NonNull final TitleViewHolder holder) {
-    if (mConfig != null) {
-      // change view according to configuration
-    }
-  }
-}
-```
-
-注册 Adapter，调用 addTitleView() 或 addHeaderView(int viewType) 增加标题栏。
-
-```
-final TitleConfig config = new TitleConfig();
-config.setTitleText("title");
-config.setType(TitleConfig.Type.BACK);
-loadingHelper.register(ViewType.TITLE, new TitleAdapter(config));
+```java
+loadingHelper= new LoadingHelper(this);
+loadingHelper.register(ViewType.TITLE, new TitleAdapter("标题名"));
 loadingHelper.addTitleView();
+// 假设还需要添加一个有搜索功能的头部
+loadingHelper.register(VIEW_TYPE_EDIT_HEADER, new SearchHeaderAdapter());
+loadingHelper.addHeaderView(VIEW_TYPE_SEARCH, 1);
 ```
 
-#### 动态更新数据
+如果想删掉某个已添加的头部。
 
-与 RecyclerView 用法类似，调用 notifyDataSetChanged()，会执行 Adapter#onBindViewHolder(holder)。
-
-```
-mTitleAdapter = new TitleAdapter(mTitleConfig);
-loadingHelper.register(ViewType.TITLE, mTitleAdapter);
-
-mTitleConfig.setTitleText("other title");
-mTitleAdapter.notifyDataSetChanged();
+```java
+loadingHelper.removeHeaderView(VIEW_TYPE_SEARCH)
 ```
 
-#### 解耦 Activity 基类
+#### 初始化内容视图
 
-继承 LoadingHelper.Adapter&lt;VH extends ContentViewHolder&gt，例如：
+创建一个适配器继承 `LoadingHelper.ContentAdapter<VH extends ViewHolder>`。如果想要使用 Activity 对象，可以在构造方法传入或者通过 contentView 获得。
 
-```
-public class SimpleContentAdapter extends LoadingHelper.ContentAdapter<SimpleContentAdapter.ViewHolder> {
+```java
+public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHelper.ViewHolder> {
   @Override
-  public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent,
-                                       @NonNull View contentView) {
-    return new ViewHolder(contentView);
+  public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull View contentView) {
+    return new LoadingHelper.ViewHolder(contentView);
   }
 
   @Override
-  public void onBindViewHolder(@NonNull ViewHolder holder) {
-
-  }
-
-  class ViewHolder extends LoadingHelper.ContentViewHolder {
-
-    ViewHolder(@NonNull View rootView) {
-      super(rootView);
-    }
-
-    @Override
-    public void onCreate(@Nullable Activity activity) {
-      super.onCreate(activity);
-      if (activity != null) {
-        // do what you want
-      }
-    }
+  public void onBindViewHolder(@NonNull LoadingHelper.ViewHolder holder) {
+    View contentView = holder.getRootView();
   }
 }
 ```
-创建 LoadingHelper 的时候传入 ContentAdapter。
 
-```
-LoadingHelper loadingHelper = new LoadingHelper(this, new SimpleContentAdapter());
+在创建 `LoadingHelper` 对象时传入 `ContentAdapter` 对象，就会立即对内容视图进行处理。
+
+```java
+loadingHelper= new LoadingHelper(this, new CommonContentAdapter());
 ```
 
 
 ## 感谢
 
-- [luckbilly/Gloading](https://github.com/luckybilly/Gloading) 
-- [drakeet/MultiType](https://github.com/drakeet/MultiType) 
+- [luckbilly/Gloading](https://github.com/luckybilly/Gloading) 站在了巨人肩膀上优化了本库，非常感谢！
+- [drakeet/MultiType](https://github.com/drakeet/MultiType) 参考了注册配置多适配器的思想和用法
+- [dinuscxj/LoadingDrawable](https://github.com/dinuscxj/LoadingDrawable) 示例中的自定义加载动画
+- [wuhenzhizao/android-titlebar](https://github.com/wuhenzhizao/android-titlebar) 示例中的标题栏控件
 
 ## License
 

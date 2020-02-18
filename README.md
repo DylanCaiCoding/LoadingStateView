@@ -2,17 +2,20 @@
 
 English | [中文](README_ZH_CN.md)
 
-LoadingHelper is a highly expandable Android library for showing loading status view with the low-coupling way, it not only shows different view like **loading, content, error, empty or customized view** when loading network data or database data, but also supports for adding view to header, you can **manager title view** more easier in the activity or fragment. It supports to **change view anytime**, then you can do something after view showed to cope with more demand. **LoadingHelper is more flexible than other similar libraries**.
+[![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion)[![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)
+
+`LoadingHelper` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of about 200 lines without comment statement . it not only **shows different view like loading, content, error, empty or customized view** when loading network data, but also **manages title bar.**
 
 ## Feature
 
-- No need to modify the code of xml file.
-- Less than 300 lines of code without comment statement.
-- Support for using in Activity, Fragment, View, ViewPager, RecyclerView.
-- Support for managing title view.
-- Support for changing views anytime.
-- Support for using with most third-party libraries.
-- Support for decoupling the code of Activity's base class.
+- No need to add code to the layout.
+- Support for adding custom views.
+- Support for use for Activity, Fragment, RecyclerView, View.
+- Support for managing title bar and add multiple headers.
+- Support for set reload event.
+- Support for update views anytime.
+- Support for use with most third-party libraries.
+- Support for decoupling the Initialization of content view.
 
 ## Demo
 
@@ -24,36 +27,25 @@ LoadingHelper is a highly expandable Android library for showing loading status 
 :---:|:---:|:---:
 ![](gif/viewpager_timeout.gif)|![](gif/recyclerview_cool_loading.gif)|![](gif/custom_title_search.gif)
 
-[Click here](https://madeqr.com/loadinghelper) or scan QR code to download
+Click or scan QR code to download
 
-![QR code](img/app_download_qr_code.png)
+[![QR code](img/app_download_qr_code.png)](https://madeqr.com/loadinghelper)
 
 ## Getting started
 
-In your project's build.gradle:
-
-```
-allprojects {
-  repositories {
-    ...
-    maven { url 'https://www.jitpack.io' }
-  }
-}
-```
-
-In your module's build.gradle:
+In your `build.gradle` :
 
 ```
 dependencies {
-  implementation 'com.github.DylanCaiCoding:LoadingHelper:1.0.0-alpha'
+  implementation 'com.dylanc:loadinghelper:1.1.0'
 }
 ```
 
 ### Usage
 
-#### Step 1. Create a class extends LoadingHelper.Adapter&lt;VH extends ViewHolder&gt;, usage is similar to RecyclerView.Adapter, for example:
+#### Step 1. Create a class extends `LoadingHelper.Adapter<VH extends ViewHolder>`, for example:
 
-```
+```java
 public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHolder> {
   
   @NonNull
@@ -69,19 +61,25 @@ public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHold
 }
 ```
 
-#### Step 2. Register your adapter with view type, for example:
+#### Step 2. Register your adapter with a view type, for example:
 
-```
+```java
 LoadingHelper loadingHelper = new LoadingHelper(this);
 loadingHelper.register(ViewType.LOADING, new LoadingAdapter());
+```
 
-// if you want to register global adapter
-LoadingHelper.getDefault().register(ViewType.LOADING, new LoadingAdapter());
+##### Or if you want to register a global adapter.
+
+```java
+LoadingHelper.setDefaultAdapterPool(adapterPool -> {
+  adapterPool.register(ViewType.LOADING, new LoadingAdapter());
+  return Unit.INSTANCE;
+});
 ```
 
 #### Step 3. Show view by view type, for example:
 
-```
+```java
 loadingHelper.showView(viewType);
 loadingHelper.showLoadingView(); // view type is ViewType.LOADING
 loadingHelper.showContentView(); // view type is ViewType.CONTENT
@@ -89,120 +87,77 @@ loadingHelper.showErrorView(); // view type is ViewType.ERROR
 loadingHelper.showEmptyView(); // view type is ViewType.EMPTY
 ```
 
-When you need to reload data.
+#### When you need to reload data.
 
-```
-LoadingHelper.setOnReloadListener(new LoadingHelper.OnReloadListener() {
+```java
+loadingHelper.setOnReloadListener(new LoadingHelper.OnReloadListener() {
   @Override
   public void onReload() {
     // request data again
   }
 });
 
+//In the adapter
 holder.getOnReloadListener.onReload();
+```
+
+#### When you need to change view after view showed.
+
+```java
+ErrorAdapter adapter = loadingHelper.getAdapter(ViewType.Error);
+adapter.errorText = "Fail to load, please wait";
+adapter.notifyDataSetChanged();
 ```
 
 ### Advanced usage
 
 #### Add title view
 
-Create the adapter of title view，suggest incoming data for configuration.
+Register the title adapter and add view.
 
-```
-public class TitleConfig {
-  private String mTitleText;
-  private Type mType;
-  // omit get set method
-  public enum Type {
-    BACK, NO_BACK
-  }
-}
-
-public class TitleAdapter extends LoadingHelper.Adapter<TitleViewHolder> {
-  private TitleConfig mConfig;
-
-  public TitleAdapter(TitleConfig config) {
-    mConfig = config;
-  }
-
-  @Override
-  public TitleViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return new TitleViewHolder(new Toolbar(parent.getContext()));
-  }
-
-  @Override
-  public void onBindViewHolder(@NonNull final TitleViewHolder holder) {
-    if (mConfig != null) {
-      // change view according to configuration
-    }
-  }
-}
-```
-
-Register title adapter and add title view.
-
-```
-final TitleConfig config = new TitleConfig();
-config.setTitleText("title");
-config.setType(TitleConfig.Type.BACK);
-loadingHelper.register(ViewType.TITLE, new TitleAdapter(config));
+```java
+loadingHelper= new LoadingHelper(this);
+loadingHelper.register(ViewType.TITLE, new TitleAdapter("title"));
 loadingHelper.addTitleView();
+// If you need to add a search header
+loadingHelper.register(VIEW_TYPE_EDIT_HEADER, new SearchHeaderAdapter(searchListener));
+loadingHelper.addHeaderView(VIEW_TYPE_SEARCH, 1);
 ```
 
-#### Change view after view showed
+If you want to delete a added header.
 
-Usage is similar to the RecyclerView.Adapter's, for example:
-
-```
-mTitleAdapter = new TitleAdapter(mTitleConfig);
-loadingHelper.register(ViewType.TITLE, mTitleAdapter);
-
-mTitleConfig.setTitleText("other title");
-mTitleAdapter.notifyDataSetChanged();
+```java
+loadingHelper.removeHeaderView(VIEW_TYPE_SEARCH)
 ```
 
-#### Decoupling the code of Activity's base class
+#### Initialize the content view
 
+Create a adapter extends `LoadingHelper.ContentAdapter<VH extends ViewHolder>`.
 
-```
-public class SimpleContentAdapter extends LoadingHelper.ContentAdapter<SimpleContentAdapter.ViewHolder> {
+```java
+public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHelper.ViewHolder> {
   @Override
-  public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent,
-                                       @NonNull View contentView) {
-    return new ViewHolder(contentView);
+  public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull View contentView) {
+    return new LoadingHelper.ViewHolder(contentView);
   }
 
   @Override
-  public void onBindViewHolder(@NonNull ViewHolder holder) {
-
-  }
-
-  class ViewHolder extends LoadingHelper.ContentViewHolder {
-
-    ViewHolder(@NonNull View rootView) {
-      super(rootView);
-    }
-
-    @Override
-    public void onCreate(@Nullable Activity activity) {
-      super.onCreate(activity);
-      if (activity != null) {
-        // do what you want
-      }
-    }
+  public void onBindViewHolder(@NonNull LoadingHelper.ViewHolder holder) {
+	View contentView = holder.getRootView();
   }
 }
 ```
 
-Creates a `LoadingHelper` with the Activity and the `ContentAdapter`.
+Create a `LoadingHelper` with  the `ContentAdapter`.
 
-```
-LoadingHelper loadingHelper = new LoadingHelper(this, new SimpleContentAdapter());
+```java
+LoadingHelper loadingHelper = new LoadingHelper(this, new CommonContentAdapter());
 ```
 
 ## Thanks
 
-- [luckbilly/Gloading](https://github.com/luckybilly/Gloading) Standing on the shoulders of giants to realize my idea.
+- [luckbilly/Gloading](https://github.com/luckybilly/Gloading) Optimize my library standing on the shoulders of giants.
+- [drakeet/MultiType](https://github.com/drakeet/MultiType)  Referenced the usage of ​​multiple adapters.
 - [dinuscxj/LoadingDrawable](https://github.com/dinuscxj/LoadingDrawable) The cool loading effect in the demo.
 - [wuhenzhizao/android-titlebar](https://github.com/wuhenzhizao/android-titlebar) All title bars in the demo.
 
