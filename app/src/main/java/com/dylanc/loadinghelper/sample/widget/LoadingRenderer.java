@@ -2,6 +2,7 @@ package com.dylanc.loadinghelper.sample.widget;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -102,6 +103,7 @@ public abstract class LoadingRenderer {
         mDuration = ANIMATION_DURATION;
     }
 
+    @SuppressLint("WrongConstant")
     private void setupAnimators() {
         mRenderAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
         mRenderAnimator.setRepeatCount(Animation.INFINITE);

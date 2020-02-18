@@ -1,4 +1,4 @@
-package com.dylanc.loadinghelper.sample.practise;
+package com.dylanc.loadinghelper.sample.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,14 +8,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
-import com.dylanc.loadinghelper.sample.adapter.TitleConfig;
-import com.dylanc.loadinghelper.sample.practise.fragment.LoadingFragment;
+import com.dylanc.loadinghelper.sample.base.TitleConfig;
+import com.dylanc.loadinghelper.sample.ui.fragment.LoadingFragment;
 
-import static com.dylanc.loadinghelper.sample.practise.fragment.LoadingFragment.VIEW_TYPE_TIMEOUT;
+import static com.dylanc.loadinghelper.sample.ui.fragment.LoadingFragment.VIEW_TYPE_TIMEOUT;
 
 /**
  * @author Dylan Cai

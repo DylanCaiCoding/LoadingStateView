@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LoadingHelper</string>
+  <string name="app_introduce">A highly expandable Android library for showing loading status view with the low-coupling way.</string>
 </resources>

@@ -1,14 +1,15 @@
-package com.dylanc.loadinghelper.sample.practise;
+package com.dylanc.loadinghelper.sample.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.PlaceholderAdapter;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
-import com.dylanc.loadinghelper.sample.adapter.TitleConfig;
+import com.dylanc.loadinghelper.sample.base.TitleConfig;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 /**

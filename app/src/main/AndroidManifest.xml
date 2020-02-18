@@ -13,19 +13,19 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     android:screenOrientation="portrait">
-    <activity android:name="com.dylanc.loadinghelper.sample.MainActivity">
+    <activity android:name="com.dylanc.loadinghelper.sample.ui.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name="com.dylanc.loadinghelper.sample.practise.ActErrorActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.practise.FragmentEmptyActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.practise.ViewPlaceholderActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.practise.ViewPagerActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.practise.RecyclerViewActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.practise.SearchTitleActivity"/>
+    <activity android:name="com.dylanc.loadinghelper.sample.ui.ActErrorActivity"/>
+    <activity android:name="com.dylanc.loadinghelper.sample.ui.FragmentEmptyActivity"/>
+    <activity android:name="com.dylanc.loadinghelper.sample.ui.ViewPlaceholderActivity"/>
+    <activity android:name="com.dylanc.loadinghelper.sample.ui.ViewPagerActivity"/>
+    <activity android:name="com.dylanc.loadinghelper.sample.ui.RecyclerViewActivity"/>
+    <activity android:name="com.dylanc.loadinghelper.sample.ui.SearchTitleActivity"/>
   </application>
 
 </manifest>

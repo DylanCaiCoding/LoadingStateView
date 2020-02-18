@@ -3,6 +3,7 @@ package com.dylanc.loadinghelper.sample.adapter;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.sample.R;
 

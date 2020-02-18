@@ -12,7 +12,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:text=" Failured to load"
-    android:textColor="@color/lce_error_text"
+    android:textColor="@color/loading_error_text"
     android:textSize="16sp"
     app:layout_constraintHorizontal_chainStyle="packed"
     app:layout_constraintStart_toStartOf="parent"

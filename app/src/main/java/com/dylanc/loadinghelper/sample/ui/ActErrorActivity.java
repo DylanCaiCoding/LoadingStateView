@@ -1,22 +1,23 @@
-package com.dylanc.loadinghelper.sample.practise;
+package com.dylanc.loadinghelper.sample.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+import android.view.View;
+
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.adapter.CustomViewType;
-import com.dylanc.loadinghelper.sample.adapter.NothingAdapter;
-import com.dylanc.loadinghelper.sample.adapter.SearchTitleAdapter;
+import com.dylanc.loadinghelper.sample.adapter.ErrorAdapter;
+import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
+import com.dylanc.loadinghelper.sample.base.TitleConfig;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 /**
  * @author Dylan Cai
- * @since 2019/6/25
+ * @since 2019/6/20
  */
-public class SearchTitleActivity extends AppCompatActivity implements SearchTitleAdapter.OnSearchListener {
+public class ActErrorActivity extends AppCompatActivity {
 
   private LoadingHelper mLoadingHelper;
 
@@ -25,17 +26,24 @@ public class SearchTitleActivity extends AppCompatActivity implements SearchTitl
     super.onCreate(savedInstanceState);
     setContentView(R.layout.layout_content);
     mLoadingHelper = new LoadingHelper(this);
-    mLoadingHelper.register(ViewType.TITLE, new SearchTitleAdapter(this));
-    mLoadingHelper.register(CustomViewType.NOTHING, new NothingAdapter());
+    mLoadingHelper.setOnReloadListener(this::onReload);
+    mLoadingHelper.register(ViewType.TITLE,new TitleAdapter("Activity(error)", TitleConfig.Type.BACK));
     mLoadingHelper.addTitleView();
-    mLoadingHelper.showView(CustomViewType.NOTHING);
+    loadFailure();
   }
 
-  @Override
-  public void onSearch(String keyword) {
-    Toast.makeText(this, "search: " + keyword, Toast.LENGTH_SHORT).show();
+  public void onReload() {
+    loadSuccess();
+  }
+
+  private void loadSuccess() {
     mLoadingHelper.showLoadingView();
     HttpUtils.requestSuccess(mCallback);
+  }
+
+  private void loadFailure() {
+    mLoadingHelper.showLoadingView();
+    HttpUtils.requestFailure(mCallback);
   }
 
   private HttpUtils.Callback mCallback = new HttpUtils.Callback() {

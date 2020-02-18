@@ -1,4 +1,4 @@
-package com.dylanc.loadinghelper.sample.practise.fragment;
+package com.dylanc.loadinghelper.sample.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.CustomViewType;
@@ -53,11 +54,6 @@ public class LoadingFragment extends Fragment implements LoadingHelper.OnReloadL
     loadFailure();
   }
 
-  @Override
-  public void onReload() {
-    loadSuccess();
-  }
-
   private void loadSuccess() {
     mLoadingHelper.showLoadingView();
     HttpUtils.requestSuccess(mCallback);
@@ -84,5 +80,8 @@ public class LoadingFragment extends Fragment implements LoadingHelper.OnReloadL
     }
   };
 
-
+  @Override
+  public void onReload() {
+    loadSuccess();
+  }
 }

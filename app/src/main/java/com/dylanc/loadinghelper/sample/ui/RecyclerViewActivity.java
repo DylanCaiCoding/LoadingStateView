@@ -1,4 +1,4 @@
-package com.dylanc.loadinghelper.sample.practise;
+package com.dylanc.loadinghelper.sample.ui;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.WaterLoadingAdapter;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
-import com.dylanc.loadinghelper.sample.adapter.TitleConfig;
+import com.dylanc.loadinghelper.sample.base.TitleConfig;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 
@@ -40,6 +40,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
     loadingHelper.addTitleView();
 
     RecyclerView recyclerView = findViewById(R.id.recycler_view);
+    recyclerView.setNestedScrollingEnabled(false);
     recyclerView.setAdapter(new ImageAdapter());
     recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
   }
@@ -63,7 +64,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
       return 10;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements LoadingHelper.OnReloadListener {
+    class ViewHolder extends RecyclerView.ViewHolder{
 
       private final LoadingHelper mLoadingHelper;
       ImageView mImageView;
@@ -73,7 +74,12 @@ public class RecyclerViewActivity extends AppCompatActivity {
         super(itemView);
         mLoadingHelper = new LoadingHelper(itemView.findViewById(R.id.loading_view));
         mLoadingHelper.register(ViewType.LOADING, new WaterLoadingAdapter());
-        mLoadingHelper.setOnReloadListener(this);
+        mLoadingHelper.setOnReloadListener(new LoadingHelper.OnReloadListener() {
+          @Override
+          public void onReload() {
+            showImage(mUrl);
+          }
+        });
         mImageView = itemView.findViewById(R.id.image_view);
       }
 
@@ -100,10 +106,6 @@ public class RecyclerViewActivity extends AppCompatActivity {
             .into(mImageView);
       }
 
-      @Override
-      public void onReload() {
-        showImage(mUrl);
-      }
     }
   }
 }

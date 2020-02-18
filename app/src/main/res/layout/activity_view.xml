@@ -36,7 +36,7 @@
         android:layout_marginStart="16dp"/>
 
       <TextView
-        android:text="LoadingHelper"
+        android:text="@string/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView4"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
       <TextView
-        android:text="A highly expandable Android library for showing loading status view with the low-coupling way."
+        android:text="@string/app_introduce"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/textView5"
