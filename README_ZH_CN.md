@@ -7,7 +7,7 @@
 `LoadingHelper` 是一个用于显示加载界面的高拓展性、低耦合的工具，只用了一个 200 行左右的 Kotlin 代码实现（不包含注释）。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
 
 - 无需在布局添加代码
-- 可添加自定义视图
+- 可显示自定义视图
 - 可用于 Activity、Fragment、列表或指定的 View
 - 可管理标题栏和添加多个头部控件
 - 可设置重新请求数据的事件
@@ -17,11 +17,11 @@
 
 ## 示例
 
-[Activity(error)](/app/src/main/java/com/dylanc/loadinghelper/sample/practise/ActErrorActivity.java)|[Fragment(empty)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/FragmentEmptyActivity.java)|[View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/ViewPlaceholderActivity.java)
+[Activity(error)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ActErrorActivity.java)|[Fragment(empty)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/FragmentEmptyActivity.java)|[View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPlaceholderActivity.java)
 :---:|:---:|:---:
 ![](gif/activity_error.gif)|![](gif/fragment_empty.gif)|![](gif/view_placeholder.gif)
 
-[ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/ViewPagerActivity.java)|[RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/RecyclerViewActivity.java)|[CustomTitle(search)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/SearchTitleActivity.java)
+[ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPagerActivity.java)|[RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/RecyclerViewActivity.java)|[CustomTitle(search)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/SearchTitleActivity.java)
 :---:|:---:|:---:
 ![](gif/viewpager_timeout.gif)|![](gif/recyclerview_cool_loading.gif)|![](gif/custom_title_search.gif)
 
@@ -115,7 +115,7 @@ loadingHelper.addHeaderView(VIEW_TYPE_SEARCH, 1);
 如果想删掉某个已添加的头部。
 
 ```java
-loadingHelper.removeHeaderView(VIEW_TYPE_SEARCH)
+loadingHelper.removeHeaderView(VIEW_TYPE_SEARCH);
 ```
 
 #### 初始化内容视图

@@ -9,7 +9,7 @@ English | [中文](README_ZH_CN.md)
 ## Feature
 
 - No need to add code to the layout.
-- Support for adding custom views.
+- Support for show custom views.
 - Support for use for Activity, Fragment, RecyclerView, View.
 - Support for managing title bar and add multiple headers.
 - Support for set reload event.
@@ -19,11 +19,11 @@ English | [中文](README_ZH_CN.md)
 
 ## Demo
 
-[Activity(error)](/app/src/main/java/com/dylanc/loadinghelper/sample/practise/ActErrorActivity.java)|[Fragment(empty)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/FragmentEmptyActivity.java)|[View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/ViewPlaceholderActivity.java)
+[Activity(error)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ActErrorActivity.java)|[Fragment(empty)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/FragmentEmptyActivity.java)|[View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPlaceholderActivity.java)
 :---:|:---:|:---:
 ![](gif/activity_error.gif)|![](gif/fragment_empty.gif)|![](gif/view_placeholder.gif)
 
-[ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/ViewPagerActivity.java)|[RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/RecyclerViewActivity.java)|[CustomTitle(search)](app/src/main/java/com/dylanc/loadinghelper/sample/practise/SearchTitleActivity.java)
+[ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPagerActivity.java)|[RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/RecyclerViewActivity.java)|[CustomTitle(search)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/SearchTitleActivity.java)
 :---:|:---:|:---:
 ![](gif/viewpager_timeout.gif)|![](gif/recyclerview_cool_loading.gif)|![](gif/custom_title_search.gif)
 
@@ -47,7 +47,7 @@ dependencies {
 
 ```java
 public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHolder> {
-  
+
   @NonNull
   @Override
   public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
@@ -127,7 +127,7 @@ loadingHelper.addHeaderView(VIEW_TYPE_SEARCH, 1);
 If you want to delete a added header.
 
 ```java
-loadingHelper.removeHeaderView(VIEW_TYPE_SEARCH)
+loadingHelper.removeHeaderView(VIEW_TYPE_SEARCH);
 ```
 
 #### Initialize the content view
@@ -143,7 +143,7 @@ public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHe
 
   @Override
   public void onBindViewHolder(@NonNull LoadingHelper.ViewHolder holder) {
-	View contentView = holder.getRootView();
+    View contentView = holder.getRootView();
   }
 }
 ```
