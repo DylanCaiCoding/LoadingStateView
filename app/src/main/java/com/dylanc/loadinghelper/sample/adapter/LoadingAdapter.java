@@ -21,5 +21,6 @@ public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHold
 
   @Override
   public void onBindViewHolder(@NonNull LoadingHelper.ViewHolder holder) {
+
   }
 }

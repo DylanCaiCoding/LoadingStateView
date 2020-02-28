@@ -3,6 +3,7 @@ package com.dylanc.loadinghelper.sample.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
@@ -18,7 +19,7 @@ import com.dylanc.loadinghelper.sample.utils.HttpUtils;
  */
 public class ViewPlaceholderActivity extends AppCompatActivity {
 
-  private LoadingHelper mViewLoadingHelper;
+  private LoadingHelper viewLoadingHelper;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,28 +27,27 @@ public class ViewPlaceholderActivity extends AppCompatActivity {
     setContentView(R.layout.activity_view);
     LoadingHelper loadingHelper = new LoadingHelper(this);
     loadingHelper.register(ViewType.TITLE, new TitleAdapter("View(placeholder)", TitleConfig.Type.BACK));
-    loadingHelper.addTitleView();
+    loadingHelper.setDecorHeader(ViewType.TITLE);
 
-    mViewLoadingHelper = new LoadingHelper(findViewById(R.id.content));
-    mViewLoadingHelper.register(ViewType.LOADING, new PlaceholderAdapter());
+    View view = findViewById(R.id.content);
+    viewLoadingHelper = new LoadingHelper(view);
+    viewLoadingHelper.register(ViewType.LOADING, new PlaceholderAdapter());
     loadSuccess();
   }
 
   private void loadSuccess() {
-    mViewLoadingHelper.showLoadingView();
-    HttpUtils.requestSuccess(mCallback);
+    viewLoadingHelper.showLoadingView();
+    HttpUtils.requestSuccess(new HttpUtils.Callback() {
+      @Override
+      public void onSuccess() {
+        viewLoadingHelper.showContentView();
+      }
+
+      @Override
+      public void onFailure() {
+        viewLoadingHelper.showLoadingView();
+      }
+    });
   }
-
-  private HttpUtils.Callback mCallback = new HttpUtils.Callback() {
-    @Override
-    public void onSuccess() {
-      mViewLoadingHelper.showContentView();
-    }
-
-    @Override
-    public void onFailure() {
-      mViewLoadingHelper.showLoadingView();
-    }
-  };
 
 }

@@ -3,12 +3,10 @@ package com.dylanc.loadinghelper.sample.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.adapter.ErrorAdapter;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
 import com.dylanc.loadinghelper.sample.base.TitleConfig;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
@@ -19,16 +17,16 @@ import com.dylanc.loadinghelper.sample.utils.HttpUtils;
  */
 public class ActErrorActivity extends AppCompatActivity {
 
-  private LoadingHelper mLoadingHelper;
+  private LoadingHelper loadingHelper;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.layout_content);
-    mLoadingHelper = new LoadingHelper(this);
-    mLoadingHelper.setOnReloadListener(this::onReload);
-    mLoadingHelper.register(ViewType.TITLE,new TitleAdapter("Activity(error)", TitleConfig.Type.BACK));
-    mLoadingHelper.addTitleView();
+    loadingHelper = new LoadingHelper(this);
+    loadingHelper.setOnReloadListener(this::onReload);
+    loadingHelper.register(ViewType.TITLE,new TitleAdapter("Activity(error)", TitleConfig.Type.BACK));
+    loadingHelper.setDecorHeader(ViewType.TITLE);
     loadFailure();
   }
 
@@ -37,24 +35,24 @@ public class ActErrorActivity extends AppCompatActivity {
   }
 
   private void loadSuccess() {
-    mLoadingHelper.showLoadingView();
-    HttpUtils.requestSuccess(mCallback);
+    loadingHelper.showLoadingView();
+    HttpUtils.requestSuccess(callback);
   }
 
   private void loadFailure() {
-    mLoadingHelper.showLoadingView();
-    HttpUtils.requestFailure(mCallback);
+    loadingHelper.showLoadingView();
+    HttpUtils.requestFailure(callback);
   }
 
-  private HttpUtils.Callback mCallback = new HttpUtils.Callback() {
+  private HttpUtils.Callback callback = new HttpUtils.Callback() {
     @Override
     public void onSuccess() {
-      mLoadingHelper.showContentView();
+      loadingHelper.showContentView();
     }
 
     @Override
     public void onFailure() {
-      mLoadingHelper.showErrorView();
+      loadingHelper.showErrorView();
     }
   };
 }

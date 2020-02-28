@@ -79,7 +79,7 @@ abstract class BaseActivity : AppCompatActivity() {
   private fun addTitleView(config: TitleConfig) {
     val titleAdapter: BaseTitleAdapter<TitleConfig, *> = loadingHelper.getAdapter(ViewType.TITLE)
     titleAdapter.config = config
-    loadingHelper.addTitleView()
+    loadingHelper.setDecorHeader(ViewType.TITLE)
   }
 
   fun showLoadingView() = loadingHelper.showLoadingView()

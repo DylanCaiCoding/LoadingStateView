@@ -14,7 +14,7 @@ import com.dylanc.loadinghelper.ViewType
  * @author Dylan Cai
  * @since 2019/11/16
  */
-abstract class BaseFragment : Fragment() ,LoadingHelper.OnReloadListener {
+abstract class BaseFragment : Fragment(), LoadingHelper.OnReloadListener {
 
   lateinit var loadingHelper: LoadingHelper
     private set
@@ -59,7 +59,7 @@ abstract class BaseFragment : Fragment() ,LoadingHelper.OnReloadListener {
   fun setContentView(
     @LayoutRes layoutResID: Int,
     @IdRes contentViewId: Int = android.R.id.content,
-    contentAdapter: LoadingHelper.ContentAdapter<*>?= null
+    contentAdapter: LoadingHelper.ContentAdapter<*>? = null
   ) {
     this.layoutResID = layoutResID
     this.contentViewId = contentViewId
@@ -87,7 +87,7 @@ abstract class BaseFragment : Fragment() ,LoadingHelper.OnReloadListener {
   private fun addTitleView(config: TitleConfig) {
     val titleAdapter: BaseTitleAdapter<TitleConfig, *> = loadingHelper.getAdapter(ViewType.TITLE)
     titleAdapter.config = config
-    loadingHelper.addTitleView()
+    loadingHelper.setDecorHeader(ViewType.TITLE)
   }
 
   fun showLoadingView() = loadingHelper.showLoadingView()

@@ -12,6 +12,7 @@ import com.dylanc.loadinghelper.LoadingHelper;
  * @since 2019/6/27
  */
 public class NothingAdapter extends LoadingHelper.Adapter {
+
   @NonNull
   @Override
   public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {

@@ -20,12 +20,12 @@ import com.dylanc.loadinghelper.sample.utils.HttpUtils;
  */
 public class LoadingFragment extends Fragment implements LoadingHelper.OnReloadListener {
 
-  private static final String KEY_VIEW_TYPE = "view type";
+  private static final String KEY_VIEW_TYPE = "view_type";
   public static final int VIEW_TYPE_TIMEOUT = 1;
   public static final int VIEW_TYPE_EMPTY = 2;
 
-  private LoadingHelper mLoadingHelper;
-  private int mViewType;
+  private LoadingHelper loadingHelper;
+  private int viewType;
 
   public static LoadingFragment newInstance(int viewType) {
     Bundle args = new Bundle();
@@ -39,43 +39,44 @@ public class LoadingFragment extends Fragment implements LoadingHelper.OnReloadL
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.layout_content, container, false);
-    mLoadingHelper = new LoadingHelper(view);
-    mLoadingHelper.register(CustomViewType.TIMEOUT, new TimeoutAdapter());
-    mLoadingHelper.setOnReloadListener(this);
-    return mLoadingHelper.getDecorView();
+    loadingHelper = new LoadingHelper(view);
+    loadingHelper.register(CustomViewType.TIMEOUT, new TimeoutAdapter());
+    loadingHelper.setOnReloadListener(this);
+    return loadingHelper.getDecorView();
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     if (getArguments() != null) {
-      mViewType = getArguments().getInt(KEY_VIEW_TYPE);
+      viewType = getArguments().getInt(KEY_VIEW_TYPE);
     }
     loadFailure();
   }
 
   private void loadSuccess() {
-    mLoadingHelper.showLoadingView();
-    HttpUtils.requestSuccess(mCallback);
+    loadingHelper.showLoadingView();
+    HttpUtils.requestSuccess(callback);
   }
 
   private void loadFailure() {
-    mLoadingHelper.showLoadingView();
-    HttpUtils.requestFailure(mCallback);
+    loadingHelper.showLoadingView();
+    HttpUtils.requestFailure(callback);
   }
 
-  private HttpUtils.Callback mCallback = new HttpUtils.Callback() {
+  private HttpUtils.Callback callback = new HttpUtils.Callback() {
+
     @Override
     public void onSuccess() {
-      mLoadingHelper.showContentView();
+      loadingHelper.showContentView();
     }
 
     @Override
     public void onFailure() {
-      if (mViewType == VIEW_TYPE_EMPTY) {
-        mLoadingHelper.showEmptyView();
-      } else if (mViewType == VIEW_TYPE_TIMEOUT) {
-        mLoadingHelper.showView(CustomViewType.TIMEOUT);
+      if (viewType == VIEW_TYPE_EMPTY) {
+        loadingHelper.showEmptyView();
+      } else if (viewType == VIEW_TYPE_TIMEOUT) {
+        loadingHelper.showView(CustomViewType.TIMEOUT);
       }
     }
   };

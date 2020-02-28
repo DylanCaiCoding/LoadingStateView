@@ -12,10 +12,11 @@ import com.dylanc.loadinghelper.sample.R;
  * @since 2019/6/24
  */
 public class WaterLoadingAdapter extends LoadingHelper.Adapter {
+
   @NonNull
   @Override
   public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return new LoadingHelper.ViewHolder(inflater.inflate(R.layout.loading_layout_water_loading,parent,false));
+    return new LoadingHelper.ViewHolder(inflater.inflate(R.layout.loading_layout_water_loading, parent, false));
   }
 
   @Override

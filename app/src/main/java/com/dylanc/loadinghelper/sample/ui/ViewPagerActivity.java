@@ -30,7 +30,7 @@ public class ViewPagerActivity extends AppCompatActivity {
     setContentView(R.layout.activity_tab_layout);
     LoadingHelper loadingHelper = new LoadingHelper(this);
     loadingHelper.register(ViewType.TITLE, new TitleAdapter("ViewPager(timeout)", TitleConfig.Type.BACK));
-    loadingHelper.addTitleView();
+    loadingHelper.setDecorHeader(ViewType.TITLE);
 
     TabLayout tabLayout = findViewById(R.id.tab_layout);
     ViewPager viewPager = findViewById(R.id.view_pager);
@@ -38,7 +38,7 @@ public class ViewPagerActivity extends AppCompatActivity {
     tabLayout.setupWithViewPager(viewPager);
   }
 
-  class TabPagerAdapter extends FragmentPagerAdapter {
+  static class TabPagerAdapter extends FragmentPagerAdapter {
 
     TabPagerAdapter(FragmentManager fm) {
       super(fm);

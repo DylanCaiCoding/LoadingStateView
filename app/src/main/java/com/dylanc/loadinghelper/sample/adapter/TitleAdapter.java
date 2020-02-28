@@ -45,16 +45,13 @@ public class TitleAdapter extends BaseTitleAdapter<TitleConfig, TitleAdapter.Vie
     }
   }
 
-  class ViewHolder extends LoadingHelper.ViewHolder {
+  static class ViewHolder extends LoadingHelper.ViewHolder {
 
     private final CommonTitleBar mTitleBar;
 
     ViewHolder(@NonNull View rootView) {
       super(rootView);
       mTitleBar = (CommonTitleBar) rootView;
-      mTitleBar.setListener((v, action, extra) -> {
-
-      });
     }
 
     void addBackBtn() {

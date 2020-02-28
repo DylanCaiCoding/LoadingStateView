@@ -25,16 +25,13 @@ public class TimeoutAdapter extends LoadingHelper.Adapter<TimeoutAdapter.ViewHol
 
   }
 
-  class ViewHolder extends LoadingHelper.ViewHolder {
+  static class ViewHolder extends LoadingHelper.ViewHolder {
 
     ViewHolder(@NonNull View rootView) {
       super(rootView);
-      rootView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          if (getOnReloadListener() != null) {
-            getOnReloadListener().onReload();
-          }
+      rootView.setOnClickListener(v -> {
+        if (getOnReloadListener() != null) {
+          getOnReloadListener().onReload();
         }
       });
     }

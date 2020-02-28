@@ -26,7 +26,7 @@ public class FragmentEmptyActivity extends AppCompatActivity {
     setContentView(R.layout.activity_fragment);
     LoadingHelper loadingHelper = new LoadingHelper(this);
     loadingHelper.register(ViewType.TITLE, new TitleAdapter("Fragment(empty)", TitleConfig.Type.BACK));
-    loadingHelper.addTitleView();
+    loadingHelper.setDecorHeader(ViewType.TITLE);
 
     final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
     transaction.add(R.id.content_view, LoadingFragment.newInstance(VIEW_TYPE_EMPTY));

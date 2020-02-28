@@ -37,7 +37,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
     setContentView(R.layout.activity_recycler_view);
     LoadingHelper loadingHelper = new LoadingHelper(this);
     loadingHelper.register(ViewType.TITLE, new TitleAdapter("RecyclerView(cool loading)", TitleConfig.Type.BACK));
-    loadingHelper.addTitleView();
+    loadingHelper.setDecorHeader(ViewType.TITLE);
 
     RecyclerView recyclerView = findViewById(R.id.recycler_view);
     recyclerView.setNestedScrollingEnabled(false);
@@ -45,7 +45,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
     recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
   }
 
-  public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
+  public static class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
     @NonNull
     @Override
@@ -64,46 +64,41 @@ public class RecyclerViewActivity extends AppCompatActivity {
       return 10;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder{
 
-      private final LoadingHelper mLoadingHelper;
-      ImageView mImageView;
-      private String mUrl;
+      private final LoadingHelper loadingHelper;
+      ImageView imageView;
+      private String url;
 
       ViewHolder(@NonNull View itemView) {
         super(itemView);
-        mLoadingHelper = new LoadingHelper(itemView.findViewById(R.id.loading_view));
-        mLoadingHelper.register(ViewType.LOADING, new WaterLoadingAdapter());
-        mLoadingHelper.setOnReloadListener(new LoadingHelper.OnReloadListener() {
-          @Override
-          public void onReload() {
-            showImage(mUrl);
-          }
-        });
-        mImageView = itemView.findViewById(R.id.image_view);
+        loadingHelper = new LoadingHelper(itemView.findViewById(R.id.loading_view));
+        loadingHelper.register(ViewType.LOADING, new WaterLoadingAdapter());
+        loadingHelper.setOnReloadListener(() -> showImage(url));
+        imageView = itemView.findViewById(R.id.image_view);
       }
 
       void showImage(String url) {
-        mUrl = url;
-        mLoadingHelper.showLoadingView();
-        Glide.with(mImageView.getContext())
+        this.url = url;
+        loadingHelper.showLoadingView();
+        Glide.with(imageView.getContext())
             .load(url)
             .listener(new RequestListener<Drawable>() {
               @Override
               public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target,
                                           boolean isFirstResource) {
-                mLoadingHelper.showErrorView();
+                loadingHelper.showErrorView();
                 return false;
               }
 
               @Override
               public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
                                              DataSource dataSource, boolean isFirstResource) {
-                mLoadingHelper.showContentView();
+                loadingHelper.showContentView();
                 return false;
               }
             })
-            .into(mImageView);
+            .into(imageView);
       }
 
     }

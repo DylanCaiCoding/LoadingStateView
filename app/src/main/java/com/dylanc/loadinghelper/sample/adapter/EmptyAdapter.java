@@ -13,7 +13,6 @@ import com.dylanc.loadinghelper.sample.R;
  */
 public class EmptyAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHolder> {
 
-
   @NonNull
   @Override
   public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
