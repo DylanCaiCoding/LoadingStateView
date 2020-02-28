@@ -15,7 +15,10 @@ class LoadingHelper @JvmOverloads constructor(
   private val contentView: View,
   contentAdapter: ContentAdapter<*>? = null
 ) {
-  val decorView: LinearLayout
+  lateinit var decorView: View
+    private set
+  private lateinit var loadingContainer: ViewGroup
+  private val parent: ViewGroup?
   private var currentViewHolder: ViewHolder? = null
   private var onReloadListener: OnReloadListener? = null
   private var adapters: HashMap<Any, Adapter<*>> = HashMap()
@@ -37,24 +40,56 @@ class LoadingHelper @JvmOverloads constructor(
    * @param contentAdapter the adapter of creating content view
    */
   @JvmOverloads
-  constructor(activity: Activity, contentAdapter: ContentAdapter<*>? = null) : this(
+  constructor(
+    activity: Activity,
+    contentAdapter: ContentAdapter<*>? = null
+  ) : this(
     (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0),
     contentAdapter
   )
 
   init {
     adapterPool?.let { AdapterPool(this).apply(it) }
-    contentAdapter?.let { register(ViewType.CONTENT, contentAdapter) }
-    decorView = LinearLayout(contentView.context)
-    decorView.orientation = LinearLayout.VERTICAL
-    decorView.layoutParams = contentView.layoutParams
-    val parent = contentView.parent as ViewGroup?
+    parent = contentView.parent as ViewGroup?
+    register(ViewType.CONTENT, contentAdapter ?: SimpleContentAdapter())
+    setDecorAdapter(LinearDecorAdapter(listOf()))
+  }
+
+  /**
+   * Sets an adapter of decorated view.
+   *
+   * @param decorAdapter the adapter of decorated view
+   */
+  fun setDecorAdapter(decorAdapter: DecorAdapter) {
+    currentViewHolder = null
     if (parent != null) {
       val index = parent.indexOfChild(contentView)
-      parent.removeView(contentView)
+      if (index >= 0) {
+        parent.removeView(contentView)
+      } else {
+        parent.removeView(decorView)
+        (contentView.parent as ViewGroup).removeView(contentView)
+      }
+      decorView = decorAdapter.onCreateDecorView(LayoutInflater.from(contentView.context))
+      decorView.layoutParams = contentView.layoutParams
       parent.addView(decorView, index)
+    } else {
+      decorView = decorAdapter.onCreateDecorView(LayoutInflater.from(contentView.context))
+      decorView.layoutParams = contentView.layoutParams
     }
+    loadingContainer = decorAdapter.getLoadingContainer(decorView)
     showView(ViewType.CONTENT)
+  }
+
+  /**
+   * @param viewType the view type of adapter
+   */
+  fun setDecorHeader(vararg viewType: Any) {
+    val views = mutableListOf<View>()
+    for (t in viewType) {
+      views.add(getViewHolder(t).rootView)
+    }
+    setDecorAdapter(LinearDecorAdapter(views))
   }
 
   /**
@@ -78,47 +113,18 @@ class LoadingHelper @JvmOverloads constructor(
 
   fun setOnReloadListener(onReloadListener: () -> Unit) =
     setOnReloadListener(object : OnReloadListener {
-      override fun onReload() {
-        onReloadListener.invoke()
-      }
+      override fun onReload() = onReloadListener.invoke()
     })
-
-  /**
-   * Adds title view to the header of decorated view
-   */
-  fun addTitleView() {
-    addHeaderView(ViewType.TITLE)
-  }
-
-  /**
-   * Adds view to the header of decorated view
-   *
-   * @param viewType the view type of adapter
-   */
-  @JvmOverloads
-  fun addHeaderView(viewType: Any, index: Int = 0) {
-    decorView.addView(getViewHolder(viewType).rootView, index)
-  }
-
-  /**
-   * Removes view in the header
-   *
-   * @param viewType the view type of adapter
-   */
-  fun removeHeaderView(viewType: Any) {
-    decorView.removeView(getViewHolder(viewType).rootView)
-  }
 
   /**
    * Shows the loading view
    */
-  fun showLoadingView()  = showView(ViewType.LOADING)
-
+  fun showLoadingView() = showView(ViewType.LOADING)
 
   /**
    * Shows the content view
    */
-  fun showContentView()  = showView(ViewType.CONTENT)
+  fun showContentView() = showView(ViewType.CONTENT)
 
   /**
    * Shows the error view
@@ -128,7 +134,7 @@ class LoadingHelper @JvmOverloads constructor(
   /**
    * Shows the empty view
    */
-  fun showEmptyView()= showView(ViewType.EMPTY)
+  fun showEmptyView() = showView(ViewType.EMPTY)
 
   /**
    * Shows the view by view type
@@ -140,7 +146,7 @@ class LoadingHelper @JvmOverloads constructor(
       addView(viewType)
     } else {
       if (viewType !== currentViewHolder!!.viewType) {
-        decorView.removeView(currentViewHolder!!.rootView)
+        loadingContainer.removeView(currentViewHolder!!.rootView)
         addView(viewType)
       }
     }
@@ -148,13 +154,12 @@ class LoadingHelper @JvmOverloads constructor(
 
   private fun addView(viewType: Any) {
     val viewHolder = getViewHolder(viewType)
-    decorView.addView(viewHolder.rootView)
+    loadingContainer.addView(viewHolder.rootView)
     currentViewHolder = viewHolder
   }
 
-  private fun notifyDataSetChanged(adapter: Adapter<ViewHolder>) {
+  private fun notifyDataSetChanged(adapter: Adapter<ViewHolder>) =
     adapter.onBindViewHolder(getViewHolder(getViewType(adapter)!!))
-  }
 
   @Suppress("UNCHECKED_CAST")
   private fun getViewHolder(viewType: Any): ViewHolder {
@@ -166,31 +171,22 @@ class LoadingHelper @JvmOverloads constructor(
 
   private fun getViewType(targetAdapter: Adapter<*>): Any? {
     for (entry in adapters.entries) {
-      if (entry.value == targetAdapter) return entry.key
+      if (entry.value == targetAdapter) {
+        return entry.key
+      }
     }
     return null
   }
 
   @Suppress("UNCHECKED_CAST")
-  fun <T : Adapter<out ViewHolder>> getAdapter(viewType: Any): T {
-    var adapter: Adapter<*>? = adapters[viewType]
-    if (adapter == null && viewType === ViewType.CONTENT) {
-      adapter = object : LoadingHelper.ContentAdapter<ViewHolder>() {
-        override fun onCreateViewHolder(contentView: View): ViewHolder = ViewHolder(contentView)
-
-        override fun onBindViewHolder(holder: ViewHolder) {}
-      }
-      register(ViewType.CONTENT, adapter)
-    }
-    return adapter as T
-  }
+  fun <T : Adapter<out ViewHolder>> getAdapter(viewType: Any) = adapters[viewType] as T
 
   private fun addViewHolder(viewType: Any) {
     val adapter: Adapter<ViewHolder> = getAdapter(viewType)
     val viewHolder = if (adapter is ContentAdapter<*>) {
       adapter.onCreateViewHolder(contentView)
     } else {
-      adapter.onCreateViewHolder(LayoutInflater.from(decorView.context), decorView)
+      adapter.onCreateViewHolder(LayoutInflater.from(loadingContainer.context), loadingContainer)
     }
     viewHolder.viewType = viewType
     viewHolder.onReloadListener = onReloadListener
@@ -207,9 +203,7 @@ class LoadingHelper @JvmOverloads constructor(
     abstract fun onBindViewHolder(holder: VH)
 
     @Suppress("UNCHECKED_CAST")
-    fun notifyDataSetChanged() {
-      listener.invoke(this as Adapter<ViewHolder>)
-    }
+    fun notifyDataSetChanged() = listener.invoke(this as Adapter<ViewHolder>)
   }
 
   abstract class ContentAdapter<VH : ViewHolder> : Adapter<VH>() {
@@ -219,14 +213,39 @@ class LoadingHelper @JvmOverloads constructor(
     abstract fun onCreateViewHolder(contentView: View): VH
   }
 
+  private class SimpleContentAdapter : LoadingHelper.ContentAdapter<ViewHolder>() {
+    override fun onCreateViewHolder(contentView: View): ViewHolder = ViewHolder(contentView)
+
+    override fun onBindViewHolder(holder: ViewHolder) = Unit
+  }
+
   open class ViewHolder(val rootView: View) {
 
     internal var viewType: Any? = null
+
     /**
      * Gets the listener of reloading data from view holder.
      */
     var onReloadListener: OnReloadListener? = null
       internal set
+  }
+
+  abstract class DecorAdapter {
+    abstract fun onCreateDecorView(inflater: LayoutInflater): View
+
+    abstract fun getLoadingContainer(decorView: View): ViewGroup
+  }
+
+  private class LinearDecorAdapter(private val views: List<View>) : DecorAdapter() {
+    override fun onCreateDecorView(inflater: LayoutInflater) =
+      LinearLayout(inflater.context).apply {
+        orientation = LinearLayout.VERTICAL
+        for (view in views) {
+          addView(view)
+        }
+      }
+
+    override fun getLoadingContainer(decorView: View) = decorView as ViewGroup
   }
 
   class AdapterPool internal constructor(private val helper: LoadingHelper) {
