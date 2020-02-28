@@ -4,9 +4,9 @@
 
 [![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)
 
-`LoadingHelper` 是一个用于显示加载界面的高拓展性、低耦合的工具，只用了一个 200 行左右的 Kotlin 代码实现（不包含注释）。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
+`LoadingHelper` 是一个深度解耦加载界面和标题栏的工具，只用了一个 Kotlin 文件实现，不算上注释只有 200 多行代码。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
 
-- 无需在布局添加代码
+- 无需在布局添加视图代码
 - 可显示自定义视图
 - 可用于 Activity、Fragment、列表或指定的 View
 - 可管理标题栏和添加多个头部控件
@@ -35,7 +35,7 @@
 
 ```
 dependencies {
-  implementation 'com.dylanc:loadinghelper:1.1.0'
+  implementation 'com.dylanc:loadinghelper:2.0.0'
 }
 ```
 
@@ -101,22 +101,90 @@ errorAdapter.notifyDataSetChanged();
 
 #### 添加标题栏
 
-先创建好标题栏的适配器，想用哪个标题栏就注册哪个适配器，能添加多个头部，会在所有头部的下方进行 loading。
+如果是**普通的标题栏**，就是简单地在内容的上方添加标题栏：
+
+和前面的用法类似，先创建一个继承  `LoadingHelper.Adapter<VH extends ViewHolder>` 的标题栏适配器，然后就能在内容的上方添加标题栏了，可以添加多个头部。
 
 ```java
 loadingHelper= new LoadingHelper(this);
 loadingHelper.register(ViewType.TITLE, new TitleAdapter("标题名"));
-loadingHelper.addTitleView();
-// 假设还需要添加一个有搜索功能的头部
-loadingHelper.register(VIEW_TYPE_EDIT_HEADER, new SearchHeaderAdapter());
-loadingHelper.addHeaderView(VIEW_TYPE_SEARCH, 1);
+loadingHelper.register(VIEW_TYPE_SEARCH, new SearchHeaderAdapter(onSearchListener));
+loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
 ```
 
-如果想删掉某个已添加的头部。
+如果是**特殊的标题栏**，比如有联动效果，就不能直接使用上面的方式了。
+
+先实现一个不含内容的布局。
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:fitsSystemWindows="true">
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/app_bar_height"
+    android:fitsSystemWindows="true"
+    android:theme="@style/AppTheme.AppBarOverlay">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+      android:id="@+id/toolbar_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:fitsSystemWindows="true"
+      app:contentScrim="?attr/colorPrimary"
+      app:layout_scrollFlags="scroll|exitUntilCollapsed"
+      app:toolbarId="@+id/toolbar">
+
+      <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <FrameLayout
+    android:id="@+id/loading_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
+
+创建一个类继承另一个适配器 `LoadingHelper.DecorAdapter` ，加载实现的布局，并指定一个 loading 的容器。
 
 ```java
-loadingHelper.removeHeaderView(VIEW_TYPE_SEARCH);
+public class ScrollDecorAdapter extends LoadingHelper.DecorAdapter {
+  @NotNull
+  @Override
+  public View onCreateDecorView(@NotNull LayoutInflater inflater) {
+    return inflater.inflate(R.layout.layout_scrolling, null);
+  }
+
+  @NotNull
+  @Override
+  public ViewGroup getLoadingContainer(@NotNull View decorView) {
+    return decorView.findViewById(R.id.loading_container);
+  }
+}
 ```
+
+最后设置一下就可以了。
+
+```java
+loadingHelper= new LoadingHelper(this);
+loadingHelper.setDecorAdapter(new ScrollDecorAdapter());
+```
+
+上述的两种使用方式都是可以进行多次设置，不过每次设置会把上一次设置的样式给替换掉。
 
 #### 初始化内容视图
 
@@ -135,7 +203,6 @@ public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHe
   }
 }
 ```
-
 在创建 `LoadingHelper` 对象时传入 `ContentAdapter` 对象，就会立即对内容视图进行处理。
 
 ```java

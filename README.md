@@ -4,11 +4,11 @@ English | [中文](README_ZH_CN.md)
 
 [![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion)[![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)
 
-`LoadingHelper` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of about 200 lines without comment statement . it not only **shows different view like loading, content, error, empty or customized view** when loading network data, but also **manages title bar.**
+`LoadingHelper` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of more than 200 lines without comment statement . it not only **shows different view like loading, content, error, empty or customized view** when loading network data, but also **manages title bar.**
 
 ## Feature
 
-- No need to add code to the layout.
+- No need to add view code to the layout.
 - Support for show custom views.
 - Support for use for Activity, Fragment, RecyclerView, View.
 - Support for managing title bar and add multiple headers.
@@ -37,7 +37,7 @@ In your `build.gradle` :
 
 ```
 dependencies {
-  implementation 'com.dylanc:loadinghelper:1.1.0'
+  implementation 'com.dylanc:loadinghelper:2.0.0'
 }
 ```
 
@@ -113,21 +113,42 @@ adapter.notifyDataSetChanged();
 
 #### Add title view
 
-Register the title adapter and add view.
+If you want to add an ordinary title bar above the content.
+
+Similar to the previous usage, create a class extends `LoadingHelper.Adapter<VH extends ViewHolder>`  and set header.
 
 ```java
 loadingHelper= new LoadingHelper(this);
 loadingHelper.register(ViewType.TITLE, new TitleAdapter("title"));
-loadingHelper.addTitleView();
-// If you need to add a search header
-loadingHelper.register(VIEW_TYPE_EDIT_HEADER, new SearchHeaderAdapter(searchListener));
-loadingHelper.addHeaderView(VIEW_TYPE_SEARCH, 1);
+loadingHelper.register(VIEW_TYPE_SEARCH, new SearchHeaderAdapter(onSearchListener));
+loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
 ```
 
-If you want to delete a added header.
+If you want to add an special title bar with linkage effect.
+
+Create a class extends `LoadingHelper.DecorAdapter` to create a decorated view and specify a loading container.
 
 ```java
-loadingHelper.removeHeaderView(VIEW_TYPE_SEARCH);
+public class ScrollDecorAdapter extends LoadingHelper.DecorAdapter {
+  @NotNull
+  @Override
+  public View onCreateDecorView(@NotNull LayoutInflater inflater) {
+    return inflater.inflate(R.layout.layout_scrolling, null);
+  }
+
+  @NotNull
+  @Override
+  public ViewGroup getLoadingContainer(@NotNull View decorView) {
+    return decorView.findViewById(R.id.loading_container);
+  }
+}
+```
+
+Then set it up.
+
+```java
+loadingHelper= new LoadingHelper(this);
+loadingHelper.setDecorAdapter(new ScrollDecorAdapter());
 ```
 
 #### Initialize the content view
@@ -143,7 +164,7 @@ public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHe
 
   @Override
   public void onBindViewHolder(@NonNull LoadingHelper.ViewHolder holder) {
-    View contentView = holder.getRootView();
+	View contentView = holder.getRootView();
   }
 }
 ```
