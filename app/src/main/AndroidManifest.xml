@@ -3,31 +3,32 @@
   xmlns:tools="http://schemas.android.com/tools"
   package="com.dylanc.loadinghelper.sample">
 
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.INTERNET" />
 
   <application
-    android:name="com.dylanc.loadinghelper.sample.App"
+    android:name=".App"
     android:allowBackup="true"
     android:icon="@drawable/ic_logo"
     android:label="@string/app_name"
+    android:screenOrientation="portrait"
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
-    android:screenOrientation="portrait"
     tools:ignore="GoogleAppIndexingWarning">
-    <activity android:name="com.dylanc.loadinghelper.sample.ui.MainActivity">
+    <activity android:name=".ui.MainActivity">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
+        <action android:name="android.intent.action.MAIN" />
 
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name="com.dylanc.loadinghelper.sample.ui.ActErrorActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.ui.FragmentEmptyActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.ui.ViewPlaceholderActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.ui.ViewPagerActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.ui.RecyclerViewActivity"/>
-    <activity android:name="com.dylanc.loadinghelper.sample.ui.SearchTitleActivity"/>
+    <activity android:name=".ui.ActErrorActivity" />
+    <activity android:name=".ui.FragmentEmptyActivity" />
+    <activity android:name=".ui.ViewPlaceholderActivity" />
+    <activity android:name=".ui.ViewPagerActivity" />
+    <activity android:name=".ui.RecyclerViewActivity" />
+    <activity android:name=".ui.MultipleHeaderActivity" />
+    <activity android:name=".ui.ScrollingTitleActivity"/>
   </application>
 
 </manifest>

@@ -1,10 +1,10 @@
 package com.dylanc.loadinghelper.sample.base
 
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
+import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.dylanc.loadinghelper.LoadingHelper
@@ -14,7 +14,7 @@ import com.dylanc.loadinghelper.ViewType
  * @author Dylan Cai
  * @since 2019/11/16
  */
-abstract class BaseFragment : Fragment(), LoadingHelper.OnReloadListener {
+abstract class BaseFragment : androidx.fragment.app.Fragment(), LoadingHelper.OnReloadListener {
 
   lateinit var loadingHelper: LoadingHelper
     private set
@@ -67,24 +67,45 @@ abstract class BaseFragment : Fragment(), LoadingHelper.OnReloadListener {
   }
 
   @JvmOverloads
-  fun addTitleView(title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK) =
-    addTitleView(TitleConfig(title, type))
+  fun setToolbar(title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK) =
+    setToolbar(TitleConfig(title, type))
 
   @JvmOverloads
-  fun addTitleView(
+  fun setToolbar(
     title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
     rightIcon: Int, rightBtnClickListener: View.OnClickListener
   ) =
-    addTitleView(TitleConfig(title, type).apply { setRightBtn(rightIcon, rightBtnClickListener) })
+    setToolbar(TitleConfig(title, type).apply { setRightBtn(rightIcon, rightBtnClickListener) })
 
   @JvmOverloads
-  fun addTitleView(
+  fun setToolbar(
     title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
     rightText: String, rightBtnClickListener: View.OnClickListener
   ) =
-    addTitleView(TitleConfig(title, type).apply { setRightBtn(rightText, rightBtnClickListener) })
+    setToolbar(TitleConfig(title, type).apply { setRightBtn(rightText, rightBtnClickListener) })
 
-  private fun addTitleView(config: TitleConfig) {
+  @JvmOverloads
+  fun setToolbar(
+    title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
+    rightIcon: Int, rightBtnClickListener: () -> Unit
+  ) =
+    setToolbar(title, type, rightIcon, View.OnClickListener { rightBtnClickListener() })
+
+  @JvmOverloads
+  fun setToolbar(
+    title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
+    rightText: String, rightBtnClickListener: () -> Unit
+  ) =
+    setToolbar(title, type, rightText, View.OnClickListener { rightBtnClickListener() })
+
+  @JvmOverloads
+  fun setToolbar(
+    title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
+    menuId: Int, listener: (MenuItem) -> Boolean
+  ) =
+    setToolbar(TitleConfig(title, type).apply { setMenu(menuId, listener) })
+
+  private fun setToolbar(config: TitleConfig) {
     val titleAdapter: BaseTitleAdapter<TitleConfig, *> = loadingHelper.getAdapter(ViewType.TITLE)
     titleAdapter.config = config
     loadingHelper.setDecorHeader(ViewType.TITLE)

@@ -1,9 +1,10 @@
 package com.dylanc.loadinghelper.sample.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
@@ -32,10 +33,11 @@ public class ViewPlaceholderActivity extends AppCompatActivity {
     View view = findViewById(R.id.content);
     viewLoadingHelper = new LoadingHelper(view);
     viewLoadingHelper.register(ViewType.LOADING, new PlaceholderAdapter());
-    loadSuccess();
+
+    loadData();
   }
 
-  private void loadSuccess() {
+  private void loadData() {
     viewLoadingHelper.showLoadingView();
     HttpUtils.requestSuccess(new HttpUtils.Callback() {
       @Override

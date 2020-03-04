@@ -1,24 +1,29 @@
 package com.dylanc.loadinghelper.sample.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.widget.Toast;
 
 import com.dylanc.loadinghelper.LoadingHelper;
+import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.adapter.CustomViewType;
 import com.dylanc.loadinghelper.sample.adapter.NothingAdapter;
-import com.dylanc.loadinghelper.sample.adapter.SearchTitleAdapter;
+import com.dylanc.loadinghelper.sample.adapter.SearchHeaderAdapter;
+import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
+import com.dylanc.loadinghelper.sample.base.TitleConfig;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 /**
  * @author Dylan Cai
  * @since 2019/6/25
  */
-public class SearchTitleActivity extends AppCompatActivity implements SearchTitleAdapter.OnSearchListener {
+public class MultipleHeaderActivity extends AppCompatActivity implements SearchHeaderAdapter.OnSearchListener {
 
-  private static final String VIEW_TYPE_SEARCH = "search_title";
+  private static final String VIEW_TYPE_SEARCH = "search_header";
+  private static final String VIEW_TYPE_NOTHING = "nothing";
   private LoadingHelper loadingHelper;
 
   @Override
@@ -26,10 +31,11 @@ public class SearchTitleActivity extends AppCompatActivity implements SearchTitl
     super.onCreate(savedInstanceState);
     setContentView(R.layout.layout_content);
     loadingHelper = new LoadingHelper(this);
-    loadingHelper.register(VIEW_TYPE_SEARCH, new SearchTitleAdapter(this));
-    loadingHelper.register(CustomViewType.NOTHING, new NothingAdapter());
-    loadingHelper.setDecorHeader(VIEW_TYPE_SEARCH);
-    loadingHelper.showView(CustomViewType.NOTHING);
+    loadingHelper.register(ViewType.TITLE, new TitleAdapter("MultipleHeader(search)", TitleConfig.Type.BACK));
+    loadingHelper.register(VIEW_TYPE_SEARCH, new SearchHeaderAdapter(this));
+    loadingHelper.register(VIEW_TYPE_NOTHING, new NothingAdapter());
+    loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
+    loadingHelper.showView(VIEW_TYPE_NOTHING);
   }
 
   @Override

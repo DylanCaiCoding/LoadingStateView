@@ -1,16 +1,18 @@
 package com.dylanc.loadinghelper.sample.ui.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.adapter.CustomViewType;
+import com.dylanc.loadinghelper.sample.adapter.EmptyAdapter;
 import com.dylanc.loadinghelper.sample.adapter.TimeoutAdapter;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
@@ -40,7 +42,6 @@ public class LoadingFragment extends Fragment implements LoadingHelper.OnReloadL
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.layout_content, container, false);
     loadingHelper = new LoadingHelper(view);
-    loadingHelper.register(CustomViewType.TIMEOUT, new TimeoutAdapter());
     loadingHelper.setOnReloadListener(this);
     return loadingHelper.getDecorView();
   }
@@ -50,39 +51,46 @@ public class LoadingFragment extends Fragment implements LoadingHelper.OnReloadL
     super.onViewCreated(view, savedInstanceState);
     if (getArguments() != null) {
       viewType = getArguments().getInt(KEY_VIEW_TYPE);
-    }
-    loadFailure();
-  }
-
-  private void loadSuccess() {
-    loadingHelper.showLoadingView();
-    HttpUtils.requestSuccess(callback);
-  }
-
-  private void loadFailure() {
-    loadingHelper.showLoadingView();
-    HttpUtils.requestFailure(callback);
-  }
-
-  private HttpUtils.Callback callback = new HttpUtils.Callback() {
-
-    @Override
-    public void onSuccess() {
-      loadingHelper.showContentView();
-    }
-
-    @Override
-    public void onFailure() {
-      if (viewType == VIEW_TYPE_EMPTY) {
-        loadingHelper.showEmptyView();
-      } else if (viewType == VIEW_TYPE_TIMEOUT) {
-        loadingHelper.showView(CustomViewType.TIMEOUT);
+      switch (viewType) {
+        case VIEW_TYPE_TIMEOUT:
+          loadingHelper.register(viewType, new TimeoutAdapter());
+          break;
+        case VIEW_TYPE_EMPTY:
+          loadingHelper.register(viewType, new EmptyAdapter());
+          break;
       }
     }
-  };
+    loadData();
+  }
+
+  private void loadData() {
+    loadingHelper.showLoadingView();
+    HttpUtils.requestFailure(new HttpUtils.Callback() {
+      @Override
+      public void onSuccess() {
+        loadingHelper.showContentView();
+      }
+
+      @Override
+      public void onFailure() {
+        loadingHelper.showView(viewType);
+      }
+    });
+  }
 
   @Override
   public void onReload() {
-    loadSuccess();
+    loadingHelper.showLoadingView();
+    HttpUtils.requestSuccess(new HttpUtils.Callback() {
+      @Override
+      public void onSuccess() {
+        loadingHelper.showContentView();
+      }
+
+      @Override
+      public void onFailure() {
+        loadingHelper.showView(viewType);
+      }
+    });
   }
 }

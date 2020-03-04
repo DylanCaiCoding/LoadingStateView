@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
   <Button
-    android:id="@+id/button"
+    android:id="@+id/btn_activity_error"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onActivityErrorClick"
+    android:onClick="onBtnClicked"
     android:text="Activity(error)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
@@ -20,73 +20,87 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <Button
-    android:id="@+id/button2"
+    android:id="@+id/btn_fragment_empty"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onFragmentEmptyClick"
+    android:onClick="onBtnClicked"
     android:text="Fragment(empty)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/button" />
+    app:layout_constraintTop_toBottomOf="@+id/btn_activity_error" />
 
   <Button
-    android:id="@+id/button3"
+    android:id="@+id/btn_view_placeholder"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onViewTimeoutClick"
+    android:onClick="onBtnClicked"
     android:text="View(placeholder)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/button2" />
+    app:layout_constraintTop_toBottomOf="@+id/btn_fragment_empty" />
 
   <Button
-    android:id="@+id/button4"
+    android:id="@+id/btn_viewpager_timeout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onViewPagerClick"
+    android:onClick="onBtnClicked"
     android:text="ViewPager(timeout)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/button3" />
+    app:layout_constraintTop_toBottomOf="@+id/btn_view_placeholder" />
 
   <Button
-    android:id="@+id/button5"
+    android:id="@+id/btn_recyclerview_loading"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onRecyclerViewClick"
+    android:onClick="onBtnClicked"
     android:text="RecyclerView(cool loading)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/button4" />
+    app:layout_constraintTop_toBottomOf="@+id/btn_viewpager_timeout" />
 
   <Button
-    android:id="@+id/button6"
+    android:id="@+id/btn_search_header"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onMVPActivityClick"
-    android:text="CustomTitle(search)"
+    android:onClick="onBtnClicked"
+    android:text="MultipleHeader(search)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/button5" />
+    app:layout_constraintTop_toBottomOf="@+id/btn_recyclerview_loading" />
 
-</android.support.constraint.ConstraintLayout>
+  <Button
+    android:id="@+id/btn_scrolling"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:onClick="onBtnClicked"
+    android:text="CoordinatorLayout(scrolling)"
+    android:textAllCaps="false"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_search_header" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,74 +1,75 @@
 package com.dylanc.loadinghelper.sample.adapter;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.base.BaseTitleAdapter;
 import com.dylanc.loadinghelper.sample.base.TitleConfig;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Dylan Cai
- * @since 2019/5/18
+ * @since 2020/3/4
  */
 public class TitleAdapter extends BaseTitleAdapter<TitleConfig, TitleAdapter.ViewHolder> {
-  public TitleAdapter(){}
+
+  public TitleAdapter() {
+  }
 
   public TitleAdapter(String title, TitleConfig.Type type) {
-    config = new TitleConfig(title, type);
+    setConfig(new TitleConfig(title, type));
   }
 
-  @NonNull
+  @NotNull
   @Override
-  public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return new ViewHolder(inflater.inflate(R.layout.loading_layout_title, parent, false));
+  public ViewHolder onCreateViewHolder(@NotNull LayoutInflater inflater, @NotNull ViewGroup parent) {
+    return new TitleAdapter.ViewHolder(inflater.inflate(R.layout.layout_toolbar, parent, false));
   }
 
   @Override
-  public void onBindViewHolder(@NonNull final ViewHolder holder) {
+  public void onBindViewHolder(@NotNull ViewHolder holder) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      holder.getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    }
+
     if (!TextUtils.isEmpty(getConfig().getTitleText())) {
-      holder.setTitleText(getConfig().getTitleText());
+      holder.toolbar.setTitle(getConfig().getTitleText());
     }
+
     if (getConfig().getType() == TitleConfig.Type.BACK) {
-      holder.addBackBtn();
+      holder.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
+      holder.toolbar.setNavigationOnClickListener(v -> holder.getActivity().finish());
     } else {
-      holder.hideBackBtn();
+      holder.toolbar.setNavigationIcon(null);
     }
-    if (!TextUtils.isEmpty(getConfig().getRightText()) && getConfig().getOnRightBtnClickListener() != null) {
-      holder.addRightBtn(getConfig().getRightText(), getConfig().getOnRightBtnClickListener());
+
+    if (getConfig().getMenuId() > 0 && getConfig().getOnMenuItemClickListener() != null) {
+      holder.toolbar.inflateMenu(getConfig().getMenuId());
+      holder.toolbar.setOnMenuItemClickListener(item -> getConfig().getOnMenuItemClickListener().invoke(item));
     }
   }
 
   static class ViewHolder extends LoadingHelper.ViewHolder {
 
-    private final CommonTitleBar mTitleBar;
+    private final Toolbar toolbar;
 
     ViewHolder(@NonNull View rootView) {
       super(rootView);
-      mTitleBar = (CommonTitleBar) rootView;
+      toolbar = (Toolbar) rootView;
     }
 
-    void addBackBtn() {
-      mTitleBar.getLeftImageButton().setOnClickListener(v -> ((Activity) getRootView().getContext()).finish());
-    }
-
-    void hideBackBtn() {
-      mTitleBar.getLeftImageButton().setImageDrawable(null);
-    }
-
-    void setTitleText(String title) {
-      mTitleBar.getCenterTextView().setText(title);
-    }
-
-    void addRightBtn(String rightText, final View.OnClickListener rightClickListener) {
-      mTitleBar.getRightTextView().setText(rightText);
-      mTitleBar.getRightTextView().setOnClickListener(rightClickListener);
+    private Activity getActivity() {
+      return (Activity) getRootView().getContext();
     }
   }
 }

@@ -2,15 +2,17 @@ package com.dylanc.loadinghelper.sample.ui;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -19,8 +21,8 @@ import com.bumptech.glide.request.target.Target;
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.adapter.WaterLoadingAdapter;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
+import com.dylanc.loadinghelper.sample.adapter.WaterLoadingAdapter;
 import com.dylanc.loadinghelper.sample.base.TitleConfig;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
@@ -56,7 +58,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-      holder.showImage(HttpUtils.getRandomUrl());
+      holder.showImage(HttpUtils.getRandomImageUrl());
     }
 
     @Override

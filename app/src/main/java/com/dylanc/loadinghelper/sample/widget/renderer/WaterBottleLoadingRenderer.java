@@ -2,7 +2,7 @@ package com.dylanc.loadinghelper.sample.widget.renderer;
 
 import android.content.Context;
 import android.graphics.*;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import android.view.animation.Interpolator;
 import com.dylanc.loadinghelper.sample.utils.DensityUtils;
 import com.dylanc.loadinghelper.sample.widget.LoadingRenderer;
