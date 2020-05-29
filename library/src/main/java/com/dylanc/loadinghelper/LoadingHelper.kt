@@ -17,6 +17,7 @@ class LoadingHelper @JvmOverloads constructor(
 ) {
   lateinit var decorView: View
     private set
+  private lateinit var decorAdapter: DecorAdapter
   private lateinit var loadingContainer: ViewGroup
   private val parent: ViewGroup?
   private var currentViewHolder: ViewHolder? = null
@@ -62,6 +63,7 @@ class LoadingHelper @JvmOverloads constructor(
    */
   fun setDecorAdapter(decorAdapter: DecorAdapter) {
     currentViewHolder = null
+    this.decorAdapter = decorAdapter
     if (parent != null) {
       val index = parent.indexOfChild(contentView)
       if (index >= 0) {
@@ -75,7 +77,9 @@ class LoadingHelper @JvmOverloads constructor(
       parent.addView(decorView, index)
     } else {
       decorView = decorAdapter.onCreateDecorView(LayoutInflater.from(contentView.context))
-      decorView.layoutParams = contentView.layoutParams
+      if (contentView.layoutParams != null) {
+        decorView.layoutParams = contentView.layoutParams
+      }
     }
     loadingContainer = decorAdapter.getLoadingContainer(decorView)
     showView(ViewType.CONTENT)
@@ -90,6 +94,25 @@ class LoadingHelper @JvmOverloads constructor(
       views.add(getViewHolder(t).rootView)
     }
     setDecorAdapter(LinearDecorAdapter(views))
+  }
+
+  fun addChildDecorAdapter(decorAdapter: DecorAdapter) {
+    loadingContainer.removeView(currentViewHolder?.rootView)
+    currentViewHolder = null
+    val childDecorView =
+      decorAdapter.onCreateDecorView(LayoutInflater.from(loadingContainer.context))
+    childDecorView.layoutParams = contentView.layoutParams
+    loadingContainer.addView(childDecorView)
+    loadingContainer = decorAdapter.getLoadingContainer(childDecorView)
+    showView(ViewType.CONTENT)
+  }
+
+  fun addChildDecorHeader(vararg viewType: Any) {
+    val views = mutableListOf<View>()
+    for (t in viewType) {
+      views.add(getViewHolder(t).rootView)
+    }
+    addChildDecorAdapter(LinearDecorAdapter(views))
   }
 
   /**
@@ -154,7 +177,11 @@ class LoadingHelper @JvmOverloads constructor(
 
   private fun addView(viewType: Any) {
     val viewHolder = getViewHolder(viewType)
-    loadingContainer.addView(viewHolder.rootView)
+    val rootView = viewHolder.rootView
+    if (rootView.parent != null) {
+      (rootView.parent as ViewGroup).removeView(rootView)
+    }
+    loadingContainer.addView(rootView)
     currentViewHolder = viewHolder
   }
 
