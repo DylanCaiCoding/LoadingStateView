@@ -17,18 +17,16 @@ public abstract class LoadingRenderer {
     private static final float DEFAULT_SIZE = 56.0f;
 
     private final ValueAnimator.AnimatorUpdateListener mAnimatorUpdateListener
-            = new ValueAnimator.AnimatorUpdateListener() {
-        @Override
-        public void onAnimationUpdate(ValueAnimator animation) {
-            computeRender((float) animation.getAnimatedValue());
-            invalidateSelf();
-        }
-    };
+            = animation -> {
+                computeRender((float) animation.getAnimatedValue());
+                invalidateSelf();
+            };
 
     /**
      * Whenever {@link LoadingDrawable} boundary changes mBounds will be updated.
      * More details you can see {@link LoadingDrawable#onBoundsChange(Rect)}
      */
+    @SuppressWarnings("WeakerAccess")
     protected final Rect mBounds = new Rect();
 
     private Drawable.Callback mCallback;
@@ -44,10 +42,12 @@ public abstract class LoadingRenderer {
         setupAnimators();
     }
 
+    @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
     protected void draw(Canvas canvas, Rect bounds) {
     }
 
+    @SuppressWarnings({"WeakerAccess", "deprecation"})
     protected void draw(Canvas canvas) {
         draw(canvas, mBounds);
     }

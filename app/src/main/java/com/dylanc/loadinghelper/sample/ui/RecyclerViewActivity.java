@@ -22,7 +22,7 @@ import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
-import com.dylanc.loadinghelper.sample.adapter.WaterLoadingAdapter;
+import com.dylanc.loadinghelper.sample.adapter.CoolLoadingAdapter;
 import com.dylanc.loadinghelper.sample.base.TitleConfig;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
@@ -75,7 +75,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
       ViewHolder(@NonNull View itemView) {
         super(itemView);
         loadingHelper = new LoadingHelper(itemView.findViewById(R.id.loading_view));
-        loadingHelper.register(ViewType.LOADING, new WaterLoadingAdapter());
+        loadingHelper.register(ViewType.LOADING, new CoolLoadingAdapter());
         loadingHelper.setOnReloadListener(() -> showImage(url));
         imageView = itemView.findViewById(R.id.image_view);
       }

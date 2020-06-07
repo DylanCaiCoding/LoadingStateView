@@ -32,17 +32,11 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
             DECELERATE_INTERPOLATOR, ACCELERATE_INTERPOLATOR, FASTOUTLINEARIN_INTERPOLATOR, MATERIAL_INTERPOLATOR};
     private static final List<LeafHolder> mLeafHolders = new ArrayList<>();
     private static final Random mRandom = new Random();
-    private final Animator.AnimatorListener mAnimatorListener = new AnimatorListenerAdapter() {
-        @Override
-        public void onAnimationRepeat(Animator animator) {
-            super.onAnimationRepeat(animator);
-            reset();
-        }
-    };
 
-    public static final int MODE_NORMAL = 0;
-    public static final int MODE_LEAF_COUNT = 1;
+    static final int MODE_NORMAL = 0;
+    static final int MODE_LEAF_COUNT = 1;
 
+    @SuppressWarnings("WeakerAccess")
     @IntDef({MODE_NORMAL, MODE_LEAF_COUNT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface MODE {
@@ -111,6 +105,13 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
         super(context);
         init(context);
         setupPaint();
+        Animator.AnimatorListener mAnimatorListener = new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+                super.onAnimationRepeat(animator);
+                reset();
+            }
+        };
         addRenderListener(mAnimatorListener);
     }
 
@@ -144,6 +145,7 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void draw(Canvas canvas, Rect bounds) {
         int saveCount = canvas.save();
@@ -311,7 +313,7 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
         mLeafHolders.clear();
     }
 
-    protected void setInsets(int width, int height) {
+    private void setInsets(int width, int height) {
         final float minEdge = (float) Math.min(width, height);
         float insetXs;
         if (mCenterRadius <= 0 || minEdge < 0) {
@@ -382,12 +384,12 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
         return point;
     }
 
-    private class BezierEvaluator implements TypeEvaluator<PointF> {
+    private static class BezierEvaluator implements TypeEvaluator<PointF> {
 
         private PointF point1;
         private PointF point2;
 
-        public BezierEvaluator(PointF point1, PointF point2) {
+        BezierEvaluator(PointF point1, PointF point2) {
             this.point1 = point1;
             this.point2 = point2;
         }
@@ -396,11 +398,10 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
         @Override
         public PointF evaluate(float fraction, PointF point0, PointF point3) {
 
-            float t = fraction;
-            float tLeft = 1.0f - t;
+            float tLeft = 1.0f - fraction;
 
-            float x = (float) (point0.x * Math.pow(tLeft, 3) + 3 * point1.x * t * Math.pow(tLeft, 2) + 3 * point2.x * Math.pow(t, 2) * tLeft + point3.x * Math.pow(t, 3));
-            float y = (float) (point0.y * Math.pow(tLeft, 3) + 3 * point1.y * t * Math.pow(tLeft, 2) + 3 * point2.y * Math.pow(t, 2) * tLeft + point3.y * Math.pow(t, 3));
+            float x = (float) (point0.x * Math.pow(tLeft, 3) + 3 * point1.x * fraction * Math.pow(tLeft, 2) + 3 * point2.x * Math.pow(fraction, 2) * tLeft + point3.x * Math.pow(fraction, 3));
+            float y = (float) (point0.y * Math.pow(tLeft, 3) + 3 * point1.y * fraction * Math.pow(tLeft, 2) + 3 * point2.y * Math.pow(fraction, 2) * tLeft + point3.y * Math.pow(fraction, 3));
 
             return new PointF(x, y);
         }
@@ -410,7 +411,7 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
 
         private LeafHolder target;
 
-        public BezierListener(LeafHolder target) {
+        BezierListener(LeafHolder target) {
             this.target = target;
         }
 
@@ -426,7 +427,7 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
     private class AnimEndListener extends AnimatorListenerAdapter {
         private LeafHolder target;
 
-        public AnimEndListener(LeafHolder target) {
+        AnimEndListener(LeafHolder target) {
             this.target = target;
         }
 
@@ -438,23 +439,11 @@ public class ElectricFanLoadingRenderer extends LoadingRenderer {
         }
     }
 
-    private class LeafHolder {
-        public Rect mLeafRect = new Rect();
-        public float mLeafRotation = 0.0f;
+    private static class LeafHolder {
+        Rect mLeafRect = new Rect();
+        float mLeafRotation = 0.0f;
 
-        public float mMaxRotation = mRandom.nextInt(120);
+        float mMaxRotation = mRandom.nextInt(120);
     }
 
-    public static class Builder {
-        private Context mContext;
-
-        public Builder(Context mContext) {
-            this.mContext = mContext;
-        }
-
-        public ElectricFanLoadingRenderer build() {
-            ElectricFanLoadingRenderer loadingRenderer = new ElectricFanLoadingRenderer(mContext);
-            return loadingRenderer;
-        }
-    }
 }

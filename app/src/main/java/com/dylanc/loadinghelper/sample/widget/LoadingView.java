@@ -2,6 +2,8 @@ package com.dylanc.loadinghelper.sample.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -49,7 +51,7 @@ public class LoadingView extends AppCompatImageView {
     }
 
     @Override
-    protected void onVisibilityChanged(View changedView, int visibility) {
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
 
         final boolean visible = visibility == VISIBLE && getVisibility() == VISIBLE;

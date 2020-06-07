@@ -7,28 +7,29 @@ import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.NonNull;
+
 public class LoadingDrawable extends Drawable implements Animatable {
     private final LoadingRenderer mLoadingRender;
 
-    private final Callback mCallback = new Callback() {
-        @Override
-        public void invalidateDrawable(Drawable d) {
-            invalidateSelf();
-        }
-
-        @Override
-        public void scheduleDrawable(Drawable d, Runnable what, long when) {
-            scheduleSelf(what, when);
-        }
-
-        @Override
-        public void unscheduleDrawable(Drawable d, Runnable what) {
-            unscheduleSelf(what);
-        }
-    };
-
-    public LoadingDrawable(LoadingRenderer loadingRender) {
+    LoadingDrawable(LoadingRenderer loadingRender) {
         this.mLoadingRender = loadingRender;
+        Callback mCallback = new Callback() {
+            @Override
+            public void invalidateDrawable(@NonNull Drawable d) {
+                invalidateSelf();
+            }
+
+            @Override
+            public void scheduleDrawable(@NonNull Drawable d, @NonNull Runnable what, long when) {
+                scheduleSelf(what, when);
+            }
+
+            @Override
+            public void unscheduleDrawable(@NonNull Drawable d, @NonNull Runnable what) {
+                unscheduleSelf(what);
+            }
+        };
         this.mLoadingRender.setCallback(mCallback);
     }
 
@@ -39,7 +40,7 @@ public class LoadingDrawable extends Drawable implements Animatable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
         if (!getBounds().isEmpty()) {
             this.mLoadingRender.draw(canvas);
         }
