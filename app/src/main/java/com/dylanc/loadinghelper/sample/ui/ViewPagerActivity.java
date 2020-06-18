@@ -14,7 +14,7 @@ import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
-import com.dylanc.loadinghelper.sample.base.TitleConfig;
+import com.dylanc.loadinghelper.sample.base.NavIconType;
 import com.dylanc.loadinghelper.sample.ui.fragment.LoadingFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -31,7 +31,7 @@ public class ViewPagerActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_tab_layout);
     LoadingHelper loadingHelper = new LoadingHelper(this);
-    loadingHelper.register(ViewType.TITLE, new TitleAdapter("ViewPager(timeout)", TitleConfig.Type.BACK));
+    loadingHelper.register(ViewType.TITLE, new TitleAdapter("ViewPager(timeout)", NavIconType.BACK));
     loadingHelper.setDecorHeader(ViewType.TITLE);
 
     TabLayout tabLayout = findViewById(R.id.tab_layout);

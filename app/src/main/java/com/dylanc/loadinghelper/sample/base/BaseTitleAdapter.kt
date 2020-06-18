@@ -2,7 +2,6 @@ package com.dylanc.loadinghelper.sample.base
 
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.Toolbar
 import com.dylanc.loadinghelper.LoadingHelper
 
 /**
@@ -17,7 +16,7 @@ abstract class BaseTitleAdapter<T : TitleConfig, VH : LoadingHelper.ViewHolder> 
 
 open class TitleConfig(
   var titleText: String,
-  var type: Type
+  var type: NavIconType
 ) {
   var rightIcon = 0
     private set
@@ -44,8 +43,8 @@ open class TitleConfig(
     this.menuId = menuId
     this.onMenuItemClickListener = onMenuItemClickListener
   }
+}
 
-  enum class Type {
-    BACK, NO_BACK
-  }
+enum class NavIconType{
+  BACK, NONE
 }

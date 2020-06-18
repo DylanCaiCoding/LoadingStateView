@@ -1,11 +1,10 @@
 package com.dylanc.loadinghelper.sample.ui;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.widget.Toast;
 
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
@@ -13,7 +12,7 @@ import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.NothingAdapter;
 import com.dylanc.loadinghelper.sample.adapter.SearchHeaderAdapter;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
-import com.dylanc.loadinghelper.sample.base.TitleConfig;
+import com.dylanc.loadinghelper.sample.base.NavIconType;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 /**
@@ -31,7 +30,7 @@ public class MultipleHeaderActivity extends AppCompatActivity implements SearchH
     super.onCreate(savedInstanceState);
     setContentView(R.layout.layout_content);
     loadingHelper = new LoadingHelper(this);
-    loadingHelper.register(ViewType.TITLE, new TitleAdapter("MultipleHeader(search)", TitleConfig.Type.BACK));
+    loadingHelper.register(ViewType.TITLE, new TitleAdapter("MultipleHeader(search)", NavIconType.BACK));
     loadingHelper.register(VIEW_TYPE_SEARCH, new SearchHeaderAdapter(this));
     loadingHelper.register(VIEW_TYPE_NOTHING, new NothingAdapter());
     loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);

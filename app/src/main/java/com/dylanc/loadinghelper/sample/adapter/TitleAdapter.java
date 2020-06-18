@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.base.BaseTitleAdapter;
+import com.dylanc.loadinghelper.sample.base.NavIconType;
 import com.dylanc.loadinghelper.sample.base.TitleConfig;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +27,7 @@ public class TitleAdapter extends BaseTitleAdapter<TitleConfig, TitleAdapter.Vie
   public TitleAdapter() {
   }
 
-  public TitleAdapter(String title, TitleConfig.Type type) {
+  public TitleAdapter(String title, NavIconType type) {
     setConfig(new TitleConfig(title, type));
   }
 
@@ -46,7 +47,7 @@ public class TitleAdapter extends BaseTitleAdapter<TitleConfig, TitleAdapter.Vie
       holder.toolbar.setTitle(getConfig().getTitleText());
     }
 
-    if (getConfig().getType() == TitleConfig.Type.BACK) {
+    if (getConfig().getType() == NavIconType.BACK) {
       holder.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
       holder.toolbar.setNavigationOnClickListener(v -> holder.getActivity().finish());
     } else {

@@ -10,7 +10,7 @@ import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
-import com.dylanc.loadinghelper.sample.base.TitleConfig;
+import com.dylanc.loadinghelper.sample.base.NavIconType;
 import com.dylanc.loadinghelper.sample.ui.fragment.LoadingFragment;
 
 import static com.dylanc.loadinghelper.sample.ui.fragment.LoadingFragment.VIEW_TYPE_EMPTY;
@@ -26,7 +26,7 @@ public class FragmentEmptyActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_fragment);
     LoadingHelper loadingHelper = new LoadingHelper(this);
-    loadingHelper.register(ViewType.TITLE, new TitleAdapter("Fragment(empty)", TitleConfig.Type.BACK));
+    loadingHelper.register(ViewType.TITLE, new TitleAdapter("Fragment(empty)", NavIconType.BACK));
     loadingHelper.setDecorHeader(ViewType.TITLE);
 
     final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

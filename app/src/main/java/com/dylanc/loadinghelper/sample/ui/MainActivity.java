@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.base.BaseActivity;
-import com.dylanc.loadinghelper.sample.base.TitleConfig;
+import com.dylanc.loadinghelper.sample.base.NavIconType;
 
 /**
  * @author Dylan Cai
@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity {
 
   @Override
   public void initViews() {
-    setToolbar("LoadingHelper", TitleConfig.Type.NO_BACK, R.menu.menu_about, this::onMenuItemClick);
+    setToolbar("LoadingHelper", NavIconType.NONE, R.menu.menu_about, this::onMenuItemClick);
   }
 
   public void onBtnClicked(View view) {

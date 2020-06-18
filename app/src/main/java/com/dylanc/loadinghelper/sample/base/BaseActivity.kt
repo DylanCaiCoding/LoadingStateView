@@ -2,11 +2,10 @@ package com.dylanc.loadinghelper.sample.base
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import android.view.View
-import androidx.appcompat.widget.Toolbar
 import com.dylanc.loadinghelper.LoadingHelper
 import com.dylanc.loadinghelper.ViewType
 
@@ -49,40 +48,40 @@ abstract class BaseActivity : AppCompatActivity() {
   }
 
   @JvmOverloads
-  fun setToolbar(title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK) =
+  fun setToolbar(title: String, type: NavIconType = NavIconType.NONE) =
     setToolbar(TitleConfig(title, type))
 
   @JvmOverloads
   fun setToolbar(
-    title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
+    title: String, type: NavIconType = NavIconType.NONE,
     rightIcon: Int, rightBtnClickListener: View.OnClickListener
   ) =
     setToolbar(TitleConfig(title, type).apply { setRightBtn(rightIcon, rightBtnClickListener) })
 
   @JvmOverloads
   fun setToolbar(
-    title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
+    title: String, type: NavIconType = NavIconType.NONE,
     rightText: String, rightBtnClickListener: View.OnClickListener
   ) =
     setToolbar(TitleConfig(title, type).apply { setRightBtn(rightText, rightBtnClickListener) })
 
   @JvmOverloads
   fun setToolbar(
-    title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
+    title: String, type: NavIconType = NavIconType.NONE,
     rightIcon: Int, rightBtnClickListener: () -> Unit
   ) =
     setToolbar(title, type, rightIcon, View.OnClickListener { rightBtnClickListener() })
 
   @JvmOverloads
   fun setToolbar(
-    title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
+    title: String, type: NavIconType = NavIconType.NONE,
     rightText: String, rightBtnClickListener: () -> Unit
   ) =
     setToolbar(title, type, rightText, View.OnClickListener { rightBtnClickListener() })
 
   @JvmOverloads
   fun setToolbar(
-    title: String, type: TitleConfig.Type = TitleConfig.Type.NO_BACK,
+    title: String, type: NavIconType = NavIconType.NONE,
     menuId: Int, listener: (MenuItem) -> Boolean
   ) =
     setToolbar(TitleConfig(title, type).apply { setMenu(menuId, listener) })

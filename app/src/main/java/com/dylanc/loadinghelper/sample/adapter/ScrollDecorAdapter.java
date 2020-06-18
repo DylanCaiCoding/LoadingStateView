@@ -42,7 +42,7 @@ public class ScrollDecorAdapter extends LoadingHelper.DecorAdapter {
 
   @NotNull
   @Override
-  public ViewGroup getLoadingContainer(@NotNull View decorView) {
+  public ViewGroup getContentParent(@NotNull View decorView) {
     return decorView.findViewById(R.id.loading_container);
   }
 

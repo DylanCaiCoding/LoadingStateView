@@ -21,9 +21,9 @@ import com.bumptech.glide.request.target.Target;
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
 import com.dylanc.loadinghelper.sample.adapter.CoolLoadingAdapter;
-import com.dylanc.loadinghelper.sample.base.TitleConfig;
+import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
+import com.dylanc.loadinghelper.sample.base.NavIconType;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 
@@ -38,7 +38,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_recycler_view);
     LoadingHelper loadingHelper = new LoadingHelper(this);
-    loadingHelper.register(ViewType.TITLE, new TitleAdapter("RecyclerView(cool loading)", TitleConfig.Type.BACK));
+    loadingHelper.register(ViewType.TITLE, new TitleAdapter("RecyclerView(cool loading)", NavIconType.BACK));
     loadingHelper.setDecorHeader(ViewType.TITLE);
 
     RecyclerView recyclerView = findViewById(R.id.recycler_view);

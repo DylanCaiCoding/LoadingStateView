@@ -9,7 +9,7 @@ import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
-import com.dylanc.loadinghelper.sample.base.TitleConfig;
+import com.dylanc.loadinghelper.sample.base.NavIconType;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 /**
@@ -26,7 +26,7 @@ public class ActErrorActivity extends AppCompatActivity {
     setContentView(R.layout.layout_content);
     loadingHelper = new LoadingHelper(this);
     loadingHelper.setOnReloadListener(this::onReload);
-    loadingHelper.register(ViewType.TITLE, new TitleAdapter("Activity(error)", TitleConfig.Type.BACK));
+    loadingHelper.register(ViewType.TITLE, new TitleAdapter("Activity(error)", NavIconType.BACK));
     loadingHelper.setDecorHeader(ViewType.TITLE);
     loadData();
   }

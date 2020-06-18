@@ -17,8 +17,7 @@ class LoadingHelper @JvmOverloads constructor(
 ) {
   lateinit var decorView: View
     private set
-  private lateinit var decorAdapter: DecorAdapter
-  private lateinit var loadingContainer: ViewGroup
+  private lateinit var contentParent: ViewGroup
   private val parent: ViewGroup?
   private var currentViewHolder: ViewHolder? = null
   private var onReloadListener: OnReloadListener? = null
@@ -63,7 +62,6 @@ class LoadingHelper @JvmOverloads constructor(
    */
   fun setDecorAdapter(decorAdapter: DecorAdapter) {
     currentViewHolder = null
-    this.decorAdapter = decorAdapter
     if (parent != null) {
       val index = parent.indexOfChild(contentView)
       if (index >= 0) {
@@ -72,17 +70,20 @@ class LoadingHelper @JvmOverloads constructor(
         parent.removeView(decorView)
         (contentView.parent as ViewGroup).removeView(contentView)
       }
-      decorView = decorAdapter.onCreateDecorView(LayoutInflater.from(contentView.context))
-      decorView.layoutParams = contentView.layoutParams
+      initDecorView(decorAdapter)
       parent.addView(decorView, index)
     } else {
-      decorView = decorAdapter.onCreateDecorView(LayoutInflater.from(contentView.context))
-      if (contentView.layoutParams != null) {
-        decorView.layoutParams = contentView.layoutParams
-      }
+      initDecorView(decorAdapter)
     }
-    loadingContainer = decorAdapter.getLoadingContainer(decorView)
     showView(ViewType.CONTENT)
+  }
+
+  private fun initDecorView(decorAdapter: DecorAdapter) {
+    decorView = decorAdapter.onCreateDecorView(LayoutInflater.from(contentView.context))
+    if (contentView.layoutParams != null) {
+      decorView.layoutParams = contentView.layoutParams
+    }
+    contentParent = decorAdapter.getContentParent(decorView)
   }
 
   /**
@@ -97,13 +98,14 @@ class LoadingHelper @JvmOverloads constructor(
   }
 
   fun addChildDecorAdapter(decorAdapter: DecorAdapter) {
-    loadingContainer.removeView(currentViewHolder?.rootView)
+    contentParent.removeView(currentViewHolder?.rootView)
     currentViewHolder = null
-    val childDecorView =
-      decorAdapter.onCreateDecorView(LayoutInflater.from(loadingContainer.context))
-    childDecorView.layoutParams = contentView.layoutParams
-    loadingContainer.addView(childDecorView)
-    loadingContainer = decorAdapter.getLoadingContainer(childDecorView)
+    val childDecorView = decorAdapter.onCreateDecorView(LayoutInflater.from(contentParent.context))
+    if (contentView.layoutParams != null) {
+      childDecorView.layoutParams = contentView.layoutParams
+    }
+    contentParent.addView(childDecorView)
+    contentParent = decorAdapter.getContentParent(childDecorView)
     showView(ViewType.CONTENT)
   }
 
@@ -168,8 +170,8 @@ class LoadingHelper @JvmOverloads constructor(
     if (currentViewHolder == null) {
       addView(viewType)
     } else {
-      if (viewType !== currentViewHolder!!.viewType) {
-        loadingContainer.removeView(currentViewHolder!!.rootView)
+      if (viewType !== currentViewHolder!!.viewType && currentViewHolder!!.rootView.parent != null) {
+        contentParent.removeView(currentViewHolder!!.rootView)
         addView(viewType)
       }
     }
@@ -181,7 +183,7 @@ class LoadingHelper @JvmOverloads constructor(
     if (rootView.parent != null) {
       (rootView.parent as ViewGroup).removeView(rootView)
     }
-    loadingContainer.addView(rootView)
+    contentParent.addView(rootView)
     currentViewHolder = viewHolder
   }
 
@@ -213,7 +215,7 @@ class LoadingHelper @JvmOverloads constructor(
     val viewHolder = if (adapter is ContentAdapter<*>) {
       adapter.onCreateViewHolder(contentView)
     } else {
-      adapter.onCreateViewHolder(LayoutInflater.from(loadingContainer.context), loadingContainer)
+      adapter.onCreateViewHolder(LayoutInflater.from(contentParent.context), contentParent)
     }
     viewHolder.viewType = viewType
     viewHolder.onReloadListener = onReloadListener
@@ -260,7 +262,7 @@ class LoadingHelper @JvmOverloads constructor(
   abstract class DecorAdapter {
     abstract fun onCreateDecorView(inflater: LayoutInflater): View
 
-    abstract fun getLoadingContainer(decorView: View): ViewGroup
+    abstract fun getContentParent(decorView: View): ViewGroup
   }
 
   private class LinearDecorAdapter(private val views: List<View>) : DecorAdapter() {
@@ -272,7 +274,7 @@ class LoadingHelper @JvmOverloads constructor(
         }
       }
 
-    override fun getLoadingContainer(decorView: View) = decorView as ViewGroup
+    override fun getContentParent(decorView: View) = decorView as ViewGroup
   }
 
   class AdapterPool internal constructor(private val helper: LoadingHelper) {

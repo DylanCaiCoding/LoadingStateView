@@ -11,7 +11,7 @@ import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.PlaceholderAdapter;
 import com.dylanc.loadinghelper.sample.adapter.TitleAdapter;
-import com.dylanc.loadinghelper.sample.base.TitleConfig;
+import com.dylanc.loadinghelper.sample.base.NavIconType;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 /**
@@ -27,7 +27,7 @@ public class ViewPlaceholderActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_view);
     LoadingHelper loadingHelper = new LoadingHelper(this);
-    loadingHelper.register(ViewType.TITLE, new TitleAdapter("View(placeholder)", TitleConfig.Type.BACK));
+    loadingHelper.register(ViewType.TITLE, new TitleAdapter("View(placeholder)", NavIconType.BACK));
     loadingHelper.setDecorHeader(ViewType.TITLE);
 
     View view = findViewById(R.id.content);
