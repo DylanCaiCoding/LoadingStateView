@@ -19,17 +19,17 @@ English | [中文](README_ZH_CN.md)
 
 ## Demo
 
-[Activity(error)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ActErrorActivity.java)|[Fragment(empty)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/FragmentEmptyActivity.java)|[View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPlaceholderActivity.java)
-:---:|:---:|:---:
-![](gif/activity_error.gif)|![](gif/fragment_empty.gif)|![](gif/view_placeholder.gif)
-
-[ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPagerActivity.java)|[RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/RecyclerViewActivity.java)|[CustomTitle(search)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/SearchTitleActivity.java)
-:---:|:---:|:---:
-![](gif/viewpager_timeout.gif)|![](gif/recyclerview_cool_loading.gif)|![](gif/custom_title_search.gif)
-
 Click or scan QR code to download
 
-[![QR code](img/app_download_qr_code.png)](https://madeqr.com/loadinghelper)
+[![QR code](img/app_download_qr_code.png)](https://www.pgyer.com/loadinghelper)
+
+| [Activity(error)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ActErrorActivity.java) | [Fragment(empty)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/FragmentEmptyActivity.java) | [View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPlaceholderActivity.java) | [ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPagerActivity.java) |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                 ![](gif/activity_error.gif)                  |                 ![](gif/fragment_empty.gif)                  |                ![](gif/view_placeholder.gif)                 |                ![](gif/viewpager_timeout.gif)                |
+
+| [RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/RecyclerViewActivity.java) | [MultipleHeader(search)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/MultipleHeaderActivity.java) | [SpecialDecorView(scrolling)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ScrollingToolbarActivity.java) | [BottomDecorView(editor)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/BottomEditorActivity.java) |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|              ![](gif/recyclerview_loading.gif)               |             ![](gif/multiple_header_search.gif)              |             ![](gif/special_decor_scrolling.gif)             |               ![](gif/bottom_decor_editor.gif)               |
 
 ## Getting started
 
@@ -37,7 +37,7 @@ In your `build.gradle` :
 
 ```
 dependencies {
-  implementation 'com.dylanc:loadinghelper:2.0.0'
+  implementation 'com.dylanc:loadinghelper:2.1.0'
 }
 ```
 
@@ -118,7 +118,6 @@ If you want to add an ordinary title bar above the content.
 Similar to the previous usage, create a class extends `LoadingHelper.Adapter<VH extends ViewHolder>`  and set header.
 
 ```java
-loadingHelper= new LoadingHelper(this);
 loadingHelper.register(ViewType.TITLE, new TitleAdapter("title"));
 loadingHelper.register(VIEW_TYPE_SEARCH, new SearchHeaderAdapter(onSearchListener));
 loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
@@ -138,8 +137,8 @@ public class ScrollDecorAdapter extends LoadingHelper.DecorAdapter {
 
   @NotNull
   @Override
-  public ViewGroup getLoadingContainer(@NotNull View decorView) {
-    return decorView.findViewById(R.id.loading_container);
+  public ViewGroup getContentParent(@NotNull View decorView) {
+    return decorView.findViewById(R.id.content_parent);
   }
 }
 ```
@@ -147,7 +146,6 @@ public class ScrollDecorAdapter extends LoadingHelper.DecorAdapter {
 Then set it up.
 
 ```java
-loadingHelper= new LoadingHelper(this);
 loadingHelper.setDecorAdapter(new ScrollDecorAdapter());
 ```
 
@@ -180,7 +178,6 @@ LoadingHelper loadingHelper = new LoadingHelper(this, new CommonContentAdapter()
 - [luckbilly/Gloading](https://github.com/luckybilly/Gloading) Optimize my library standing on the shoulders of giants.
 - [drakeet/MultiType](https://github.com/drakeet/MultiType)  Referenced the usage of ​​multiple adapters.
 - [dinuscxj/LoadingDrawable](https://github.com/dinuscxj/LoadingDrawable) The cool loading effect in the demo.
-- [wuhenzhizao/android-titlebar](https://github.com/wuhenzhizao/android-titlebar) All title bars in the demo.
 
 ## License
 
