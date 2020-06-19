@@ -1,6 +1,21 @@
+/*
+ * Copyright (c) 2019. Dylan Cai
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dylanc.loadinghelper.sample.base
 
-import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.IdRes
@@ -11,28 +26,11 @@ import com.dylanc.loadinghelper.ViewType
 
 /**
  * @author Dylan Cai
- * @since 2019/11/16
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(),LoadingHelper.OnReloadListener {
 
   lateinit var loadingHelper: LoadingHelper
     private set
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    initContentView()
-    initData(savedInstanceState)
-    initViews()
-    loadData()
-  }
-
-  abstract fun initContentView()
-
-  abstract fun initData(savedInstanceState: Bundle?)
-
-  abstract fun initViews()
-
-  open fun loadData() {}
 
   // 如果有默认的 ContentAdapter，参数中的 null 改成创建该对象，比如把第三个参数改成：
   // contentAdapter: LoadingHelper.ContentAdapter<*>? = DefContentAdapter()
@@ -44,51 +42,19 @@ abstract class BaseActivity : AppCompatActivity() {
   ) {
     super.setContentView(layoutResID)
     loadingHelper = LoadingHelper(findViewById<View>(contentViewId), contentAdapter)
-    loadingHelper.setOnReloadListener(this::loadData)
+    loadingHelper.setOnReloadListener(this)
   }
 
   @JvmOverloads
-  fun setToolbar(title: String, type: NavIconType = NavIconType.NONE) =
-    setToolbar(TitleConfig(title, type))
-
-  @JvmOverloads
   fun setToolbar(
     title: String, type: NavIconType = NavIconType.NONE,
-    rightIcon: Int, rightBtnClickListener: View.OnClickListener
+    menuId: Int = 0, listener: ((MenuItem) -> Boolean)? = null
   ) =
-    setToolbar(TitleConfig(title, type).apply { setRightBtn(rightIcon, rightBtnClickListener) })
+    setToolbar(ToolbarConfig(title, type,menuId, listener))
 
-  @JvmOverloads
-  fun setToolbar(
-    title: String, type: NavIconType = NavIconType.NONE,
-    rightText: String, rightBtnClickListener: View.OnClickListener
-  ) =
-    setToolbar(TitleConfig(title, type).apply { setRightBtn(rightText, rightBtnClickListener) })
-
-  @JvmOverloads
-  fun setToolbar(
-    title: String, type: NavIconType = NavIconType.NONE,
-    rightIcon: Int, rightBtnClickListener: () -> Unit
-  ) =
-    setToolbar(title, type, rightIcon, View.OnClickListener { rightBtnClickListener() })
-
-  @JvmOverloads
-  fun setToolbar(
-    title: String, type: NavIconType = NavIconType.NONE,
-    rightText: String, rightBtnClickListener: () -> Unit
-  ) =
-    setToolbar(title, type, rightText, View.OnClickListener { rightBtnClickListener() })
-
-  @JvmOverloads
-  fun setToolbar(
-    title: String, type: NavIconType = NavIconType.NONE,
-    menuId: Int, listener: (MenuItem) -> Boolean
-  ) =
-    setToolbar(TitleConfig(title, type).apply { setMenu(menuId, listener) })
-
-  private fun setToolbar(config: TitleConfig) {
-    val titleAdapter: BaseTitleAdapter<TitleConfig, *> = loadingHelper.getAdapter(ViewType.TITLE)
-    titleAdapter.config = config
+  private fun setToolbar(config: ToolbarConfig) {
+    val toolbarAdapter: BaseToolbarAdapter<ToolbarConfig, *> = loadingHelper.getAdapter(ViewType.TITLE)
+    toolbarAdapter.config = config
     loadingHelper.setDecorHeader(ViewType.TITLE)
   }
 
@@ -101,4 +67,6 @@ abstract class BaseActivity : AppCompatActivity() {
   fun showEmptyView() = loadingHelper.showEmptyView()
 
   fun showCustomView(viewType: Any) = loadingHelper.showView(viewType)
+
+  override fun onReload() {}
 }

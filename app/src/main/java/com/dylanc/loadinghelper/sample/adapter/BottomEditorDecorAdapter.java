@@ -17,41 +17,40 @@
 package com.dylanc.loadinghelper.sample.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.appcompat.widget.Toolbar;
+import android.widget.EditText;
 
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.sample.R;
+import com.dylanc.loadinghelper.sample.utils.KeyboardUtils;
 
 import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Dylan Cai
  */
-public class ScrollDecorAdapter extends LoadingHelper.DecorAdapter {
-  private String title;
+public class BottomEditorDecorAdapter extends LoadingHelper.DecorAdapter {
+  private OnSendListener onSendListener;
 
-  public ScrollDecorAdapter(String title) {
-    this.title = title;
+  public BottomEditorDecorAdapter(OnSendListener onSendListener) {
+    this.onSendListener = onSendListener;
   }
 
   @NotNull
   @Override
   @SuppressLint("InflateParams")
   public View onCreateDecorView(@NotNull LayoutInflater inflater) {
-    View view = inflater.inflate(R.layout.layout_scrolling_toolbar, null);
-    Activity activity = (Activity) inflater.getContext();
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-    }
-    Toolbar toolbar = view.findViewById(R.id.toolbar);
-    toolbar.setTitle(title);
-    toolbar.setNavigationOnClickListener(v -> activity.finish());
+    View view = inflater.inflate(R.layout.layout_bottom_editor, null);
+    EditText edtContent = view.findViewById(R.id.edt_content);
+    view.findViewById(R.id.btn_send).setOnClickListener(v -> {
+      if (onSendListener != null) {
+        onSendListener.onSend(edtContent.getText().toString());
+        edtContent.setText("");
+        KeyboardUtils.hideKeyboard(edtContent);
+      }
+    });
     return view;
   }
 
@@ -61,4 +60,7 @@ public class ScrollDecorAdapter extends LoadingHelper.DecorAdapter {
     return decorView.findViewById(R.id.content_parent);
   }
 
+  public interface OnSendListener {
+    void onSend(String content);
+  }
 }

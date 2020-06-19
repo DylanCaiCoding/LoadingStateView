@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2019. Dylan Cai
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@file:Suppress("unused")
+
 package com.dylanc.loadinghelper
 
 import android.app.Activity
@@ -10,7 +28,6 @@ import java.util.*
 /**
  * @author Dylan Cai
  */
-@Suppress("unused")
 class LoadingHelper @JvmOverloads constructor(
   private val contentView: View,
   contentAdapter: ContentAdapter<*>? = null
@@ -40,10 +57,7 @@ class LoadingHelper @JvmOverloads constructor(
    * @param contentAdapter the adapter of creating content view
    */
   @JvmOverloads
-  constructor(
-    activity: Activity,
-    contentAdapter: ContentAdapter<*>? = null
-  ) : this(
+  constructor(activity: Activity, contentAdapter: ContentAdapter<*>? = null) : this(
     (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0),
     contentAdapter
   )
@@ -56,9 +70,10 @@ class LoadingHelper @JvmOverloads constructor(
   }
 
   /**
-   * Sets an adapter of decorated view.
+   * Sets an adapter for decorating content view.
    *
-   * @param decorAdapter the adapter of decorated view
+   * @param decorAdapter the adapter for decorating content view.
+   * @since v2.0.0
    */
   fun setDecorAdapter(decorAdapter: DecorAdapter) {
     currentViewHolder = null
@@ -70,24 +85,20 @@ class LoadingHelper @JvmOverloads constructor(
         parent.removeView(decorView)
         (contentView.parent as ViewGroup).removeView(contentView)
       }
-      initDecorView(decorAdapter)
+      decorView = decorAdapter.createDecorView()
       parent.addView(decorView, index)
     } else {
-      initDecorView(decorAdapter)
+      decorView = decorAdapter.createDecorView()
     }
+    contentParent = decorAdapter.getContentParent(decorView)
     showView(ViewType.CONTENT)
   }
 
-  private fun initDecorView(decorAdapter: DecorAdapter) {
-    decorView = decorAdapter.onCreateDecorView(LayoutInflater.from(contentView.context))
-    if (contentView.layoutParams != null) {
-      decorView.layoutParams = contentView.layoutParams
-    }
-    contentParent = decorAdapter.getContentParent(decorView)
-  }
-
   /**
+   * Adds one or more views to decorate content in the header.
+   *
    * @param viewType the view type of adapter
+   * @since v2.0.0
    */
   fun setDecorHeader(vararg viewType: Any) {
     val views = mutableListOf<View>()
@@ -97,25 +108,41 @@ class LoadingHelper @JvmOverloads constructor(
     setDecorAdapter(LinearDecorAdapter(views))
   }
 
+  /**
+   * Adds child decorative view between the content and the decorative view.
+   *
+   * @param decorAdapter the adapter for decorating content view.
+   * @since v2.1.0
+   */
   fun addChildDecorAdapter(decorAdapter: DecorAdapter) {
     contentParent.removeView(currentViewHolder?.rootView)
     currentViewHolder = null
-    val childDecorView = decorAdapter.onCreateDecorView(LayoutInflater.from(contentParent.context))
-    if (contentView.layoutParams != null) {
-      childDecorView.layoutParams = contentView.layoutParams
-    }
+    val childDecorView = decorAdapter.createDecorView()
     contentParent.addView(childDecorView)
     contentParent = decorAdapter.getContentParent(childDecorView)
     showView(ViewType.CONTENT)
   }
 
-  fun addChildDecorHeader(vararg viewType: Any) {
+  /**
+   * Adds child decorative header between the content and the decorative view.
+   *
+   * @param viewTypes the view type of adapter
+   * @since v2.1.0
+   */
+  fun addChildDecorHeader(vararg viewTypes: Any) {
     val views = mutableListOf<View>()
-    for (t in viewType) {
-      views.add(getViewHolder(t).rootView)
+    for (viewType in viewTypes) {
+      views.add(getViewHolder(viewType).rootView)
     }
     addChildDecorAdapter(LinearDecorAdapter(views))
   }
+
+  private fun DecorAdapter.createDecorView() =
+    onCreateDecorView(LayoutInflater.from(contentView.context)).also { decorView ->
+      if (contentView.layoutParams != null) {
+        decorView.layoutParams = contentView.layoutParams
+      }
+    }
 
   /**
    * Registers the adapter of creating view before showing view.
@@ -136,29 +163,17 @@ class LoadingHelper @JvmOverloads constructor(
     this.onReloadListener = onReloadListener
   }
 
-  fun setOnReloadListener(onReloadListener: () -> Unit) =
+  fun setOnReloadListener(onReload: () -> Unit) =
     setOnReloadListener(object : OnReloadListener {
-      override fun onReload() = onReloadListener.invoke()
+      override fun onReload() = onReload()
     })
 
-  /**
-   * Shows the loading view
-   */
   fun showLoadingView() = showView(ViewType.LOADING)
 
-  /**
-   * Shows the content view
-   */
   fun showContentView() = showView(ViewType.CONTENT)
 
-  /**
-   * Shows the error view
-   */
   fun showErrorView() = showView(ViewType.ERROR)
 
-  /**
-   * Shows the empty view
-   */
   fun showEmptyView() = showView(ViewType.EMPTY)
 
   /**
@@ -190,7 +205,6 @@ class LoadingHelper @JvmOverloads constructor(
   private fun notifyDataSetChanged(adapter: Adapter<ViewHolder>) =
     adapter.onBindViewHolder(getViewHolder(getViewType(adapter)!!))
 
-  @Suppress("UNCHECKED_CAST")
   private fun getViewHolder(viewType: Any): ViewHolder {
     if (viewHolders[viewType] == null) {
       addViewHolder(viewType)
@@ -249,12 +263,7 @@ class LoadingHelper @JvmOverloads constructor(
   }
 
   open class ViewHolder(val rootView: View) {
-
     internal var viewType: Any? = null
-
-    /**
-     * Gets the listener of reloading data from view holder.
-     */
     var onReloadListener: OnReloadListener? = null
       internal set
   }

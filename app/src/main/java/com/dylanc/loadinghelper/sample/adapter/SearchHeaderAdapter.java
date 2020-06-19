@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2019. Dylan Cai
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dylanc.loadinghelper.sample.adapter;
 
 import android.view.LayoutInflater;
@@ -14,7 +30,6 @@ import com.dylanc.loadinghelper.sample.utils.KeyboardUtils;
 
 /**
  * @author Dylan Cai
- * @since 2019/6/25
  */
 public class SearchHeaderAdapter extends LoadingHelper.Adapter<SearchHeaderAdapter.ViewHolder> {
 
@@ -35,7 +50,7 @@ public class SearchHeaderAdapter extends LoadingHelper.Adapter<SearchHeaderAdapt
   public void onBindViewHolder(@NonNull ViewHolder holder) {
     holder.edtSearch.setOnEditorActionListener((v, actionId, event) -> {
       if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-        KeyboardUtils.hideKeyboard(holder.getRootView().getContext(), holder.edtSearch);
+        KeyboardUtils.hideKeyboard(holder.edtSearch);
         if (onSearchListener != null) {
           onSearchListener.onSearch(holder.edtSearch.getText().toString());
         }

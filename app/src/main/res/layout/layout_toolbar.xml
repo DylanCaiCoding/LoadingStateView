@@ -6,6 +6,4 @@
   android:layout_height="?attr/actionBarSize"
   android:background="?attr/colorPrimary"
   app:navigationIcon="@drawable/ic_arrow_back_black"
-  app:titleTextAppearance="@style/ToolbarTextAppearance">
-
-</androidx.appcompat.widget.Toolbar>
+  app:titleTextAppearance="@style/ToolbarTextAppearance" />

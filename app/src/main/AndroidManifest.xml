@@ -28,7 +28,8 @@
     <activity android:name=".ui.ViewPagerActivity" />
     <activity android:name=".ui.RecyclerViewActivity" />
     <activity android:name=".ui.MultipleHeaderActivity" />
-    <activity android:name=".ui.ScrollingTitleActivity"/>
+    <activity android:name=".ui.ScrollingToolbarActivity" />
+    <activity android:name=".ui.BottomEditorActivity"/>
   </application>
 
 </manifest>
