@@ -4,7 +4,7 @@
 
 [![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)
 
-`LoadingHelper` 是一个深度解耦加载界面和标题栏的工具，只用了一个 Kotlin 文件实现，不算上注释只有 200 多行代码。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
+`LoadingHelper` 是一个深度解耦加载界面和标题栏的工具，只用了一个 Kotlin 文件实现，不算上注释只有 200 多行代码。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。详细的标题栏用法可以查看这篇文章[《史上耦合度最低的添加标题栏方式》](https://juejin.im/post/5ef01e22e51d4573eb40dab1)。
 
 - 无需在布局添加视图代码
 - 可显示自定义视图
@@ -13,7 +13,7 @@
 - 可设置重新请求数据的事件
 - 可动态更新视图样式
 - 可结合绝大部分第三方控件使用
-- 可解耦内容视图的初始化
+- 可对内容进行预处理
 
 ## 示例
 
@@ -150,7 +150,7 @@ loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
   </com.google.android.material.appbar.AppBarLayout>
 
   <FrameLayout
-    android:id="@+id/loading_container"
+    android:id="@+id/content_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
@@ -184,7 +184,7 @@ loadingHelper.setDecorAdapter(new ScrollDecorAdapter());
 
 上述的两种使用方式都是可以进行多次设置，不过每次设置会把上一次设置的样式给替换掉。
 
-#### 初始化内容视图
+#### 预处理内容视图
 
 创建一个适配器继承 `LoadingHelper.ContentAdapter<VH extends ViewHolder>`。如果想要使用 Activity 对象，可以在构造方法传入或者通过 contentView 获得。
 
