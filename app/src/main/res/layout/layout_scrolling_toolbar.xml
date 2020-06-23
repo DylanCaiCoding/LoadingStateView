@@ -8,7 +8,7 @@
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:elevation="0dp">
+    android:elevation="2dp">
 
     <androidx.appcompat.widget.Toolbar
       android:id="@+id/toolbar"
@@ -17,7 +17,7 @@
       app:layout_collapseMode="pin"
       app:layout_scrollFlags="scroll|enterAlways"
       app:navigationIcon="@drawable/ic_arrow_back_black"
-      app:titleTextAppearance="@style/ToolbarTextAppearance"/>
+      app:titleTextAppearance="@style/ToolbarTextAppearance" />
 
   </com.google.android.material.appbar.AppBarLayout>
 
@@ -25,7 +25,6 @@
     android:id="@+id/content_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior" >
-  </FrameLayout>
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

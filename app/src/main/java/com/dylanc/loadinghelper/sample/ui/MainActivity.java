@@ -23,23 +23,21 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.loadinghelper.sample.R;
+import com.dylanc.loadinghelper.sample.base.BaseActivity;
 import com.dylanc.loadinghelper.sample.base.NavIconType;
-import com.dylanc.loadinghelper.sample.utils.ToolbarUtils;
 
 /**
  * @author Dylan Cai
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    ToolbarUtils.setToolbar(this, "LoadingHelper", NavIconType.NONE,
-        R.menu.menu_about, this::onMenuItemClick);
+    setToolbar("LoadingHelper", NavIconType.NONE, R.menu.menu_about, this::onMenuItemClick);
   }
 
   public void onBtnClicked(View view) {

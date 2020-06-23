@@ -25,9 +25,16 @@ import com.dylanc.loadinghelper.LoadingHelper
 import com.dylanc.loadinghelper.ViewType
 
 /**
+ * 这是耦合度较低的封装方式，没有任何抽象方法，可以很方便地将基类里的代码拷贝到其它项目的基类里使用。
+ *
+ * 使用该基类时注意以下事项：
+ * 将主题设置成 NoActionBar 再使用，不然会有报错，后续会将这个问题修复。
+ * 要注册一个类型为 ViewType.TITLE 的继承了 BaseToolbarAdapter 的全局标题栏适配器。
+ *
  * @author Dylan Cai
  */
-abstract class BaseActivity : AppCompatActivity(),LoadingHelper.OnReloadListener {
+@Suppress("unused")
+abstract class BaseActivity : AppCompatActivity() {
 
   lateinit var loadingHelper: LoadingHelper
     private set
@@ -42,7 +49,7 @@ abstract class BaseActivity : AppCompatActivity(),LoadingHelper.OnReloadListener
   ) {
     super.setContentView(layoutResID)
     loadingHelper = LoadingHelper(findViewById<View>(contentViewId), contentAdapter)
-    loadingHelper.setOnReloadListener(this)
+    loadingHelper.setOnReloadListener(this::onReload)
   }
 
   @JvmOverloads
@@ -50,10 +57,11 @@ abstract class BaseActivity : AppCompatActivity(),LoadingHelper.OnReloadListener
     title: String, type: NavIconType = NavIconType.NONE,
     menuId: Int = 0, listener: ((MenuItem) -> Boolean)? = null
   ) =
-    setToolbar(ToolbarConfig(title, type,menuId, listener))
+    setToolbar(ToolbarConfig(title, type, menuId, listener))
 
   private fun setToolbar(config: ToolbarConfig) {
-    val toolbarAdapter: BaseToolbarAdapter<ToolbarConfig, *> = loadingHelper.getAdapter(ViewType.TITLE)
+    val toolbarAdapter: BaseToolbarAdapter<ToolbarConfig, *> =
+      loadingHelper.getAdapter(ViewType.TITLE)
     toolbarAdapter.config = config
     loadingHelper.setDecorHeader(ViewType.TITLE)
   }
@@ -68,5 +76,5 @@ abstract class BaseActivity : AppCompatActivity(),LoadingHelper.OnReloadListener
 
   fun showCustomView(viewType: Any) = loadingHelper.showView(viewType)
 
-  override fun onReload() {}
+  open fun onReload() {}
 }
