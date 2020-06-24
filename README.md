@@ -2,7 +2,7 @@
 
 English | [中文](README_ZH_CN.md)
 
-[![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)  [![QQ Group](https://img.shields.io/badge/QQ_Group-1128654865-orange.svg)](https://jq.qq.com/?_wv=1027&k=FUC5g86E)
+[![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE) 
 
 `LoadingHelper` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of more than 200 lines without comment statement . it not only **shows different view like loading, content, error, empty or customized view** when loading network data, but also **manages title bar.**
 
