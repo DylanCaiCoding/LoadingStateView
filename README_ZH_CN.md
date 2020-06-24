@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-[![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)
+[![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE) [![QQ Group](https://img.shields.io/badge/QQ%E7%BE%A4-1128654865-orange.svg)](https://jq.qq.com/?_wv=1027&k=FUC5g86E)
 
 `LoadingHelper` 是一个深度解耦加载界面和标题栏的工具，只用了一个 Kotlin 文件实现，不算上注释只有 200 多行代码。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。详细的标题栏用法可以查看这篇文章[《史上耦合度最低的添加标题栏方式》](https://juejin.im/post/5ef01e22e51d4573eb40dab1)。
 
@@ -208,6 +208,9 @@ public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHe
 loadingHelper= new LoadingHelper(this, new CommonContentAdapter());
 ```
 
+## 问题反馈
+
+遇到问题或者看了文档和 Demo 代码后仍有使用上的疑问，可以提 [issue](https://github.com/DylanCaiCoding/LoadingHelper/issues) 或者 [加群交流](https://jq.qq.com/?_wv=1027&k=FUC5g86E)。 
 
 ## 感谢
 
