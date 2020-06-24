@@ -38,7 +38,7 @@ import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.CoolLoadingAdapter;
-import com.dylanc.loadinghelper.sample.base.NavIconType;
+import com.dylanc.loadinghelper.sample.adapter.NavIconType;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 import com.dylanc.loadinghelper.sample.utils.ToolbarUtils;
 

@@ -26,7 +26,7 @@ import androidx.annotation.Nullable;
 
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.base.BaseActivity;
-import com.dylanc.loadinghelper.sample.base.NavIconType;
+import com.dylanc.loadinghelper.sample.adapter.NavIconType;
 
 /**
  * @author Dylan Cai
@@ -40,7 +40,16 @@ public class MainActivity extends BaseActivity {
     setToolbar("LoadingHelper", NavIconType.NONE, R.menu.menu_about, this::onMenuItemClick);
   }
 
-  public void onBtnClicked(View view) {
+  public boolean onMenuItemClick(MenuItem item) {
+    if (item.getItemId() == R.id.about) {
+      Uri uri = Uri.parse("https://github.com/DylanCaiCoding/LoadingHelper");
+      Intent intent = new Intent("android.intent.action.VIEW", uri);
+      startActivity(intent);
+    }
+    return true;
+  }
+
+  public void onViewClicked(View view) {
     switch (view.getId()) {
       case R.id.btn_activity_error:
         startActivity(new Intent(this, ActErrorActivity.class));
@@ -57,6 +66,9 @@ public class MainActivity extends BaseActivity {
       case R.id.btn_recyclerview_loading:
         startActivity(new Intent(this, RecyclerViewActivity.class));
         break;
+      case R.id.btn_custom_header:
+        startActivity(new Intent(this, CustomHeaderActivity.class));
+        break;
       case R.id.btn_search_header:
         startActivity(new Intent(this, MultipleHeaderActivity.class));
         break;
@@ -67,14 +79,5 @@ public class MainActivity extends BaseActivity {
         startActivity(new Intent(this, BottomEditorActivity.class));
         break;
     }
-  }
-
-  public boolean onMenuItemClick(MenuItem item) {
-    if (item.getItemId() == R.id.about) {
-      Uri uri = Uri.parse("https://github.com/DylanCaiCoding/LoadingHelper");
-      Intent intent = new Intent("android.intent.action.VIEW", uri);
-      startActivity(intent);
-    }
-    return true;
   }
 }

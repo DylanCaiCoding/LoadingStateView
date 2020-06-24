@@ -23,13 +23,17 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.dylanc.loadinghelper.LoadingHelper
 import com.dylanc.loadinghelper.ViewType
+import com.dylanc.loadinghelper.sample.adapter.NavIconType
+import com.dylanc.loadinghelper.sample.adapter.ScrollingDecorAdapter
+import com.dylanc.loadinghelper.sample.adapter.ToolbarAdapter
 
 /**
  * 这是耦合度较低的封装方式，没有任何抽象方法，可以很方便地将基类里的代码拷贝到其它项目的基类里使用。
  *
  * 使用该基类时注意以下事项：
- * 将主题设置成 NoActionBar 再使用，不然会有报错，后续会将这个问题修复。
- * 要注册一个类型为 ViewType.TITLE 的继承了 BaseToolbarAdapter 的全局标题栏适配器。
+ * 将主题设置成 NoActionBar，不然会有报错，后续会将这个问题修复。
+ * 显示对应视图之前需要注册适配器，可以设置全局适配器，某个页面想修改样式时再注册个新的适配器。
+ * 设置标题栏的方法应该根据项目需要进行编写，下面提供了参考示例。
  *
  * @author Dylan Cai
  */
@@ -39,8 +43,6 @@ abstract class BaseActivity : AppCompatActivity() {
   lateinit var loadingHelper: LoadingHelper
     private set
 
-  // 如果有默认的 ContentAdapter，参数中的 null 改成创建该对象，比如把第三个参数改成：
-  // contentAdapter: LoadingHelper.ContentAdapter<*>? = DefContentAdapter()
   @JvmOverloads
   fun setContentView(
     @LayoutRes layoutResID: Int,
@@ -52,18 +54,23 @@ abstract class BaseActivity : AppCompatActivity() {
     loadingHelper.setOnReloadListener(this::onReload)
   }
 
+  /**
+   * 这是添加通用标题栏的示例方法。
+   */
   @JvmOverloads
   fun setToolbar(
     title: String, type: NavIconType = NavIconType.NONE,
     menuId: Int = 0, listener: ((MenuItem) -> Boolean)? = null
-  ) =
-    setToolbar(ToolbarConfig(title, type, menuId, listener))
-
-  private fun setToolbar(config: ToolbarConfig) {
-    val toolbarAdapter: BaseToolbarAdapter<ToolbarConfig, *> =
-      loadingHelper.getAdapter(ViewType.TITLE)
-    toolbarAdapter.config = config
+  ) {
+    loadingHelper.register(ViewType.TITLE, ToolbarAdapter(title, type, menuId, listener))
     loadingHelper.setDecorHeader(ViewType.TITLE)
+  }
+
+  /**
+   * 这是添加有联动效果的标题栏的示例方法。
+   */
+  fun setScrollingToolbar(title: String) {
+    loadingHelper.setDecorAdapter(ScrollingDecorAdapter(title))
   }
 
   fun showLoadingView() = loadingHelper.showLoadingView()

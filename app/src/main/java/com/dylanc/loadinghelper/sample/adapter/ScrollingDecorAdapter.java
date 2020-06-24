@@ -33,10 +33,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Dylan Cai
  */
-public class ScrollDecorAdapter extends LoadingHelper.DecorAdapter {
+public class ScrollingDecorAdapter extends LoadingHelper.DecorAdapter {
   private String title;
 
-  public ScrollDecorAdapter(String title) {
+  public ScrollingDecorAdapter(String title) {
     this.title = title;
   }
 

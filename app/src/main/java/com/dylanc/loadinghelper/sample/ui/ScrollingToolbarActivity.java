@@ -26,7 +26,6 @@ import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.LoadingAdapter;
-import com.dylanc.loadinghelper.sample.adapter.ScrollDecorAdapter;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 import com.dylanc.loadinghelper.sample.utils.ToolbarUtils;
 

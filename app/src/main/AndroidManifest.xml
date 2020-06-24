@@ -27,6 +27,7 @@
     <activity android:name=".ui.ViewPlaceholderActivity" />
     <activity android:name=".ui.ViewPagerActivity" />
     <activity android:name=".ui.RecyclerViewActivity" />
+    <activity android:name=".ui.CustomHeaderActivity" />
     <activity android:name=".ui.MultipleHeaderActivity" />
     <activity android:name=".ui.ScrollingToolbarActivity" />
     <activity android:name=".ui.BottomEditorActivity"/>

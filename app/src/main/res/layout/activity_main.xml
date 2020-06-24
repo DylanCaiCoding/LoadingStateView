@@ -13,7 +13,7 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onBtnClicked"
+    android:onClick="onViewClicked"
     android:text="Activity(error)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +27,7 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onBtnClicked"
+    android:onClick="onViewClicked"
     android:text="Fragment(empty)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +41,7 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onBtnClicked"
+    android:onClick="onViewClicked"
     android:text="View(placeholder)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +55,7 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onBtnClicked"
+    android:onClick="onViewClicked"
     android:text="ViewPager(timeout)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
@@ -69,12 +69,27 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onBtnClicked"
+    android:onClick="onViewClicked"
     android:text="RecyclerView(cool loading)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/btn_viewpager_timeout" />
+
+  <Button
+    android:id="@+id/btn_custom_header"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:onClick="onViewClicked"
+    android:text="SpecialHeader(custom)"
+    android:textAllCaps="false"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_recyclerview_loading" />
+
 
   <Button
     android:id="@+id/btn_search_header"
@@ -83,12 +98,12 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onBtnClicked"
+    android:onClick="onViewClicked"
     android:text="MultipleHeader(search)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_recyclerview_loading" />
+    app:layout_constraintTop_toBottomOf="@+id/btn_custom_header" />
 
   <Button
     android:id="@+id/btn_scrolling"
@@ -97,7 +112,7 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:onClick="onBtnClicked"
+    android:onClick="onViewClicked"
     android:text="SpecialDecorView(scrolling)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +124,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-    android:onClick="onBtnClicked"
+    android:onClick="onViewClicked"
     android:text="BottomDecorView(editor)"
     android:textAllCaps="false"
     app:layout_constraintEnd_toEndOf="@+id/btn_activity_error"

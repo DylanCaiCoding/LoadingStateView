@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,22 +29,31 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.base.BaseToolbarAdapter;
-import com.dylanc.loadinghelper.sample.base.NavIconType;
-import com.dylanc.loadinghelper.sample.base.ToolbarConfig;
 
 import org.jetbrains.annotations.NotNull;
+
+import kotlin.jvm.functions.Function1;
 
 /**
  * @author Dylan Cai
  */
-public class ToolbarAdapter extends BaseToolbarAdapter<ToolbarConfig, ToolbarAdapter.ViewHolder> {
+public class ToolbarAdapter extends LoadingHelper.Adapter<ToolbarAdapter.ViewHolder> {
 
-  public ToolbarAdapter() {
-  }
+  private String title;
+  private NavIconType type;
+  private int menuId;
+  private Function1<? super MenuItem, Boolean> onMenuItemClick;
 
   public ToolbarAdapter(String title, NavIconType type) {
-    setConfig(new ToolbarConfig(title, type));
+    this.title = title;
+    this.type = type;
+  }
+
+  public ToolbarAdapter(String title, NavIconType type, int menuId, Function1<? super MenuItem, Boolean> onMenuItemClick) {
+    this.title = title;
+    this.type = type;
+    this.menuId = menuId;
+    this.onMenuItemClick = onMenuItemClick;
   }
 
   @NotNull
@@ -58,20 +68,20 @@ public class ToolbarAdapter extends BaseToolbarAdapter<ToolbarConfig, ToolbarAda
       holder.getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
-    if (!TextUtils.isEmpty(getConfig().getTitleText())) {
-      holder.toolbar.setTitle(getConfig().getTitleText());
+    if (!TextUtils.isEmpty(title)) {
+      holder.toolbar.setTitle(title);
     }
 
-    if (getConfig().getType() == NavIconType.BACK) {
+    if (type == NavIconType.BACK) {
       holder.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
       holder.toolbar.setNavigationOnClickListener(v -> holder.getActivity().finish());
     } else {
       holder.toolbar.setNavigationIcon(null);
     }
 
-    if (getConfig().getMenuId() > 0 && getConfig().getOnMenuItemClick() != null) {
-      holder.toolbar.inflateMenu(getConfig().getMenuId());
-      holder.toolbar.setOnMenuItemClickListener(item -> getConfig().getOnMenuItemClick().invoke(item));
+    if (menuId > 0 && onMenuItemClick != null) {
+      holder.toolbar.inflateMenu(menuId);
+      holder.toolbar.setOnMenuItemClickListener(item -> onMenuItemClick.invoke(item));
     }
   }
 

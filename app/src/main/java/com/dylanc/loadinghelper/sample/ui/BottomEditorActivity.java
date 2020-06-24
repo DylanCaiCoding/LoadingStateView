@@ -26,7 +26,7 @@ import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.BottomEditorDecorAdapter;
 import com.dylanc.loadinghelper.sample.adapter.NothingAdapter;
-import com.dylanc.loadinghelper.sample.base.NavIconType;
+import com.dylanc.loadinghelper.sample.adapter.NavIconType;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 import com.dylanc.loadinghelper.sample.utils.ToolbarUtils;
 

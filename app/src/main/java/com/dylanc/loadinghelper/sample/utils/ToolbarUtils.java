@@ -18,19 +18,21 @@ package com.dylanc.loadinghelper.sample.utils;
 
 import android.app.Activity;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.dylanc.loadinghelper.LoadingHelper;
 import com.dylanc.loadinghelper.ViewType;
-import com.dylanc.loadinghelper.sample.adapter.ScrollDecorAdapter;
-import com.dylanc.loadinghelper.sample.base.BaseToolbarAdapter;
-import com.dylanc.loadinghelper.sample.base.NavIconType;
-import com.dylanc.loadinghelper.sample.base.ToolbarConfig;
+import com.dylanc.loadinghelper.sample.adapter.CustomHeaderAdapter;
+import com.dylanc.loadinghelper.sample.adapter.ScrollingDecorAdapter;
+import com.dylanc.loadinghelper.sample.adapter.ToolbarAdapter;
+import com.dylanc.loadinghelper.sample.adapter.NavIconType;
 
 import kotlin.jvm.functions.Function1;
 
 /**
  * @author Dylan Cai
  */
+@SuppressWarnings("UnusedReturnValue")
 public class ToolbarUtils {
   public static LoadingHelper setToolbar(Activity activity, String title, NavIconType type) {
     return setToolbar(activity, title, type, 0, null);
@@ -39,16 +41,24 @@ public class ToolbarUtils {
   public static LoadingHelper setToolbar(Activity activity, String title, NavIconType type, int menuId,
                                          Function1<? super MenuItem, Boolean> onMenuItemClick) {
     LoadingHelper loadingHelper = new LoadingHelper(activity);
-    BaseToolbarAdapter<ToolbarConfig, ?> adapter = loadingHelper.getAdapter(ViewType.TITLE);
-    ToolbarConfig config = new ToolbarConfig(title, type, menuId, onMenuItemClick);
-    adapter.setConfig(config);
+    loadingHelper.register(ViewType.TITLE, new ToolbarAdapter(title, type, menuId, onMenuItemClick));
+    loadingHelper.setDecorHeader(ViewType.TITLE);
+    return loadingHelper;
+  }
+
+  public static LoadingHelper setCustomToolbar(Activity activity, View.OnClickListener onMessageClick,
+                                               int firstDrawableId, View.OnClickListener onFirstBtnClick,
+                                               int secondDrawableId, View.OnClickListener onSecondBtnClick) {
+    LoadingHelper loadingHelper = new LoadingHelper(activity);
+    loadingHelper.register(ViewType.TITLE, new CustomHeaderAdapter(onMessageClick,
+        firstDrawableId, onFirstBtnClick, secondDrawableId, onSecondBtnClick));
     loadingHelper.setDecorHeader(ViewType.TITLE);
     return loadingHelper;
   }
 
   public static LoadingHelper setScrollingToolbar(Activity activity, String title) {
     LoadingHelper loadingHelper = new LoadingHelper(activity);
-    loadingHelper.setDecorAdapter(new ScrollDecorAdapter(title));
+    loadingHelper.setDecorAdapter(new ScrollingDecorAdapter(title));
     return loadingHelper;
   }
 }

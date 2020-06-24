@@ -28,7 +28,7 @@ import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.NothingAdapter;
 import com.dylanc.loadinghelper.sample.adapter.SearchHeaderAdapter;
 import com.dylanc.loadinghelper.sample.adapter.ToolbarAdapter;
-import com.dylanc.loadinghelper.sample.base.NavIconType;
+import com.dylanc.loadinghelper.sample.adapter.NavIconType;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 /**

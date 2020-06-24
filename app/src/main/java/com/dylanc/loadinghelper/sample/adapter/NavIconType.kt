@@ -14,27 +14,11 @@
  * limitations under the License.
  */
 
-package com.dylanc.loadinghelper.sample.base
-
-import android.view.MenuItem
-import com.dylanc.loadinghelper.LoadingHelper
+package com.dylanc.loadinghelper.sample.adapter
 
 /**
  * @author Dylan Cai
  */
-abstract class BaseToolbarAdapter<T : ToolbarConfig, VH : LoadingHelper.ViewHolder> :
-  LoadingHelper.Adapter<VH>() {
-
-  lateinit var config: T
-}
-
-open class ToolbarConfig @JvmOverloads constructor(
-  var titleText: String,
-  var type: NavIconType,
-  var menuId: Int = 0,
-  var onMenuItemClick: ((MenuItem) -> Boolean)? = null
-)
-
 enum class NavIconType {
   BACK, NONE
 }

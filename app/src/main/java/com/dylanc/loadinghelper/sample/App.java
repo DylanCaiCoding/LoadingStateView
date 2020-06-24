@@ -35,7 +35,6 @@ public class App extends Application {
   public void onCreate() {
     super.onCreate();
     LoadingHelper.setDefaultAdapterPool(adapterPool -> {
-      adapterPool.register(ViewType.TITLE,new ToolbarAdapter());
       adapterPool.register(ViewType.LOADING, new LoadingAdapter());
       adapterPool.register(ViewType.ERROR, new ErrorAdapter());
       adapterPool.register(ViewType.EMPTY, new EmptyAdapter());
