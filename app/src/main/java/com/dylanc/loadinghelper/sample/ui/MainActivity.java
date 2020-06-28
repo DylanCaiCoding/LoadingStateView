@@ -22,11 +22,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.base.BaseActivity;
 import com.dylanc.loadinghelper.sample.adapter.NavIconType;
+import com.dylanc.loadinghelper.sample.base.BaseActivity;
 
 /**
  * @author Dylan Cai
@@ -37,10 +38,11 @@ public class MainActivity extends BaseActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    setToolbar("LoadingHelper", NavIconType.NONE, R.menu.menu_about, this::onMenuItemClick);
+    setToolbar("LoadingHelper", NavIconType.NONE, R.menu.menu_about);
   }
 
-  public boolean onMenuItemClick(MenuItem item) {
+  @Override
+  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
     if (item.getItemId() == R.id.about) {
       Uri uri = Uri.parse("https://github.com/DylanCaiCoding/LoadingHelper");
       Intent intent = new Intent("android.intent.action.VIEW", uri);

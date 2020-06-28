@@ -50,14 +50,14 @@ public class CustomHeaderActivity extends AppCompatActivity {
   }
 
   private void onMessageClick(View view) {
-    Toast.makeText(this, "click message button", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, "message", Toast.LENGTH_SHORT).show();
   }
 
   private void onFirstBtnClick(View view) {
-    Toast.makeText(this, "click camera button", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, "camera", Toast.LENGTH_SHORT).show();
   }
 
   private void onSecondBtnClick(View view) {
-    Toast.makeText(this, "click favorite button", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, "favorite", Toast.LENGTH_SHORT).show();
   }
 }

@@ -22,9 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.dylanc.loadinghelper.sample.ui.fragment.LoadingFragment;
-
-import static com.dylanc.loadinghelper.sample.ui.fragment.LoadingFragment.VIEW_TYPE_TIMEOUT;
+import com.dylanc.loadinghelper.sample.ui.fragment.TimeoutFragment;
 
 /**
  * @author Dylan Cai
@@ -38,7 +36,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
   @NonNull
   @Override
   public Fragment getItem(int i) {
-    return LoadingFragment.newInstance(VIEW_TYPE_TIMEOUT);
+    return new TimeoutFragment();
   }
 
   @Override

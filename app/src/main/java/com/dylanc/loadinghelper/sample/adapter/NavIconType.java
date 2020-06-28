@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.dylanc.loadinghelper.sample.adapter
+package com.dylanc.loadinghelper.sample.adapter;
 
 /**
  * @author Dylan Cai
  */
-enum class NavIconType {
+public enum NavIconType {
   BACK, NONE
 }
