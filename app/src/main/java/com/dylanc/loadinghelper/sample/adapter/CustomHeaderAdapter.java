@@ -16,7 +16,8 @@
 
 package com.dylanc.loadinghelper.sample.adapter;
 
-import android.content.Context;
+import android.app.Activity;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,12 +60,16 @@ public class CustomHeaderAdapter extends LoadingHelper.Adapter<CustomHeaderAdapt
 
   @Override
   public void onBindViewHolder(@NotNull ViewHolder holder) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      holder.getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    }
+
     holder.btnMessage.setOnClickListener(onMessageClickListener);
 
-    holder.btnFirst.setImageDrawable(ContextCompat.getDrawable(holder.getContext(),firstDrawableId));
+    holder.btnFirst.setImageDrawable(ContextCompat.getDrawable(holder.getActivity(), firstDrawableId));
     holder.btnFirst.setOnClickListener(onFirstBtnClickListener);
 
-    holder.btnSecond.setImageDrawable(ContextCompat.getDrawable(holder.getContext(),secondDrawableId));
+    holder.btnSecond.setImageDrawable(ContextCompat.getDrawable(holder.getActivity(), secondDrawableId));
     holder.btnSecond.setOnClickListener(onSecondBtnClickListener);
   }
 
@@ -80,8 +85,8 @@ public class CustomHeaderAdapter extends LoadingHelper.Adapter<CustomHeaderAdapt
       btnMessage = rootView.findViewById(R.id.btn_message);
     }
 
-    private Context getContext() {
-      return getRootView().getContext();
+    private Activity getActivity() {
+      return (Activity) getRootView().getContext();
     }
   }
 }

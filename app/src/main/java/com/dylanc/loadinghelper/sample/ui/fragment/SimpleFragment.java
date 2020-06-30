@@ -14,39 +14,27 @@
  * limitations under the License.
  */
 
-package com.dylanc.loadinghelper.sample.adapter;
+package com.dylanc.loadinghelper.sample.ui.fragment;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.dylanc.loadinghelper.sample.ui.fragment.TimeoutFragment;
+import com.dylanc.loadinghelper.sample.R;
 
 /**
  * @author Dylan Cai
  */
-public class TabPagerAdapter extends FragmentPagerAdapter {
-
-  public TabPagerAdapter(FragmentManager fm) {
-    super(fm);
-  }
-
-  @NonNull
-  @Override
-  public Fragment getItem(int i) {
-    return new TimeoutFragment();
-  }
-
-  @Override
-  public int getCount() {
-    return 2;
-  }
+public class SimpleFragment extends Fragment {
 
   @Nullable
   @Override
-  public CharSequence getPageTitle(int position) {
-    return "tab " + position;
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.layout_content, container, false);
   }
 }
