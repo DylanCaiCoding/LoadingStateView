@@ -67,7 +67,7 @@ public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHold
 第二步，注册适配器，关联一个视图类型。有五个默认类型，也可以传任意类型数据进行注册。
 
 ```java
-LoadingHelper loadingHelper = new LoadingHelper(this);
+LoadingHelper loadingHelper = new LoadingHelper(this); // 可传 Activity 或 View
 loadingHelper.register(ViewType.LOADING, new LoadingAdapter());
 // 当需要支持点击重新请求数据时
 loadingHelper.setOnReloadListener(() -> {})
@@ -212,10 +212,6 @@ public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHe
 ```java
 loadingHelper= new LoadingHelper(this, new CommonContentAdapter());
 ```
-
-## 问题反馈
-
-遇到问题或者看了文档和 Demo 代码后仍有使用上的疑问，可以提 [issue](https://github.com/DylanCaiCoding/LoadingHelper/issues) 或者 加群 [1128654865](https://jq.qq.com/?_wv=1027&k=FUC5g86E) 交流。 
 
 ## 感谢
 
