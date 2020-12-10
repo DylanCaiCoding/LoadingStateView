@@ -20,12 +20,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.adapter.TabPagerAdapter;
+import com.dylanc.loadinghelper.sample.ui.fragment.SimpleFragment;
 import com.dylanc.loadinghelper.sample.utils.ToolbarUtils;
 import com.google.android.material.tabs.TabLayout;
 
@@ -50,14 +54,38 @@ public class CustomHeaderActivity extends AppCompatActivity {
   }
 
   private void onMessageClick(View view) {
-    Toast.makeText(this, "click message button", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, "message", Toast.LENGTH_SHORT).show();
   }
 
   private void onFirstBtnClick(View view) {
-    Toast.makeText(this, "click camera button", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, "camera", Toast.LENGTH_SHORT).show();
   }
 
   private void onSecondBtnClick(View view) {
-    Toast.makeText(this, "click favorite button", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, "favorite", Toast.LENGTH_SHORT).show();
+  }
+
+  public static class TabPagerAdapter extends FragmentPagerAdapter {
+
+    public TabPagerAdapter(FragmentManager fm) {
+      super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    }
+
+    @NonNull
+    @Override
+    public Fragment getItem(int i) {
+      return new SimpleFragment();
+    }
+
+    @Override
+    public int getCount() {
+      return 2;
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+      return "tab " + position;
+    }
   }
 }

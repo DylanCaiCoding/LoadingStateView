@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import java.util.*
 
 /**
@@ -198,6 +199,10 @@ class LoadingHelper @JvmOverloads constructor(
     if (rootView.parent != null) {
       (rootView.parent as ViewGroup).removeView(rootView)
     }
+    if (parent is ConstraintLayout && viewType == ViewType.CONTENT) {
+      if (rootView.measuredWidth == 0) rootView.setWidth(ViewGroup.LayoutParams.MATCH_PARENT)
+      if (rootView.measuredHeight == 0) rootView.setHeight(ViewGroup.LayoutParams.MATCH_PARENT)
+    }
     contentParent.addView(rootView)
     currentViewHolder = viewHolder
   }
@@ -219,6 +224,18 @@ class LoadingHelper @JvmOverloads constructor(
       }
     }
     return null
+  }
+
+  private fun View.setWidth(width: Int) {
+    val layoutParams = layoutParams
+    layoutParams.width = width
+    this.layoutParams = layoutParams
+  }
+
+  private fun View.setHeight(height: Int) {
+    val layoutParams = layoutParams
+    layoutParams.height = height
+    this.layoutParams = layoutParams
   }
 
   @Suppress("UNCHECKED_CAST")

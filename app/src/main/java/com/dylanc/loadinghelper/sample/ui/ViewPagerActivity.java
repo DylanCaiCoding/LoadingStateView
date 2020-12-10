@@ -18,13 +18,17 @@ package com.dylanc.loadinghelper.sample.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.dylanc.loadinghelper.sample.R;
-import com.dylanc.loadinghelper.sample.adapter.TabPagerAdapter;
 import com.dylanc.loadinghelper.sample.adapter.NavIconType;
+import com.dylanc.loadinghelper.sample.ui.fragment.TimeoutFragment;
 import com.dylanc.loadinghelper.sample.utils.ToolbarUtils;
 import com.google.android.material.tabs.TabLayout;
 
@@ -37,7 +41,7 @@ public class ViewPagerActivity extends AppCompatActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_tab_layout);
-    ToolbarUtils.setToolbar(this,"ViewPager(timeout)", NavIconType.BACK);
+    ToolbarUtils.setToolbar(this, "ViewPager(timeout)", NavIconType.BACK);
 
     TabLayout tabLayout = findViewById(R.id.tab_layout);
     ViewPager viewPager = findViewById(R.id.view_pager);
@@ -45,4 +49,27 @@ public class ViewPagerActivity extends AppCompatActivity {
     tabLayout.setupWithViewPager(viewPager);
   }
 
+  public static class TabPagerAdapter extends FragmentPagerAdapter {
+
+    public TabPagerAdapter(FragmentManager fm) {
+      super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    }
+
+    @NonNull
+    @Override
+    public Fragment getItem(int i) {
+      return new TimeoutFragment();
+    }
+
+    @Override
+    public int getCount() {
+      return 2;
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+      return "tab " + position;
+    }
+  }
 }

@@ -11,11 +11,11 @@ English | [中文](README_ZH_CN.md)
 - No need to add view code to the layout.
 - Support for show custom views.
 - Support for use for Activity, Fragment, RecyclerView, View.
-- Support for managing title bar and add multiple headers.
+- Support for managing the title bar and add multiple headers.
 - Support for set reload event.
 - Support for update views anytime.
 - Support for use with most third-party libraries.
-- Support for decoupling the Initialization of content view.
+- Support for preprocessing the content view.
 
 ## Demo
 
@@ -23,13 +23,14 @@ Click or scan QR code to download
 
 [![QR code](img/app_download_qr_code.png)](https://www.pgyer.com/loadinghelper)
 
-| [Activity(error)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ActErrorActivity.java) | [Fragment(empty)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/FragmentEmptyActivity.java) | [View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPlaceholderActivity.java) | [ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPagerActivity.java) |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                 ![](gif/activity_error.gif)                  |                 ![](gif/fragment_empty.gif)                  |                ![](gif/view_placeholder.gif)                 |                ![](gif/viewpager_timeout.gif)                |
+| [Activity(error)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ActErrorActivity.java) | [View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPlaceholderActivity.java) | [ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPagerActivity.java) | [RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/RecyclerViewActivity.java) |
+| :---: | :----: | :---: | :---: |
+| ![](gif/activity_error.gif) | ![](gif/view_placeholder.gif) | ![](gif/viewpager_timeout.gif) | ![](gif/recyclerview_loading.gif) |
 
-| [RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/RecyclerViewActivity.java) | [MultipleHeader(search)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/MultipleHeaderActivity.java) | [SpecialDecorView(scrolling)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ScrollingToolbarActivity.java) | [BottomDecorView(editor)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/BottomEditorActivity.java) |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|              ![](gif/recyclerview_loading.gif)               |             ![](gif/multiple_header_search.gif)              |             ![](gif/special_decor_scrolling.gif)             |               ![](gif/bottom_decor_editor.gif)               |
+| [SpecialHeader(custom)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/CustomHeaderActivity.java) | [MultipleHeader(search)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/MultipleHeaderActivity.java) | [SpecialDecorView(scrolling)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ScrollingToolbarActivity.java) | [BottomDecorView(editor)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/BottomEditorActivity.java) |
+| :---: | :---: | :---: | :---: |
+| ![](gif/special_header_custom.gif) | ![](gif/multiple_header_search.gif) | ![](gif/special_decor_scrolling.gif) | ![](gif/bottom_decor_editor.gif) |
+
 
 ## Getting started
 
@@ -149,7 +150,7 @@ Then set it up.
 loadingHelper.setDecorAdapter(new ScrollDecorAdapter());
 ```
 
-#### Initialize the content view
+#### Preprocessing the content view
 
 Create a adapter extends `LoadingHelper.ContentAdapter<VH extends ViewHolder>`.
 

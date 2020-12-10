@@ -23,13 +23,18 @@
 
 [![QR code](img/app_download_qr_code.png)](https://www.pgyer.com/loadinghelper)
 
-| [Activity(error)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ActErrorActivity.java) | [Fragment(empty)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/FragmentEmptyActivity.java) | [View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPlaceholderActivity.java) | [ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPagerActivity.java) |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                 ![](gif/activity_error.gif)                  |                 ![](gif/fragment_empty.gif)                  |                ![](gif/view_placeholder.gif)                 |                ![](gif/viewpager_timeout.gif)                |
+动态添加加载状态的布局：
 
-| [RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/RecyclerViewActivity.java) | [MultipleHeader(search)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/MultipleHeaderActivity.java) | [SpecialDecorView(scrolling)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ScrollingToolbarActivity.java) | [BottomDecorView(editor)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/BottomEditorActivity.java) |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|              ![](gif/recyclerview_loading.gif)               |             ![](gif/multiple_header_search.gif)              |             ![](gif/special_decor_scrolling.gif)             |               ![](gif/bottom_decor_editor.gif)               |
+| [Activity(error)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ActErrorActivity.java) | [View(placeholder)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPlaceholderActivity.java) | [ViewPager(timeout)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ViewPagerActivity.java) | [RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/RecyclerViewActivity.java) |
+| :---: | :----: | :---: | :---: |
+| ![](gif/activity_error.gif) | ![](gif/view_placeholder.gif) | ![](gif/viewpager_timeout.gif) | ![](gif/recyclerview_loading.gif) |
+
+动态添加标题栏或装饰容器：
+
+| [SpecialHeader(custom)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/CustomHeaderActivity.java) | [MultipleHeader(search)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/MultipleHeaderActivity.java) | [SpecialDecorView(scrolling)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/ScrollingToolbarActivity.java) | [BottomDecorView(editor)](app/src/main/java/com/dylanc/loadinghelper/sample/ui/BottomEditorActivity.java) |
+| :---: | :---: | :---: | :---: |
+| ![](gif/special_header_custom.gif) | ![](gif/multiple_header_search.gif) | ![](gif/special_decor_scrolling.gif) | ![](gif/bottom_decor_editor.gif) |
+
 
 ## 开始使用
 
@@ -64,7 +69,7 @@ public class LoadingAdapter extends LoadingHelper.Adapter<LoadingHelper.ViewHold
 第二步，注册适配器，关联一个视图类型。有五个默认类型，也可以传任意类型数据进行注册。
 
 ```java
-LoadingHelper loadingHelper = new LoadingHelper(this);
+LoadingHelper loadingHelper = new LoadingHelper(this); // 可传 Activity 或 View
 loadingHelper.register(ViewType.LOADING, new LoadingAdapter());
 // 当需要支持点击重新请求数据时
 loadingHelper.setOnReloadListener(() -> {})
@@ -113,7 +118,7 @@ loadingHelper.register(VIEW_TYPE_SEARCH, new SearchHeaderAdapter(onSearchListene
 loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
 ```
 
-如果是**特殊的标题栏**，比如有联动效果，就不能直接使用上面的方式了。
+如果是**特殊的标题栏**，比如有联动效果，就不能直接使用上面的方式了。这时我们要给内容增加个装饰的容器。
 
 先实现一个不含内容的布局。
 
@@ -160,7 +165,7 @@ loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
-创建一个类继承另一个适配器 `LoadingHelper.DecorAdapter` ，加载实现的布局，并指定一个 loading 的容器。
+创建一个类继承另一个适配器 `LoadingHelper.DecorAdapter` ，加载实现的布局，并指定一个添加内容的容器。
 
 ```java
 public class ScrollDecorAdapter extends LoadingHelper.DecorAdapter {
@@ -209,10 +214,6 @@ public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHe
 ```java
 loadingHelper= new LoadingHelper(this, new CommonContentAdapter());
 ```
-
-## 问题反馈
-
-遇到问题或者看了文档和 Demo 代码后仍有使用上的疑问，可以提 [issue](https://github.com/DylanCaiCoding/LoadingHelper/issues) 或者 加群 [1128654865](https://jq.qq.com/?_wv=1027&k=FUC5g86E) 交流。 
 
 ## 感谢
 

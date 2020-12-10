@@ -24,10 +24,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.NavIconType;
-import com.dylanc.loadinghelper.sample.ui.fragment.LoadingFragment;
+import com.dylanc.loadinghelper.sample.ui.fragment.EmptyFragment;
 import com.dylanc.loadinghelper.sample.utils.ToolbarUtils;
-
-import static com.dylanc.loadinghelper.sample.ui.fragment.LoadingFragment.VIEW_TYPE_EMPTY;
 
 /**
  * @author Dylan Cai
@@ -40,7 +38,7 @@ public class FragmentEmptyActivity extends AppCompatActivity {
     setContentView(R.layout.activity_fragment);
     ToolbarUtils.setToolbar(this,"Fragment(empty)", NavIconType.BACK);
     final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.add(R.id.content_view, LoadingFragment.newInstance(VIEW_TYPE_EMPTY));
+    transaction.add(R.id.content_view, new EmptyFragment());
     transaction.commit();
   }
 
