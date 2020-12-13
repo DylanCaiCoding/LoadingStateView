@@ -42,7 +42,7 @@
 
 ```
 dependencies {
-  implementation 'com.dylanc:loadinghelper:2.1.0'
+  implementation 'com.dylanc:loadinghelper:2.1.1'
 }
 ```
 
