@@ -22,8 +22,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.loadinghelper.LoadingHelper;
+import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.NavIconType;
+import com.dylanc.loadinghelper.sample.animation.FadeAnimation;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 import com.dylanc.loadinghelper.sample.utils.ToolbarUtils;
 
@@ -48,12 +50,12 @@ public class ActErrorActivity extends AppCompatActivity {
     HttpUtils.requestFailure(new HttpUtils.Callback() {
       @Override
       public void onSuccess() {
-        loadingHelper.showContentView();
+        loadingHelper.showContentView(new FadeAnimation());
       }
 
       @Override
       public void onFailure() {
-        loadingHelper.showErrorView();
+        loadingHelper.showErrorView(new FadeAnimation());
       }
     });
   }
@@ -63,12 +65,12 @@ public class ActErrorActivity extends AppCompatActivity {
     HttpUtils.requestSuccess(new HttpUtils.Callback() {
       @Override
       public void onSuccess() {
-        loadingHelper.showContentView();
+          loadingHelper.showContentView(new FadeAnimation());
       }
 
       @Override
       public void onFailure() {
-        loadingHelper.showErrorView();
+        loadingHelper.showErrorView(new FadeAnimation());
       }
     });
   }

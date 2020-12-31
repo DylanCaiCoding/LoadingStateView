@@ -22,6 +22,8 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import java.util.*
@@ -33,8 +35,7 @@ class LoadingHelper @JvmOverloads constructor(
   private val contentView: View,
   contentAdapter: ContentAdapter<*>? = null
 ) {
-  lateinit var decorView: View
-    private set
+  lateinit var decorView: View private set
   private lateinit var contentParent: ViewGroup
   private val parent: ViewGroup?
   private var currentViewHolder: ViewHolder? = null
@@ -169,26 +170,41 @@ class LoadingHelper @JvmOverloads constructor(
       override fun onReload() = onReload()
     })
 
-  fun showLoadingView() = showView(ViewType.LOADING)
+  @JvmOverloads
+  fun showLoadingView(animation: Animation? = null) = showView(ViewType.LOADING, animation)
 
-  fun showContentView() = showView(ViewType.CONTENT)
+  @JvmOverloads
+  fun showContentView(animation: Animation? = null) = showView(ViewType.CONTENT, animation)
 
-  fun showErrorView() = showView(ViewType.ERROR)
+  @JvmOverloads
+  fun showErrorView(animation: Animation? = null) = showView(ViewType.ERROR, animation)
 
-  fun showEmptyView() = showView(ViewType.EMPTY)
+  @JvmOverloads
+  fun showEmptyView(animation: Animation? = null) = showView(ViewType.EMPTY, animation)
 
   /**
    * Shows the view by view type
    *
    * @param viewType the view type of adapter
    */
-  fun showView(viewType: Any) {
+  @JvmOverloads
+  fun showView(viewType: Any, animation: Animation? = null) {
+    val currentViewHolder = currentViewHolder
     if (currentViewHolder == null) {
       addView(viewType)
     } else {
-      if (viewType !== currentViewHolder!!.viewType && currentViewHolder!!.rootView.parent != null) {
-        contentParent.removeView(currentViewHolder!!.rootView)
+      if (viewHolders[viewType] == null) {
         addView(viewType)
+      }
+      if (viewType != currentViewHolder.viewType) {
+        getViewHolder(viewType).rootView.visibility = View.VISIBLE
+        if (animation != null) {
+          animation.onStartHideAnimation(currentViewHolder.rootView, currentViewHolder.viewType!!)
+          animation.onStartShowAnimation(getViewHolder(viewType).rootView, getViewHolder(viewType).viewType!!)
+        } else {
+          currentViewHolder.rootView.visibility = View.GONE
+        }
+        this.currentViewHolder = getViewHolder(viewType)
       }
     }
   }
@@ -292,15 +308,20 @@ class LoadingHelper @JvmOverloads constructor(
   }
 
   private class LinearDecorAdapter(private val views: List<View>) : DecorAdapter() {
+    private lateinit var contentParent: FrameLayout
+
     override fun onCreateDecorView(inflater: LayoutInflater) =
       LinearLayout(inflater.context).apply {
         orientation = LinearLayout.VERTICAL
-        for (view in views) {
-          addView(view)
-        }
+        contentParent = FrameLayout(inflater.context)
+        contentParent.layoutParams = FrameLayout.LayoutParams(
+          ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        views.forEach { addView(it) }
+        addView(contentParent)
       }
 
-    override fun getContentParent(decorView: View) = decorView as ViewGroup
+    override fun getContentParent(decorView: View) = contentParent
   }
 
   class AdapterPool internal constructor(private val helper: LoadingHelper) {
@@ -311,6 +332,12 @@ class LoadingHelper @JvmOverloads constructor(
 
   interface OnReloadListener {
     fun onReload()
+  }
+
+  interface Animation {
+    fun onStartShowAnimation(view: View, viewType: Any)
+
+    fun onStartHideAnimation(view: View, viewType: Any)
   }
 }
 
