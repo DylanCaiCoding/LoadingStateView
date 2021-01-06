@@ -22,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.loadinghelper.LoadingHelper;
-import com.dylanc.loadinghelper.ViewType;
 import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.NavIconType;
 import com.dylanc.loadinghelper.sample.animation.FadeAnimation;
@@ -61,7 +60,7 @@ public class ActErrorActivity extends AppCompatActivity {
   }
 
   public void onReload() {
-    loadingHelper.showLoadingView();
+    loadingHelper.showLoadingView(new FadeAnimation());
     HttpUtils.requestSuccess(new HttpUtils.Callback() {
       @Override
       public void onSuccess() {
