@@ -39,7 +39,7 @@ publish {
     repoName = 'maven'
     groupId = 'com.dylanc'
     artifactId = 'loadinghelper'
-    publishVersion = '2.2.0-alpha'
+    publishVersion = '2.2.0'
     desc = 'A highly expandable Android library for showing loading status view with the low-coupling way.'
     website = 'https://github.com/DylanCaiCoding/LoadingHelper'
 }
