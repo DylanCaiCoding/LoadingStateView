@@ -26,23 +26,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.dylanc.loadinghelper.LoadingHelper;
-import com.dylanc.loadinghelper.sample.R;
 import com.dylanc.loadinghelper.sample.adapter.TimeoutAdapter;
+import com.dylanc.loadinghelper.sample.databinding.LayoutContentBinding;
 import com.dylanc.loadinghelper.sample.utils.HttpUtils;
 
 /**
  * @author Dylan Cai
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class TimeoutFragment extends Fragment implements LoadingHelper.OnReloadListener {
 
   public static final String VIEW_TYPE_TIMEOUT = "timeout";
+  private LayoutContentBinding binding;
   private LoadingHelper loadingHelper;
 
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.layout_content, container, false);
-    loadingHelper = new LoadingHelper(view);
+    binding = LayoutContentBinding.inflate(inflater, container, false);
+    loadingHelper = new LoadingHelper(binding.getRoot());
     loadingHelper.register(VIEW_TYPE_TIMEOUT, new TimeoutAdapter());
     loadingHelper.setOnReloadListener(this);
     return loadingHelper.getDecorView();
