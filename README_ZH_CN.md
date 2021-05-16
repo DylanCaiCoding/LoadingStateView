@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-[![maven](https://api.bintray.com/packages/dylancai/maven/loadinghelper/images/download.svg)](https://bintray.com/dylancai/maven/loadinghelper/_latestVersion) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE) 
+[![](https://www.jitpack.io/v/DylanCaiCoding/LoadingHelper.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingHelper) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)
 
 `LoadingHelper` 是一个深度解耦加载界面和标题栏的工具，只用了一个 Kotlin 文件实现，不算上注释只有 200 多行代码。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
 
@@ -38,11 +38,22 @@
 
 ## 开始使用
 
-在 `build.gradle` 添加依赖：
+在根目录的 `build.gradle` 添加:
+
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://www.jitpack.io' }
+    }
+}
+```
+
+在模块的 `build.gradle` 添加依赖：
 
 ```
 dependencies {
-  implementation 'com.dylanc:loadinghelper:2.1.1'
+  implementation 'com.github.DylanCaiCoding:LoadingHelper:2.2.0'
 }
 ```
 
