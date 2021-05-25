@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package com.dylanc.loadinghelper
 
@@ -22,10 +22,10 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
 import java.util.*
 
 /**
@@ -99,6 +99,20 @@ class LoadingHelper @JvmOverloads constructor(
   /**
    * Adds one or more views to decorate content in the header.
    *
+   * @param adapters the adapters of creating view
+   * @since v2.2.1
+   */
+  fun setDecorHeader(vararg adapters: Adapter<*>) {
+    val viewType = Array<Any>(adapters.size) { adapters[it].javaClass.name }
+    for (i in adapters.indices) {
+      register(viewType[i], adapters[i])
+    }
+    setDecorHeader(*viewType)
+  }
+
+  /**
+   * Adds one or more views to decorate content in the header.
+   *
    * @param viewType the view type of adapter
    * @since v2.0.0
    */
@@ -123,6 +137,20 @@ class LoadingHelper @JvmOverloads constructor(
     contentParent.addView(childDecorView)
     contentParent = decorAdapter.getContentParent(childDecorView)
     showView(ViewType.CONTENT)
+  }
+
+  /**
+   * Adds child decorative header between the content and the decorative view.
+   *
+   * @param adapters the adapters of creating view
+   * @since v2.2.1
+   */
+  fun addChildDecorHeader(vararg adapters: Adapter<*>) {
+    val viewType = Array<Any>(adapters.size) { adapters[it].javaClass.name }
+    for (i in adapters.indices) {
+      register(viewType[i], adapters[i])
+    }
+    addChildDecorHeader(*viewType)
   }
 
   /**
@@ -164,11 +192,6 @@ class LoadingHelper @JvmOverloads constructor(
   fun setOnReloadListener(onReloadListener: OnReloadListener) {
     this.onReloadListener = onReloadListener
   }
-
-  fun setOnReloadListener(onReload: () -> Unit) =
-    setOnReloadListener(object : OnReloadListener {
-      override fun onReload() = onReload()
-    })
 
   @JvmOverloads
   fun showLoadingView(animation: Animation? = null) = showView(ViewType.LOADING, animation)
@@ -216,8 +239,10 @@ class LoadingHelper @JvmOverloads constructor(
       (rootView.parent as ViewGroup).removeView(rootView)
     }
     if (parent is ConstraintLayout && viewType == ViewType.CONTENT) {
-      if (rootView.measuredWidth == 0) rootView.setWidth(ViewGroup.LayoutParams.MATCH_PARENT)
-      if (rootView.measuredHeight == 0) rootView.setHeight(ViewGroup.LayoutParams.MATCH_PARENT)
+      rootView.updateLayoutParams {
+        if (rootView.measuredWidth == 0)  width = ViewGroup.LayoutParams.MATCH_PARENT
+        if (rootView.measuredHeight == 0) height = ViewGroup.LayoutParams.MATCH_PARENT
+      }
     }
     contentParent.addView(rootView)
     currentViewHolder = viewHolder
@@ -240,18 +265,6 @@ class LoadingHelper @JvmOverloads constructor(
       }
     }
     return null
-  }
-
-  private fun View.setWidth(width: Int) {
-    val layoutParams = layoutParams
-    layoutParams.width = width
-    this.layoutParams = layoutParams
-  }
-
-  private fun View.setHeight(height: Int) {
-    val layoutParams = layoutParams
-    layoutParams.height = height
-    this.layoutParams = layoutParams
   }
 
   @Suppress("UNCHECKED_CAST")
@@ -330,7 +343,7 @@ class LoadingHelper @JvmOverloads constructor(
     }
   }
 
-  interface OnReloadListener {
+  fun interface OnReloadListener {
     fun onReload()
   }
 
