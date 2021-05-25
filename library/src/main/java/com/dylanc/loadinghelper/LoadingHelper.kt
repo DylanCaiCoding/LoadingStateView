@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+@file:Suppress("unused")
 
 package com.dylanc.loadinghelper
 
@@ -22,6 +22,7 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -31,10 +32,7 @@ import java.util.*
 /**
  * @author Dylan Cai
  */
-class LoadingHelper @JvmOverloads constructor(
-  private val contentView: View,
-  contentAdapter: ContentAdapter<*>? = null
-) {
+class LoadingHelper(private val contentView: View) {
   lateinit var decorView: View private set
   private lateinit var contentParent: ViewGroup
   private val parent: ViewGroup?
@@ -55,19 +53,14 @@ class LoadingHelper @JvmOverloads constructor(
   /**
    * Constructs a LoadingHelper with a activity and a content adapter
    *
-   * @param activity       the activity
-   * @param contentAdapter the adapter of creating content view
+   * @param activity the activity
    */
-  @JvmOverloads
-  constructor(activity: Activity, contentAdapter: ContentAdapter<*>? = null) : this(
-    (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0),
-    contentAdapter
-  )
+  constructor(activity: Activity) : this((activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0))
 
   init {
     adapterPool?.let { AdapterPool(this).apply(it) }
     parent = contentView.parent as ViewGroup?
-    register(ViewType.CONTENT, contentAdapter ?: SimpleContentAdapter())
+    register(ViewType.CONTENT, ContentAdapter())
     setDecorAdapter(LinearDecorAdapter(listOf()))
   }
 
@@ -100,7 +93,7 @@ class LoadingHelper @JvmOverloads constructor(
    * Adds one or more views to decorate content in the header.
    *
    * @param adapters the adapters of creating view
-   * @since v2.2.1
+   * @since v2.3.0
    */
   fun setDecorHeader(vararg adapters: Adapter<*>) {
     val viewType = Array<Any>(adapters.size) { adapters[it].javaClass.name }
@@ -143,7 +136,7 @@ class LoadingHelper @JvmOverloads constructor(
    * Adds child decorative header between the content and the decorative view.
    *
    * @param adapters the adapters of creating view
-   * @since v2.2.1
+   * @since v2.3.0
    */
   fun addChildDecorHeader(vararg adapters: Adapter<*>) {
     val viewType = Array<Any>(adapters.size) { adapters[it].javaClass.name }
@@ -159,6 +152,7 @@ class LoadingHelper @JvmOverloads constructor(
    * @param viewTypes the view type of adapter
    * @since v2.1.0
    */
+  @Suppress("MemberVisibilityCanBePrivate")
   fun addChildDecorHeader(vararg viewTypes: Any) {
     val views = mutableListOf<View>()
     for (viewType in viewTypes) {
@@ -240,16 +234,21 @@ class LoadingHelper @JvmOverloads constructor(
     }
     if (parent is ConstraintLayout && viewType == ViewType.CONTENT) {
       rootView.updateLayoutParams {
-        if (rootView.measuredWidth == 0)  width = ViewGroup.LayoutParams.MATCH_PARENT
-        if (rootView.measuredHeight == 0) height = ViewGroup.LayoutParams.MATCH_PARENT
+        if (rootView.measuredWidth == 0) width = MATCH_PARENT
+        if (rootView.measuredHeight == 0) height = MATCH_PARENT
       }
     }
     contentParent.addView(rootView)
     currentViewHolder = viewHolder
   }
 
-  private fun notifyDataSetChanged(adapter: Adapter<ViewHolder>) =
-    adapter.onBindViewHolder(getViewHolder(getViewType(adapter)!!))
+  private fun notifyDataSetChanged(adapter: Adapter<ViewHolder>) {
+    for (entry in adapters.entries) {
+      if (entry.value == adapter) {
+        adapter.onBindViewHolder(getViewHolder(entry.key))
+      }
+    }
+  }
 
   private fun getViewHolder(viewType: Any): ViewHolder {
     if (viewHolders[viewType] == null) {
@@ -258,25 +257,12 @@ class LoadingHelper @JvmOverloads constructor(
     return viewHolders[viewType] as ViewHolder
   }
 
-  private fun getViewType(targetAdapter: Adapter<*>): Any? {
-    for (entry in adapters.entries) {
-      if (entry.value == targetAdapter) {
-        return entry.key
-      }
-    }
-    return null
-  }
-
   @Suppress("UNCHECKED_CAST")
   fun <T : Adapter<out ViewHolder>> getAdapter(viewType: Any) = adapters[viewType] as T
 
   private fun addViewHolder(viewType: Any) {
     val adapter: Adapter<ViewHolder> = getAdapter(viewType)
-    val viewHolder = if (adapter is ContentAdapter<*>) {
-      adapter.onCreateViewHolder(contentView)
-    } else {
-      adapter.onCreateViewHolder(LayoutInflater.from(contentParent.context), contentParent)
-    }
+    val viewHolder = adapter.onCreateViewHolder(LayoutInflater.from(contentParent.context), contentParent)
     viewHolder.viewType = viewType
     viewHolder.onReloadListener = onReloadListener
     viewHolders[viewType] = viewHolder
@@ -295,15 +281,8 @@ class LoadingHelper @JvmOverloads constructor(
     fun notifyDataSetChanged() = listener.invoke(this as Adapter<ViewHolder>)
   }
 
-  abstract class ContentAdapter<VH : ViewHolder> : Adapter<VH>() {
-    override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup) =
-      onCreateViewHolder(View(parent.context))
-
-    abstract fun onCreateViewHolder(contentView: View): VH
-  }
-
-  private class SimpleContentAdapter : LoadingHelper.ContentAdapter<ViewHolder>() {
-    override fun onCreateViewHolder(contentView: View): ViewHolder = ViewHolder(contentView)
+  private inner class ContentAdapter : LoadingHelper.Adapter<ViewHolder>() {
+    override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup) = ViewHolder(contentView)
 
     override fun onBindViewHolder(holder: ViewHolder) = Unit
   }
@@ -327,9 +306,7 @@ class LoadingHelper @JvmOverloads constructor(
       LinearLayout(inflater.context).apply {
         orientation = LinearLayout.VERTICAL
         contentParent = FrameLayout(inflater.context)
-        contentParent.layoutParams = FrameLayout.LayoutParams(
-          ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
-        )
+        contentParent.layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         views.forEach { addView(it) }
         addView(contentParent)
       }
