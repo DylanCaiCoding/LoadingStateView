@@ -199,6 +199,11 @@ loadingHelper.setDecorAdapter(new ScrollDecorAdapter());
 
 上述的两种使用方式都是可以进行多次设置，不过每次设置会把上一次设置的样式给替换掉。
 
+## 作者其它的库
+
+- [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) —— 最全面的 ViewBinding 工具
+- [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) —— 完美替代 `startActivityForResult()`
+
 ## 感谢
 
 - [luckbilly/Gloading](https://github.com/luckybilly/Gloading) 站在了巨人肩膀上优化了本库，非常感谢！
