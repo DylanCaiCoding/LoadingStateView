@@ -4,7 +4,7 @@ English | [中文](README_ZH_CN.md)
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/LoadingHelper.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingHelper) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)
 
-`LoadingHelper` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of more than 200 lines without comment statement . it not only **shows different view like loading, content, error, empty or customized view** when loading network data, but also **manages title bar.**
+`LoadingHelper` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of less than 300 lines without comment statement . it not only **shows different view like loading, content, error, empty or customized view** when loading network data, but also **manages title bar.**
 
 ## Feature
 
@@ -15,7 +15,6 @@ English | [中文](README_ZH_CN.md)
 - Support for set reload event.
 - Support for update views anytime.
 - Support for use with most third-party libraries.
-- Support for preprocessing the content view.
 
 ## Demo
 
@@ -48,7 +47,7 @@ Add dependencies in your module `build.gradle` :
 
 ```
 dependencies {
-  implementation 'com.github.DylanCaiCoding:LoadingHelper:2.2.0'
+  implementation 'com.github.DylanCaiCoding:LoadingHelper:2.3.0'
 }
 ```
 
@@ -129,9 +128,7 @@ If you want to add an ordinary title bar above the content.
 Similar to the previous usage, create a class extends `LoadingHelper.Adapter<VH extends ViewHolder>`  and set header.
 
 ```java
-loadingHelper.register(ViewType.TITLE, new TitleAdapter("title"));
-loadingHelper.register(VIEW_TYPE_SEARCH, new SearchHeaderAdapter(onSearchListener));
-loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
+loadingHelper.setDecorHeader(new TitleAdapter("title"), new SearchHeaderAdapter(onSearchListener));
 ```
 
 If you want to add an special title bar with linkage effect.
@@ -160,29 +157,10 @@ Then set it up.
 loadingHelper.setDecorAdapter(new ScrollDecorAdapter());
 ```
 
-#### Preprocessing the content view
+## Author's other libraries
 
-Create a adapter extends `LoadingHelper.ContentAdapter<VH extends ViewHolder>`.
-
-```java
-public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHelper.ViewHolder> {
-  @Override
-  public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull View contentView) {
-    return new LoadingHelper.ViewHolder(contentView);
-  }
-
-  @Override
-  public void onBindViewHolder(@NonNull LoadingHelper.ViewHolder holder) {
-	View contentView = holder.getRootView();
-  }
-}
-```
-
-Create a `LoadingHelper` with  the `ContentAdapter`.
-
-```java
-LoadingHelper loadingHelper = new LoadingHelper(this, new CommonContentAdapter());
-```
+- [LoadingHelper](https://github.com/DylanCaiCoding/LoadingHelper), a highly expandable Android library for decoupling the code of toolbar or loading status view.
+- [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX), the most comprehensive utils of ViewBinding.
 
 ## Thanks
 

@@ -4,7 +4,7 @@
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/LoadingHelper.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingHelper) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingHelper/blob/master/LICENSE)
 
-`LoadingHelper` 是一个深度解耦加载界面和标题栏的工具，只用了一个 Kotlin 文件实现，不算上注释只有 200 多行代码。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
+`LoadingHelper` 是一个深度解耦加载界面和标题栏的工具，只用了一个 Kotlin 文件实现，不算上注释少于 300 行代码。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
 
 详细的标题栏用法可以查看这篇文章[《史上耦合度最低的添加标题栏方式》](https://juejin.im/post/5ef01e22e51d4573eb40dab1)。
 
@@ -15,7 +15,6 @@
 - 可设置重新请求数据的事件
 - 可动态更新视图样式
 - 可结合绝大部分第三方控件使用
-- 可对内容进行预处理
 
 ## 示例
 
@@ -53,7 +52,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation 'com.github.DylanCaiCoding:LoadingHelper:2.2.0'
+  implementation 'com.github.DylanCaiCoding:LoadingHelper:2.3.0'
 }
 ```
 
@@ -124,9 +123,7 @@ errorAdapter.notifyDataSetChanged();
 和前面的用法类似，先创建一个继承  `LoadingHelper.Adapter<VH extends ViewHolder>` 的标题栏适配器，然后就能在内容的上方添加标题栏了，可以添加多个头部。
 
 ```java
-loadingHelper.register(ViewType.TITLE, new TitleAdapter("标题名"));
-loadingHelper.register(VIEW_TYPE_SEARCH, new SearchHeaderAdapter(onSearchListener));
-loadingHelper.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
+loadingHelper.setDecorHeader(new TitleAdapter("标题名"), new SearchHeaderAdapter(onSearchListener));
 ```
 
 如果是**特殊的标题栏**，比如有联动效果，就不能直接使用上面的方式了。这时我们要给内容增加个装饰的容器。
@@ -202,29 +199,10 @@ loadingHelper.setDecorAdapter(new ScrollDecorAdapter());
 
 上述的两种使用方式都是可以进行多次设置，不过每次设置会把上一次设置的样式给替换掉。
 
-#### 预处理内容视图
+## 作者其它的库
 
-创建一个适配器继承 `LoadingHelper.ContentAdapter<VH extends ViewHolder>`。如果想要使用 Activity 对象，可以在构造方法传入或者通过 contentView 获得。
-
-```java
-public class CommonContentAdapter extends LoadingHelper.ContentAdapter<LoadingHelper.ViewHolder> {
-  @Override
-  public LoadingHelper.ViewHolder onCreateViewHolder(@NonNull View contentView) {
-    return new LoadingHelper.ViewHolder(contentView);
-  }
-
-  @Override
-  public void onBindViewHolder(@NonNull LoadingHelper.ViewHolder holder) {
-    View contentView = holder.getRootView();
-  }
-}
-```
-
-在创建 `LoadingHelper` 对象时传入 `ContentAdapter` 对象，就会立即对内容视图进行处理。
-
-```java
-loadingHelper= new LoadingHelper(this, new CommonContentAdapter());
-```
+- [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) —— 最全面的 ViewBinding 工具
+- [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) —— 完美替代 `startActivityForResult()`
 
 ## 感谢
 
