@@ -39,8 +39,8 @@ import kotlin.jvm.functions.Function1;
  */
 public class ToolbarAdapter extends LoadingHelper.Adapter<ToolbarAdapter.ViewHolder> {
 
-  private String title;
-  private NavIconType type;
+  private final String title;
+  private final NavIconType type;
   private int menuId;
   private Function1<? super MenuItem, Boolean> onMenuItemClick;
 
