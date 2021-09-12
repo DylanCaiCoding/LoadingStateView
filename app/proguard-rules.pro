@@ -20,4 +20,4 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep public class com.dylanc.loadinghelper.sample.widget.**{*;}
+-keep public class com.dylanc.loadingstateview.sample.widget.**{*;}

@@ -23,7 +23,7 @@ android {
     }
 
     compileOptions {
-        kotlinOptions.freeCompilerArgs += ['-module-name', "loading_helper"]
+        kotlinOptions.freeCompilerArgs += ['-module-name', "loading_state_view"]
     }
 
     compileOptions {
