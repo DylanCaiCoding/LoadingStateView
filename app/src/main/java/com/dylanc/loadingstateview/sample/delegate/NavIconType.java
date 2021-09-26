@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dylanc.loadingstateview.sample.viewdelegate;
+package com.dylanc.loadingstateview.sample.delegate;
 
 /**
  * @author Dylan Cai

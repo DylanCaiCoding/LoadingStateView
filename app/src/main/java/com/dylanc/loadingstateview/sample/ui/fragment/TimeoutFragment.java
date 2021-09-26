@@ -26,7 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.dylanc.loadingstateview.LoadingStateView;
-import com.dylanc.loadingstateview.sample.viewdelegate.TimeoutViewDelegate;
+import com.dylanc.loadingstateview.sample.delegate.TimeoutViewDelegate;
 import com.dylanc.loadingstateview.sample.databinding.LayoutContentBinding;
 import com.dylanc.loadingstateview.sample.utils.HttpUtils;
 

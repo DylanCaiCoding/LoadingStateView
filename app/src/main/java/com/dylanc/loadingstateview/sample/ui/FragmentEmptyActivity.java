@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.dylanc.loadingstateview.sample.R;
-import com.dylanc.loadingstateview.sample.viewdelegate.NavIconType;
+import com.dylanc.loadingstateview.sample.delegate.NavIconType;
 import com.dylanc.loadingstateview.sample.ui.fragment.EmptyFragment;
 import com.dylanc.loadingstateview.sample.utils.ToolbarUtils;
 

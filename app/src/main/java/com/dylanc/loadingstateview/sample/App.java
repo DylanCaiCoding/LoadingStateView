@@ -20,9 +20,9 @@ import android.app.Application;
 
 import com.dylanc.loadingstateview.LoadingStateView;
 import com.dylanc.loadingstateview.ViewType;
-import com.dylanc.loadingstateview.sample.viewdelegate.EmptyViewDelegate;
-import com.dylanc.loadingstateview.sample.viewdelegate.ErrorViewDelegate;
-import com.dylanc.loadingstateview.sample.viewdelegate.LoadingViewDelegate;
+import com.dylanc.loadingstateview.sample.delegate.EmptyViewDelegate;
+import com.dylanc.loadingstateview.sample.delegate.ErrorViewDelegate;
+import com.dylanc.loadingstateview.sample.delegate.LoadingViewDelegate;
 
 import kotlin.Unit;
 
@@ -33,10 +33,10 @@ public class App extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    LoadingStateView.setViewDelegatePool(adapterPool -> {
-      adapterPool.register(ViewType.LOADING, new LoadingViewDelegate());
-      adapterPool.register(ViewType.ERROR, new ErrorViewDelegate());
-      adapterPool.register(ViewType.EMPTY, new EmptyViewDelegate());
+    LoadingStateView.setViewDelegatePool(pool -> {
+      pool.register(ViewType.LOADING, new LoadingViewDelegate());
+      pool.register(ViewType.ERROR, new ErrorViewDelegate());
+      pool.register(ViewType.EMPTY, new EmptyViewDelegate());
       return Unit.INSTANCE;
     });
   }

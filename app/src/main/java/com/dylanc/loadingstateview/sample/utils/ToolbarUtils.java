@@ -22,10 +22,10 @@ import android.view.View;
 
 import com.dylanc.loadingstateview.LoadingStateView;
 import com.dylanc.loadingstateview.ViewType;
-import com.dylanc.loadingstateview.sample.viewdelegate.CustomHeaderViewDelegate;
-import com.dylanc.loadingstateview.sample.viewdelegate.ScrollingDecorViewDelegate;
-import com.dylanc.loadingstateview.sample.viewdelegate.ToolbarViewDelegate;
-import com.dylanc.loadingstateview.sample.viewdelegate.NavIconType;
+import com.dylanc.loadingstateview.sample.delegate.CustomHeaderViewDelegate;
+import com.dylanc.loadingstateview.sample.delegate.ScrollingDecorViewDelegate;
+import com.dylanc.loadingstateview.sample.delegate.ToolbarViewDelegate;
+import com.dylanc.loadingstateview.sample.delegate.NavIconType;
 
 import kotlin.jvm.functions.Function1;
 

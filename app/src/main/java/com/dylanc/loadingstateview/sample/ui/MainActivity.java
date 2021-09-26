@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dylanc.loadingstateview.sample.R;
-import com.dylanc.loadingstateview.sample.viewdelegate.NavIconType;
+import com.dylanc.loadingstateview.sample.delegate.NavIconType;
 import com.dylanc.loadingstateview.sample.base.BaseActivity;
 
 /**

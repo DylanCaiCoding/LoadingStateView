@@ -20,8 +20,8 @@ import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.loadingstateview.LoadingStateView;
-import com.dylanc.loadingstateview.sample.viewdelegate.NavIconType;
-import com.dylanc.loadingstateview.sample.viewdelegate.ToolbarViewDelegate;
+import com.dylanc.loadingstateview.sample.delegate.NavIconType;
+import com.dylanc.loadingstateview.sample.delegate.ToolbarViewDelegate;
 
 /**
  * 这是耦合度较低的封装方式，没有任何抽象方法，可以很方便地将基类里的代码拷贝到其它项目的基类里使用。

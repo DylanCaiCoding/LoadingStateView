@@ -27,7 +27,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.dylanc.loadingstateview.sample.R;
-import com.dylanc.loadingstateview.sample.viewdelegate.NavIconType;
+import com.dylanc.loadingstateview.sample.delegate.NavIconType;
 import com.dylanc.loadingstateview.sample.ui.fragment.TimeoutFragment;
 import com.dylanc.loadingstateview.sample.utils.ToolbarUtils;
 import com.google.android.material.tabs.TabLayout;

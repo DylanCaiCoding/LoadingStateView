@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package com.dylanc.loadingstateview
 
@@ -88,7 +88,7 @@ class LoadingStateView(private val contentView: View) {
    * @since v2.3.0
    */
   fun setDecorHeader(vararg viewDelegates: ViewDelegate<*>) {
-    val viewType = Array<Any>(viewDelegates.size) { viewDelegates[it].javaClass.name }
+    val viewType = Array(viewDelegates.size) { viewDelegates[it].javaClass.name }
     for (i in viewDelegates.indices) {
       register(viewType[i], viewDelegates[i])
     }
@@ -101,13 +101,8 @@ class LoadingStateView(private val contentView: View) {
    * @param viewType the view type of view delegate
    * @since v2.0.0
    */
-  fun setDecorHeader(vararg viewType: Any) {
-    val views = mutableListOf<View>()
-    for (t in viewType) {
-      views.add(getViewHolder(t).rootView)
-    }
-    setDecorView(LinearDecorViewDelegate(views))
-  }
+  fun setDecorHeader(vararg viewType: Any) =
+    setDecorView(LinearDecorViewDelegate(viewType.map { getViewHolder(it).rootView }))
 
   /**
    * Adds child decorative view between the content and the decorative view.
@@ -131,7 +126,7 @@ class LoadingStateView(private val contentView: View) {
    * @since v2.3.0
    */
   fun addChildDecorHeader(vararg viewDelegates: ViewDelegate<*>) {
-    val viewType = Array<Any>(viewDelegates.size) { viewDelegates[it].javaClass.name }
+    val viewType = Array(viewDelegates.size) { viewDelegates[it].javaClass.name }
     for (i in viewDelegates.indices) {
       register(viewType[i], viewDelegates[i])
     }
@@ -144,20 +139,12 @@ class LoadingStateView(private val contentView: View) {
    * @param viewTypes the view type of view delegate
    * @since v2.1.0
    */
-  @Suppress("MemberVisibilityCanBePrivate")
-  fun addChildDecorHeader(vararg viewTypes: Any) {
-    val views = mutableListOf<View>()
-    for (viewType in viewTypes) {
-      views.add(getViewHolder(viewType).rootView)
-    }
-    addChildDecorView(LinearDecorViewDelegate(views))
-  }
+  fun addChildDecorHeader(vararg viewTypes: Any) =
+    addChildDecorView(LinearDecorViewDelegate(viewTypes.map { getViewHolder(it).rootView }))
 
   private fun DecorViewDelegate.createDecorView() =
     onCreateDecorView(LayoutInflater.from(contentView.context)).also { decorView ->
-      if (contentView.layoutParams != null) {
-        decorView.layoutParams = contentView.layoutParams
-      }
+      contentView.layoutParams?.let { decorView.layoutParams = it }
     }
 
   /**
@@ -218,6 +205,15 @@ class LoadingStateView(private val contentView: View) {
     }
   }
 
+  fun notifyDataSetChanged(viewType: Any) {
+    val viewDelegate: ViewDelegate<ViewHolder> = getViewDelegate(viewType)
+    for (entry in viewDelegates.entries) {
+      if (entry.value == viewDelegate) {
+        viewDelegate.onBindViewHolder(getViewHolder(entry.key))
+      }
+    }
+  }
+
   private fun addView(viewType: Any) {
     val viewHolder = getViewHolder(viewType)
     val rootView = viewHolder.rootView
@@ -232,14 +228,6 @@ class LoadingStateView(private val contentView: View) {
     }
     contentParent.addView(rootView)
     currentViewHolder = viewHolder
-  }
-
-  private fun notifyDataSetChanged(viewDelegate: ViewDelegate<ViewHolder>) {
-    for (entry in viewDelegates.entries) {
-      if (entry.value == viewDelegate) {
-        viewDelegate.onBindViewHolder(getViewHolder(entry.key))
-      }
-    }
   }
 
   private fun getViewHolder(viewType: Any): ViewHolder {
@@ -259,18 +247,12 @@ class LoadingStateView(private val contentView: View) {
     viewHolder.onReloadListener = onReloadListener
     viewHolders[viewType] = viewHolder
     viewDelegate.onBindViewHolder(viewHolder)
-    viewDelegate.listener = this::notifyDataSetChanged
   }
 
   abstract class ViewDelegate<VH : ViewHolder> {
-    internal lateinit var listener: (viewDelegate: ViewDelegate<ViewHolder>) -> Unit
-
     abstract fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): VH
 
     abstract fun onBindViewHolder(holder: VH)
-
-    @Suppress("UNCHECKED_CAST")
-    fun notifyDataSetChanged() = listener.invoke(this as ViewDelegate<ViewHolder>)
   }
 
   private inner class ContentViewDelegate : LoadingStateView.ViewDelegate<ViewHolder>() {
@@ -297,7 +279,7 @@ class LoadingStateView(private val contentView: View) {
     override fun onCreateDecorView(inflater: LayoutInflater) =
       LinearLayout(inflater.context).apply {
         orientation = LinearLayout.VERTICAL
-        contentParent = FrameLayout(inflater.context)
+        contentParent = FrameLayout(context)
         contentParent.layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         views.forEach { addView(it) }
         addView(contentParent)
@@ -307,9 +289,7 @@ class LoadingStateView(private val contentView: View) {
   }
 
   class ViewDelegatePool internal constructor(private val stateView: LoadingStateView) {
-    fun register(viewType: Any, viewDelegate: ViewDelegate<*>) {
-      stateView.register(viewType, viewDelegate)
-    }
+    fun register(viewType: Any, viewDelegate: ViewDelegate<*>) = stateView.register(viewType, viewDelegate)
   }
 
   fun interface OnReloadListener {
@@ -330,7 +310,6 @@ class LoadingStateView(private val contentView: View) {
       this.viewDelegatePool = viewDelegatePool
     }
   }
-
 }
 
 enum class ViewType {

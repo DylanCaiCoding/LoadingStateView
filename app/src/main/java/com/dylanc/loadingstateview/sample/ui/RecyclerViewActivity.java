@@ -37,8 +37,8 @@ import com.bumptech.glide.request.target.Target;
 import com.dylanc.loadingstateview.LoadingStateView;
 import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.R;
-import com.dylanc.loadingstateview.sample.viewdelegate.CoolLoadingViewDelegate;
-import com.dylanc.loadingstateview.sample.viewdelegate.NavIconType;
+import com.dylanc.loadingstateview.sample.delegate.CoolLoadingViewDelegate;
+import com.dylanc.loadingstateview.sample.delegate.NavIconType;
 import com.dylanc.loadingstateview.sample.utils.HttpUtils;
 import com.dylanc.loadingstateview.sample.utils.ToolbarUtils;
 
