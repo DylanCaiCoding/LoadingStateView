@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  package="com.dylanc.loadinghelper.sample">
+  package="com.dylanc.loadingstateview.sample">
 
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.INTERNET" />
 
   <application
-    android:name=".App"
+    android:name="com.dylanc.loadingstateview.sample.App"
     android:allowBackup="true"
     android:icon="@drawable/ic_logo"
     android:label="@string/app_name"
@@ -15,22 +15,22 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     tools:ignore="GoogleAppIndexingWarning">
-    <activity android:name=".ui.MainActivity">
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name=".ui.ActErrorActivity" />
-    <activity android:name=".ui.FragmentEmptyActivity" />
-    <activity android:name=".ui.ViewPlaceholderActivity" />
-    <activity android:name=".ui.ViewPagerActivity" />
-    <activity android:name=".ui.RecyclerViewActivity" />
-    <activity android:name=".ui.CustomHeaderActivity" />
-    <activity android:name=".ui.MultipleHeaderActivity" />
-    <activity android:name=".ui.ScrollingToolbarActivity" />
-    <activity android:name=".ui.BottomEditorActivity"/>
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.ActErrorActivity" />
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.FragmentEmptyActivity" />
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.ViewPlaceholderActivity" />
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.ViewPagerActivity" />
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.RecyclerViewActivity" />
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.CustomHeaderActivity" />
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.MultipleHeaderActivity" />
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.ScrollingToolbarActivity" />
+    <activity android:name="com.dylanc.loadingstateview.sample.ui.BottomEditorActivity"/>
   </application>
 
 </manifest>
