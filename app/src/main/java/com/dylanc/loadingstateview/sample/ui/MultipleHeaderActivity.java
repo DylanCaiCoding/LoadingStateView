@@ -36,7 +36,6 @@ import com.dylanc.loadingstateview.sample.utils.HttpUtils;
  */
 public class MultipleHeaderActivity extends AppCompatActivity implements SearchHeaderViewDelegate.OnSearchListener {
 
-  private static final String VIEW_TYPE_SEARCH = "search_header";
   private LoadingStateView loadingStateView;
 
   @Override
@@ -44,10 +43,11 @@ public class MultipleHeaderActivity extends AppCompatActivity implements SearchH
     super.onCreate(savedInstanceState);
     setContentView(R.layout.layout_content);
     loadingStateView = new LoadingStateView(this);
-    loadingStateView.register(ViewType.TITLE, new ToolbarViewDelegate("MultipleHeader(search)", NavIconType.BACK));
-    loadingStateView.register(VIEW_TYPE_SEARCH, new SearchHeaderViewDelegate(this));
     loadingStateView.register(ViewType.EMPTY, new NothingViewDelegate());
-    loadingStateView.setDecorHeader(ViewType.TITLE, VIEW_TYPE_SEARCH);
+    loadingStateView.setDecorHeader(
+        new ToolbarViewDelegate("MultipleHeader(search)", NavIconType.BACK),
+        new SearchHeaderViewDelegate(this)
+    );
     loadingStateView.showEmptyView();
   }
 

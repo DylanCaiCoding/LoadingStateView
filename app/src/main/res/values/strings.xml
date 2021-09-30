@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">LoadingHelper</string>
+  <string name="app_name">LoadingStateView</string>
   <string name="app_introduce">A highly expandable Android library for showing loading status view with the low-coupling way.</string>
   <string name="large_text">
     "Material is the metaphor.\n\n"

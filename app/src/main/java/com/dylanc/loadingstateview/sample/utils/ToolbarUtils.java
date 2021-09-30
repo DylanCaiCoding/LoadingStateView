@@ -41,8 +41,7 @@ public class ToolbarUtils {
   public static LoadingStateView setToolbar(Activity activity, String title, NavIconType type, int menuId,
                                             Function1<? super MenuItem, Boolean> onMenuItemClick) {
     LoadingStateView loadingStateView = new LoadingStateView(activity);
-    loadingStateView.register(ViewType.TITLE, new ToolbarViewDelegate(title, type, menuId, onMenuItemClick));
-    loadingStateView.setDecorHeader(ViewType.TITLE);
+    loadingStateView.setDecorHeader(new ToolbarViewDelegate(title, type, menuId, onMenuItemClick));
     return loadingStateView;
   }
 

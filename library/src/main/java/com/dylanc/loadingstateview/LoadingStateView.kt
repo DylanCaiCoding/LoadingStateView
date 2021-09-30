@@ -47,7 +47,7 @@ class LoadingStateView(private val contentView: View) {
    * @param activity the activity
    */
   constructor(activity: Activity) :
-      this((activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0))
+      this(activity.findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
 
   init {
     viewDelegatePool?.let { ViewDelegatePool(this).apply(it) }
