@@ -2,9 +2,11 @@
 
 English | [中文](README_ZH_CN.md)
 
+>The original library name was [LoadingHelper](https://github.com/DylanCaiCoding/LoadingHelper)
+
 [![](https://www.jitpack.io/v/DylanCaiCoding/LoadingStateView.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingLoadingStateView) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/LICENSE)
 
-`LoadingStateView` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of less than 300 lines without comment statement . it not only **shows different view like loading, content, error, empty or customized view** when loading network data, but also **manages title bar.**
+`LoadingStateView` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of less than 300 lines without comment statement . it not only **shows different view like loading, content, error, empty and customized view** when loading network data, but also **manages title bar.**
 
 ## Feature
 
@@ -136,7 +138,17 @@ If you want to add an special title bar with linkage effect.
 Create a class extends `LoadingStateView.DecorViewDelegate` to create a decorated view and specify a loading container.
 
 ```java
-public class ScrollingDecorViewDelegate extends LoadingStateView.DecorViewDelegate {  @NotNull  @Override  public View onCreateDecorView(@NotNull LayoutInflater inflater) {    return inflater.inflate(R.layout.layout_scrolling, null);  }  @NotNull  @Override  public ViewGroup getContentParent(@NotNull View decorView) {    return decorView.findViewById(R.id.content_parent);  }}
+class ScrollingDecorViewDelegate : LoadingStateView.DecorViewDelegate() {
+  @NotNull
+  override fun onCreateDecorView(@NotNull inflater: LayoutInflater): View {
+    return inflater.inflate(R.layout.layout_scrolling, null)
+  }
+
+  @NotNull
+  fun getContentParent(@NotNull decorView: View): ViewGroup {
+    return decorView.findViewById(R.id.content_parent)
+  }
+}
 ```
 
 Then set it up.
@@ -159,5 +171,18 @@ loadingStateView.setDecorView(new ScrollingDecorViewDelegate());
 ## License
 
 ```
-Copyright (C) 2019. Dylan CaiLicensed under the Apache License, Version 2.0 (the "License");you may not use this file except in compliance with the License.You may obtain a copy of the License at   http://www.apache.org/licenses/LICENSE-2.0Unless required by applicable law or agreed to in writing, softwaredistributed under the License is distributed on an "AS IS" BASIS,WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.See the License for the specific language governing permissions andlimitations under the License.
+
+Copyright (C) 2019. Dylan Cai
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```

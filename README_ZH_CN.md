@@ -4,6 +4,8 @@
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/LoadingStateView.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingLoadingStateView) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/LICENSE)
 
+>原库名 [LoadingHelper](https://github.com/DylanCaiCoding/LoadingHelper/blob/main/README_CN.md)
+
 `LoadingStateView` 是一个深度解耦加载界面和标题栏的工具，只用了一个 Kotlin 文件实现，不算上注释少于 300 行代码。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
 
 详细的标题栏用法可以查看这篇文章[《史上耦合度最低的添加标题栏方式》](https://juejin.im/post/5ef01e22e51d4573eb40dab1)。
@@ -130,13 +132,60 @@ loadingStateView.setDecorHeader(new TitleViewDelegate("标题名"), new SearchHe
 先实现一个不含内容的布局。
 
 ```xml
-<?xml version="1.0" encoding="utf-8"?><androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"  xmlns:app="http://schemas.android.com/apk/res-auto"  android:layout_width="match_parent"  android:layout_height="match_parent"  android:fitsSystemWindows="true">  <com.google.android.material.appbar.AppBarLayout    android:id="@+id/app_bar"    android:layout_width="match_parent"    android:layout_height="@dimen/app_bar_height"    android:fitsSystemWindows="true"    android:theme="@style/AppTheme.AppBarOverlay">    <com.google.android.material.appbar.CollapsingToolbarLayout      android:id="@+id/toolbar_layout"      android:layout_width="match_parent"      android:layout_height="match_parent"      android:fitsSystemWindows="true"      app:contentScrim="?attr/colorPrimary"      app:layout_scrollFlags="scroll|exitUntilCollapsed"      app:toolbarId="@+id/toolbar">      <androidx.appcompat.widget.Toolbar        android:id="@+id/toolbar"        android:layout_width="match_parent"        android:layout_height="?attr/actionBarSize"        app:layout_collapseMode="pin"        app:popupTheme="@style/AppTheme.PopupOverlay" />    </com.google.android.material.appbar.CollapsingToolbarLayout>  </com.google.android.material.appbar.AppBarLayout>  <FrameLayout    android:id="@+id/content_parent"    android:layout_width="match_parent"    android:layout_height="match_parent"    app:layout_behavior="@string/appbar_scrolling_view_behavior" /></androidx.coordinatorlayout.widget.CoordinatorLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:fitsSystemWindows="true">
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/app_bar_height"
+    android:fitsSystemWindows="true"
+    android:theme="@style/AppTheme.AppBarOverlay">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+      android:id="@+id/toolbar_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:fitsSystemWindows="true"
+      app:contentScrim="?attr/colorPrimary"
+      app:layout_scrollFlags="scroll|exitUntilCollapsed"
+      app:toolbarId="@+id/toolbar">
+
+      <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <FrameLayout
+    android:id="@+id/content_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
-创建一个类继承另一个适配器 `LoadingStateView.DecorViewDelegate` ，加载实现的布局，并指定一个添加内容的容器。
+创建一个类继承 `LoadingStateView.DecorViewDelegate` ，加载实现的布局，并指定一个添加内容的容器。
 
 ```java
-public class ScrollingDecorViewDelegate extends LoadingStateView.DecorViewDelegate {  @NotNull  @Override  public View onCreateDecorView(@NotNull LayoutInflater inflater) {    return inflater.inflate(R.layout.layout_scrolling, null);  }  @NotNull  @Override  public ViewGroup getContentParent(@NotNull View decorView) {    return decorView.findViewById(R.id.content_parent);  }}
+class ScrollingDecorViewDelegate : LoadingStateView.DecorViewDelegate() {
+  @NotNull
+  override fun onCreateDecorView(@NotNull inflater: LayoutInflater): View {
+    return inflater.inflate(R.layout.layout_scrolling, null)
+  }
+
+  @NotNull
+  fun getContentParent(@NotNull decorView: View): ViewGroup {
+    return decorView.findViewById(R.id.content_parent)
+  }
+}
 ```
 
 最后设置一下就可以了。
@@ -161,5 +210,17 @@ loadingStateView.setDecorView(new ScrollingDecorViewDelegate());
 ## License
 
 ```
-Copyright (C) 2019. Dylan CaiLicensed under the Apache License, Version 2.0 (the "License");you may not use this file except in compliance with the License.You may obtain a copy of the License at   http://www.apache.org/licenses/LICENSE-2.0Unless required by applicable law or agreed to in writing, softwaredistributed under the License is distributed on an "AS IS" BASIS,WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.See the License for the specific language governing permissions andlimitations under the License.
+Copyright (C) 2019. Dylan Cai
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```
