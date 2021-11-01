@@ -22,7 +22,7 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.*
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -50,7 +50,7 @@ class LoadingStateView(private val contentView: View) {
       this(activity.findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
 
   init {
-    viewDelegatePool?.let { ViewDelegatePool(this).apply(it) }
+    viewDelegatePool?.apply { ViewDelegatePool(this@LoadingStateView).invoke() }
     parent = contentView.parent as ViewGroup?
     register(ViewType.CONTENT, ContentViewDelegate())
     setDecorView(LinearDecorViewDelegate(listOf()))
@@ -195,8 +195,8 @@ class LoadingStateView(private val contentView: View) {
       if (viewType != currentViewHolder.viewType) {
         getViewHolder(viewType).rootView.visibility = View.VISIBLE
         if (animation != null) {
-          animation.onStartHideAnimation(currentViewHolder.rootView, currentViewHolder.viewType!!)
-          animation.onStartShowAnimation(getViewHolder(viewType).rootView, getViewHolder(viewType).viewType!!)
+          animation.onStartHideAnimation(currentViewHolder.rootView, currentViewHolder.viewType)
+          animation.onStartShowAnimation(getViewHolder(viewType).rootView, getViewHolder(viewType).viewType)
         } else {
           currentViewHolder.rootView.visibility = View.GONE
         }
@@ -205,14 +205,34 @@ class LoadingStateView(private val contentView: View) {
     }
   }
 
-  fun notifyDataSetChanged(viewType: Any) {
+  /**
+   * Gets the current view type.
+   *
+   * @since v3.0.1
+   */
+  val currentViewType get() = currentViewHolder!!.viewType
+
+  /**
+   * Updates the view by view type. It needs to be called after showing view.
+   *
+   * @since v3.0.1
+   */
+  @Suppress("UNCHECKED_CAST")
+  fun <T : ViewDelegate<*>> updateView(viewType: Any, block: Callback<T>) {
     val viewDelegate: ViewDelegate<ViewHolder> = getViewDelegate(viewType)
+    block.apply { (viewDelegate as T).invoke() }
     for (entry in viewDelegates.entries) {
       if (entry.value == viewDelegate) {
         viewDelegate.onBindViewHolder(getViewHolder(entry.key))
       }
     }
   }
+
+  @Deprecated(
+    "Use the method of update view.",
+    ReplaceWith("loadingStateView.updateView<>(viewType) {\n\n}")
+  )
+  fun notifyDataSetChanged(viewType: Any) = updateView<ViewDelegate<*>>(viewType) {}
 
   private fun addView(viewType: Any) {
     val viewHolder = getViewHolder(viewType)
@@ -238,7 +258,7 @@ class LoadingStateView(private val contentView: View) {
   }
 
   @Suppress("UNCHECKED_CAST")
-  fun <T : ViewDelegate<out ViewHolder>> getViewDelegate(viewType: Any) = viewDelegates[viewType] as T
+  fun <T : ViewDelegate<*>> getViewDelegate(viewType: Any) = viewDelegates[viewType] as T
 
   private fun addViewHolder(viewType: Any) {
     val viewDelegate: ViewDelegate<ViewHolder> = getViewDelegate(viewType)
@@ -262,7 +282,7 @@ class LoadingStateView(private val contentView: View) {
   }
 
   open class ViewHolder(val rootView: View) {
-    internal var viewType: Any? = null
+    internal lateinit var viewType: Any
     var onReloadListener: OnReloadListener? = null
       internal set
   }
@@ -296,6 +316,10 @@ class LoadingStateView(private val contentView: View) {
     fun onReload()
   }
 
+  fun interface Callback<in T> {
+    fun T.invoke()
+  }
+
   interface Animation {
     fun onStartShowAnimation(view: View, viewType: Any)
 
@@ -303,10 +327,10 @@ class LoadingStateView(private val contentView: View) {
   }
 
   companion object {
-    private var viewDelegatePool: (ViewDelegatePool.() -> Unit)? = null
+    private var viewDelegatePool: Callback<ViewDelegatePool>? = null
 
     @JvmStatic
-    fun setViewDelegatePool(viewDelegatePool: ViewDelegatePool.() -> Unit) {
+    fun setViewDelegatePool(viewDelegatePool: Callback<ViewDelegatePool>) {
       this.viewDelegatePool = viewDelegatePool
     }
   }
