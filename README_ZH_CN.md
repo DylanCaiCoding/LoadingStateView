@@ -4,8 +4,6 @@
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/LoadingStateView.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingLoadingStateView) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/LICENSE)
 
->原库名 [LoadingHelper](https://github.com/DylanCaiCoding/LoadingHelper/blob/main/README_CN.md)
-
 `LoadingStateView` 是一个深度解耦加载界面和标题栏的工具，只用了一个 Kotlin 文件实现，不算上注释少于 300 行代码。不仅能在请求网络数据时**显示加载中、加载成功、加载失败、无数据的视图或自定义视图**，还可以**对标题栏进行管理**。
 
 详细的标题栏用法可以查看这篇文章[《史上耦合度最低的添加标题栏方式》](https://juejin.im/post/5ef01e22e51d4573eb40dab1)。
@@ -54,7 +52,7 @@ allprojects {
 
 ```groovy
 dependencies {
-  implementation 'com.github.DylanCaiCoding:LoadingStateView:3.0.0-alpha'
+  implementation 'com.github.DylanCaiCoding:LoadingStateView:3.0.0'
 }
 ```
 
@@ -196,10 +194,18 @@ loadingStateView.setDecorView(new ScrollingDecorViewDelegate());
 
 上述的两种使用方式都是可以进行多次设置，不过每次设置会把上一次设置的样式给替换掉。
 
+## LoadingHelper 迁移指南
+
+本库原名是 `LoadingHelper`，后面对部分类名和方法名进行修改。老用户可以查看[迁移指南](https://github.com/DylanCaiCoding/LoadingHelper/blob/main/README_CN.md)改为最新的用法，如果觉得麻烦并且不是强迫症患者，也可以不迁移。
+
 ## 作者其它的库
 
-- [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) —— 最全面的 ViewBinding 工具
-- [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) —— 优雅地替代 `startActivityForResult()`
+| 库                                                           | 简介                                           |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| [Longan](https://github.com/DylanCaiCoding/Longan)           | 简化 Android 开发的 Kotlin 工具类集合          |
+| [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) | 最全面的 ViewBinding 工具                      |
+| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | 让 MMKV 更加易用                               |
+| [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) | 优雅地替代 `startActivityForResult()`          |
 
 ## 感谢
 

@@ -2,8 +2,6 @@
 
 English | [中文](README_ZH_CN.md)
 
->The original library name was [LoadingHelper](https://github.com/DylanCaiCoding/LoadingHelper)
-
 [![](https://www.jitpack.io/v/DylanCaiCoding/LoadingStateView.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingLoadingStateView) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/LICENSE)
 
 `LoadingStateView` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of less than 300 lines without comment statement . it not only **shows different view like loading, content, error, empty and customized view** when loading network data, but also **manages title bar.**
@@ -50,7 +48,7 @@ Add dependencies in your module `build.gradle` :
 
 ```groovy
 dependencies {
-  implementation 'com.github.DylanCaiCoding:LoadingStateView:3.0.0-alpha'
+  implementation 'com.github.DylanCaiCoding:LoadingStateView:3.0.0'
 }
 ```
 
@@ -157,15 +155,23 @@ Then set it up.
 loadingStateView.setDecorView(new ScrollingDecorViewDelegate());
 ```
 
+## LoadingHelper's migration Guide
+
+The original name of this library is `LoadingHelper`, and some class and method names should be changed later. Old users can check the [migration guide](https://github.com/DylanCaiCoding/LoadingHelper) and change it to the latest usage. If you feel troublesome and are not obsessive-compulsive, you can also not migrate.
+
 ## Author's other libraries
 
-- [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX), the most comprehensive utils of ViewBinding.
-- [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher), perfect replacement for `startActivityForResult()`
+| Library                                                      | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Longan](https://github.com/DylanCaiCoding/Longan)           | A collection of Kotlin utils which makes Android application development faster and easier. |
+| [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) | The most comprehensive utils of ViewBinding.                 |
+| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Easier to use the MMKV.                                      |
+| [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) | Perfect replacement for `startActivityForResult()`           |
 
 ## Thanks
 
 - [luckbilly/Gloading](https://github.com/luckybilly/Gloading) Optimize my library standing on the shoulders of giants.
-- [drakeet/MultiType](https://github.com/drakeet/MultiType)  Referenced the usage of ​​multiple adapters.
+- [drakeet/MultiType](https://github.com/drakeet/MultiType)  Referenced the usage of multiple adapters.
 - [dinuscxj/LoadingDrawable](https://github.com/dinuscxj/LoadingDrawable) The cool loading effect in the demo.
 
 ## License
