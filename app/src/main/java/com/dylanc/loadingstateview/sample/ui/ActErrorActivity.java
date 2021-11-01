@@ -64,7 +64,7 @@ public class ActErrorActivity extends AppCompatActivity {
     HttpUtils.requestSuccess(new HttpUtils.Callback() {
       @Override
       public void onSuccess() {
-          loadingStateView.showContentView(new FadeAnimation());
+        loadingStateView.showContentView(new FadeAnimation());
       }
 
       @Override

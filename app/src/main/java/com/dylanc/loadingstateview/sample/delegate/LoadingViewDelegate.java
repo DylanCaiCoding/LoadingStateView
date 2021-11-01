@@ -28,14 +28,7 @@ import com.dylanc.loadingstateview.sample.R;
  */
 public class LoadingViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
 
-  private int height = ViewGroup.LayoutParams.MATCH_PARENT;
-
-  public LoadingViewDelegate() {
-  }
-
-  public LoadingViewDelegate(int height) {
-    this.height = height;
-  }
+  public int height = ViewGroup.LayoutParams.MATCH_PARENT;
 
   @NonNull
   @Override

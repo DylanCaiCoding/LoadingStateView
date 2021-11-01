@@ -37,7 +37,6 @@ public class App extends Application {
       pool.register(ViewType.LOADING, new LoadingViewDelegate());
       pool.register(ViewType.ERROR, new ErrorViewDelegate());
       pool.register(ViewType.EMPTY, new EmptyViewDelegate());
-      return Unit.INSTANCE;
     });
   }
 }
