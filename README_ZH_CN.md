@@ -52,7 +52,7 @@ allprojects {
 
 ```groovy
 dependencies {
-  implementation 'com.github.DylanCaiCoding:LoadingStateView:3.0.0'
+  implementation 'com.github.DylanCaiCoding:LoadingStateView:3.0.1'
 }
 ```
 
@@ -105,12 +105,12 @@ loadingStateView.showEmptyView(); // 对应视图类型 ViewType.EMPTY
 
 **动态更新已显示视图**
 
-在显示了视图之后，可以对视图进行更改刷新。和 `RecyclerView.Adapter` 类似，调用 `notifyDataSetChanged()` 后，会执行适配器的 `onBindViewHolder()` 方法。
+在显示了视图之后，可以对视图进行更改刷新。和 `RecyclerView.Adapter` 类似，会执行适配器的 `onBindViewHolder()` 方法。
 
 ```java
-ErrorViewDelegate errorViewDelegate = loadingStateView.getViewDelegate(ViewType.ERROR);
-errorViewDelegate.errorText = "服务器繁忙，请稍后重试";
-loadingStateView.notifyDataSetChanged(ViewType.ERROR);
+loadingStateView.updateView(ViewType.ERROR, (ErrorViewDelegate delegate) -> {
+   delegate.msg = "服务器繁忙，请稍后重试";
+});
 ```
 
 ### 高级用法
