@@ -23,7 +23,7 @@ android {
     }
 
     compileOptions {
-        kotlinOptions.freeCompilerArgs += ['-module-name', "loading_state_view"]
+        kotlinOptions.freeCompilerArgs += ['-module-name', "loading_state_view",]
     }
 
     compileOptions {
@@ -33,6 +33,7 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += "-Xcontext-receivers"
     }
 }
 

@@ -1,2 +1,3 @@
 rootProject.name = "LoadingStateView"
-include ':app', ':library'
+include ':sample-java', ':loadingstateview'
+include ':sample-kotlin'
