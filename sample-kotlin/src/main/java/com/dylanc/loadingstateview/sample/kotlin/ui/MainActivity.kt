@@ -8,6 +8,7 @@ import com.dylanc.loadingstateview.sample.kotlin.R
 import com.dylanc.loadingstateview.sample.kotlin.base.BaseActivity
 
 class MainActivity : BaseActivity() {
+
   override val layoutRes: Int = R.layout.activity_main
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +20,4 @@ class MainActivity : BaseActivity() {
       }, 2000)
     }
   }
-
-  override val isDecorated = false
 }

@@ -32,7 +32,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':library')
+    implementation project(':loadingstateview')
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
