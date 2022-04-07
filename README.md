@@ -48,7 +48,7 @@ Add dependencies in your module `build.gradle` :
 
 ```groovy
 dependencies {
-  implementation 'com.github.DylanCaiCoding:LoadingStateView:3.0.0'
+  implementation 'com.github.DylanCaiCoding:LoadingStateView:3.0.1'
 }
 ```
 
@@ -83,7 +83,6 @@ loadingStateView.register(ViewType.LOADING, new LoadingViewDelegate());
 ```java
 loadingStateView.setViewDelegatePool(pool -> {
   pool.register(ViewType.LOADING, new LoadingViewDelegate());
-  return null;
 });
 ```
 
@@ -114,9 +113,9 @@ holder.getOnReloadListener.onReload();
 #### When you need to change view after view showed.
 
 ```java
-ErrorViewDelegate errorViewDelegate = loadingStateView.getViewDelegate(ViewType.ERROR);
-errorViewDelegate.errorText = "Fail to load, please wait";
-loadingStateView.notifyDataSetChanged(ViewType.ERROR);
+loadingStateView.updateView(ViewType.ERROR, (ErrorViewDelegate delegate) -> {
+   delegate.msg = "Fail to load, please wait";
+});
 ```
 
 ### Advanced usage
