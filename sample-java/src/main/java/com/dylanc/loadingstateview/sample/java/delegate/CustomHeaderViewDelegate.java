@@ -55,22 +55,9 @@ public class CustomHeaderViewDelegate extends LoadingStateView.ViewDelegate<Cust
   @NotNull
   @Override
   public ViewHolder onCreateViewHolder(@NotNull LayoutInflater inflater, @NotNull ViewGroup parent) {
-    return new ViewHolder(inflater.inflate(R.layout.layout_custom_header, parent, false));
-  }
-
-  @Override
-  public void onBindViewHolder(@NotNull ViewHolder holder) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      holder.getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-    }
-
-    holder.btnMessage.setOnClickListener(onMessageClickListener);
-
-    holder.btnFirst.setImageDrawable(ContextCompat.getDrawable(holder.getActivity(), firstDrawableId));
-    holder.btnFirst.setOnClickListener(onFirstBtnClickListener);
-
-    holder.btnSecond.setImageDrawable(ContextCompat.getDrawable(holder.getActivity(), secondDrawableId));
-    holder.btnSecond.setOnClickListener(onSecondBtnClickListener);
+    ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.layout_custom_header, parent, false));
+    holder.bind(onMessageClickListener, firstDrawableId, onFirstBtnClickListener, secondDrawableId, onSecondBtnClickListener);
+    return holder;
   }
 
   static class ViewHolder extends LoadingStateView.ViewHolder {
@@ -83,6 +70,22 @@ public class CustomHeaderViewDelegate extends LoadingStateView.ViewDelegate<Cust
       btnFirst = rootView.findViewById(R.id.btn_first);
       btnSecond = rootView.findViewById(R.id.btn_second);
       btnMessage = rootView.findViewById(R.id.btn_message);
+    }
+
+    public void bind(View.OnClickListener onMessageClickListener, int firstDrawableId,
+                     View.OnClickListener onFirstBtnClickListener, int secondDrawableId,
+                     View.OnClickListener onSecondBtnClickListener) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+      }
+
+      btnMessage.setOnClickListener(onMessageClickListener);
+
+      btnFirst.setImageDrawable(ContextCompat.getDrawable(getActivity(), firstDrawableId));
+      btnFirst.setOnClickListener(onFirstBtnClickListener);
+
+      btnSecond.setImageDrawable(ContextCompat.getDrawable(getActivity(), secondDrawableId));
+      btnSecond.setOnClickListener(onSecondBtnClickListener);
     }
 
     private Activity getActivity() {

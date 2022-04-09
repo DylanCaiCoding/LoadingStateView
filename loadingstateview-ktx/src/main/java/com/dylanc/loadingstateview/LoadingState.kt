@@ -19,12 +19,13 @@ package com.dylanc.loadingstateview
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 
 interface LoadingState : LoadingStateView.OnReloadListener {
   val loadingStateView: LoadingStateView?
   fun View.decorateWithLoadingState(isDecorated: Boolean = true): View
   fun registerLoadingState(viewType: Any, viewDelegate: LoadingStateView.ViewDelegate<*>)
-  fun <T : LoadingStateView.ViewDelegate<*>> updateView(viewType: Any, block: LoadingStateView.Callback<T>)
+  fun <T : LoadingStateView.ViewHolder> updateView(viewType: Any, block: LoadingStateView.Callback<T>)
   fun showLoadingView()
   fun showContentView()
   fun showErrorView()
@@ -33,9 +34,18 @@ interface LoadingState : LoadingStateView.OnReloadListener {
 
   companion object {
     context(LoadingState)
-    fun Activity.decorateWithLoadingState(isDecorated: Boolean = true) {
+    fun Activity.decorateWithLoadingState(isDecorated: Boolean = true) =
       findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         .decorateWithLoadingState(isDecorated)
+
+    context(LoadingState)
+    fun Activity.setHeaders(vararg pairs: Pair<Any, LoadingStateView.ViewDelegate<*>>) {
+      loadingStateView?.setDecorHeader(*pairs)
+    }
+
+    context(LoadingState)
+    fun Fragment.setHeaders(vararg pairs: Pair<Any, LoadingStateView.ViewDelegate<*>>) {
+      loadingStateView?.addChildDecorHeader(*pairs)
     }
   }
 }
@@ -58,7 +68,7 @@ class LoadingStateImpl : LoadingState {
     loadingStateView?.register(viewType, viewDelegate)
   }
 
-  override fun <T : LoadingStateView.ViewDelegate<*>> updateView(viewType: Any, block: LoadingStateView.Callback<T>) {
+  override fun <T : LoadingStateView.ViewHolder> updateView(viewType: Any, block: LoadingStateView.Callback<T>) {
     loadingStateView?.updateView(viewType, block)
   }
 

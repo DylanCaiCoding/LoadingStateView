@@ -33,9 +33,4 @@ public class NothingViewDelegate extends LoadingStateView.ViewDelegate<LoadingSt
   public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
     return new LoadingStateView.ViewHolder(new View(parent.getContext()));
   }
-
-  @Override
-  public void onBindViewHolder(@NonNull LoadingStateView.ViewHolder holder) {
-
-  }
 }

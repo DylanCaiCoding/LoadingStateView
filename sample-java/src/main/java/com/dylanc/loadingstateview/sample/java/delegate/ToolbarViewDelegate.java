@@ -59,30 +59,9 @@ public class ToolbarViewDelegate extends LoadingStateView.ViewDelegate<ToolbarVi
   @NotNull
   @Override
   public ViewHolder onCreateViewHolder(@NotNull LayoutInflater inflater, @NotNull ViewGroup parent) {
-    return new ToolbarViewDelegate.ViewHolder(inflater.inflate(R.layout.layout_toolbar, parent, false));
-  }
-
-  @Override
-  public void onBindViewHolder(@NotNull ViewHolder holder) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      holder.getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-    }
-
-    if (!TextUtils.isEmpty(title)) {
-      holder.toolbar.setTitle(title);
-    }
-
-    if (type == NavIconType.BACK) {
-      holder.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
-      holder.toolbar.setNavigationOnClickListener(v -> holder.getActivity().finish());
-    } else {
-      holder.toolbar.setNavigationIcon(null);
-    }
-
-    if (menuId > 0 && onMenuItemClick != null) {
-      holder.toolbar.inflateMenu(menuId);
-      holder.toolbar.setOnMenuItemClickListener(item -> onMenuItemClick.invoke(item));
-    }
+    ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.layout_toolbar, parent, false));
+    holder.bind(title, type, menuId, onMenuItemClick);
+    return holder;
   }
 
   static class ViewHolder extends LoadingStateView.ViewHolder {
@@ -92,6 +71,28 @@ public class ToolbarViewDelegate extends LoadingStateView.ViewDelegate<ToolbarVi
     ViewHolder(@NonNull View rootView) {
       super(rootView);
       toolbar = (Toolbar) rootView;
+    }
+
+    public void bind(String title, NavIconType type, int menuId, Function1<? super MenuItem, Boolean> onMenuItemClick) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+      }
+
+      if (!TextUtils.isEmpty(title)) {
+        toolbar.setTitle(title);
+      }
+
+      if (type == NavIconType.BACK) {
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
+        toolbar.setNavigationOnClickListener(v -> getActivity().finish());
+      } else {
+        toolbar.setNavigationIcon(null);
+      }
+
+      if (menuId > 0 && onMenuItemClick != null) {
+        toolbar.inflateMenu(menuId);
+        toolbar.setOnMenuItemClickListener(onMenuItemClick::invoke);
+      }
     }
 
     private Activity getActivity() {

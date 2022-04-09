@@ -33,9 +33,4 @@ public class CoolLoadingViewDelegate extends LoadingStateView.ViewDelegate<Loadi
   public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
     return new LoadingStateView.ViewHolder(inflater.inflate(R.layout.layout_cool_loading, parent, false));
   }
-
-  @Override
-  public void onBindViewHolder(@NonNull LoadingStateView.ViewHolder holder) {
-
-  }
 }

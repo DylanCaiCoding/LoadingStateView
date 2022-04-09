@@ -33,9 +33,4 @@ public class EmptyViewDelegate extends LoadingStateView.ViewDelegate<LoadingStat
   public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
     return new LoadingStateView.ViewHolder(inflater.inflate(R.layout.layout_empty, parent, false));
   }
-
-  @Override
-  public void onBindViewHolder(@NonNull LoadingStateView.ViewHolder holder) {
-
-  }
 }

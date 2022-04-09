@@ -31,7 +31,7 @@ import com.dylanc.loadingstateview.sample.java.utils.KeyboardUtils;
 /**
  * @author Dylan Cai
  */
-public class SearchHeaderViewDelegate extends LoadingStateView.ViewDelegate<SearchHeaderViewDelegate.ViewHolder> {
+public class SearchHeaderViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
 
   private final OnSearchListener onSearchListener;
 
@@ -41,33 +41,20 @@ public class SearchHeaderViewDelegate extends LoadingStateView.ViewDelegate<Sear
 
   @NonNull
   @Override
-  public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+  public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
     View view = inflater.inflate(R.layout.layout_search_header, parent, false);
-    return new ViewHolder(view);
-  }
-
-  @Override
-  public void onBindViewHolder(@NonNull ViewHolder holder) {
-    holder.edtSearch.setOnEditorActionListener((v, actionId, event) -> {
+    EditText edtSearch = view.findViewById(R.id.edt_search);
+    edtSearch.setOnEditorActionListener((v, actionId, event) -> {
       if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-        KeyboardUtils.hideKeyboard(holder.edtSearch);
+        KeyboardUtils.hideKeyboard(edtSearch);
         if (onSearchListener != null) {
-          onSearchListener.onSearch(holder.edtSearch.getText().toString());
+          onSearchListener.onSearch(edtSearch.getText().toString());
         }
         return true;
       }
       return false;
     });
-  }
-
-  static class ViewHolder extends LoadingStateView.ViewHolder {
-
-    final EditText edtSearch;
-
-    ViewHolder(@NonNull final View rootView) {
-      super(rootView);
-      edtSearch = rootView.findViewById(R.id.edt_search);
-    }
+    return new LoadingStateView.ViewHolder(view);
   }
 
   public interface OnSearchListener {

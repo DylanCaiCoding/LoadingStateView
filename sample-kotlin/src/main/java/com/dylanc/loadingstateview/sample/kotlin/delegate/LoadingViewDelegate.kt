@@ -26,15 +26,6 @@ import com.dylanc.loadingstateview.sample.kotlin.R
  */
 class LoadingViewDelegate : ViewDelegate<LoadingStateView.ViewHolder>() {
 
-  var height = ViewGroup.LayoutParams.MATCH_PARENT
-
-  override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): LoadingStateView.ViewHolder {
-    return LoadingStateView.ViewHolder(inflater.inflate(R.layout.layout_loading, parent, false))
-  }
-
-  override fun onBindViewHolder(holder: LoadingStateView.ViewHolder) {
-    val layoutParams = holder.rootView.layoutParams
-    layoutParams.height = height
-    holder.rootView.layoutParams = layoutParams
-  }
+  override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup) =
+    LoadingStateView.ViewHolder(inflater.inflate(R.layout.layout_loading, parent, false))
 }

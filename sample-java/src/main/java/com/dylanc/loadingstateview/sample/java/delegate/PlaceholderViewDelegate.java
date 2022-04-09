@@ -33,9 +33,4 @@ public class PlaceholderViewDelegate extends LoadingStateView.ViewDelegate<Loadi
   public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
     return new LoadingStateView.ViewHolder(inflater.inflate(R.layout.layout_placeholder, parent, false));
   }
-
-  @Override
-  public void onBindViewHolder(@NonNull LoadingStateView.ViewHolder holder) {
-
-  }
 }

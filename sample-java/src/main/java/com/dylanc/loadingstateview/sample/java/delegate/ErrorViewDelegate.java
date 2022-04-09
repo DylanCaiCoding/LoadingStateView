@@ -27,30 +27,17 @@ import com.dylanc.loadingstateview.sample.java.R;
 /**
  * @author Dylan Cai
  */
-public class ErrorViewDelegate extends LoadingStateView.ViewDelegate<ErrorViewDelegate.ViewHolder> {
+public class ErrorViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
 
   @NonNull
   @Override
-  public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return new ViewHolder(inflater.inflate(R.layout.layout_error, parent, false));
-  }
-
-  @Override
-  public void onBindViewHolder(@NonNull final ViewHolder holder) {
-    holder.btnReload.setOnClickListener(v -> {
-      if (holder.getOnReloadListener() != null) {
-        holder.getOnReloadListener().onReload();
+  public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    View view = inflater.inflate(R.layout.layout_error, parent, false);
+    view.findViewById(R.id.btn_reload).setOnClickListener(v -> {
+      if (getOnReloadListener() != null) {
+        getOnReloadListener().onReload();
       }
     });
-  }
-
-  public static class ViewHolder extends LoadingStateView.ViewHolder {
-
-    private final View btnReload;
-
-    ViewHolder(@NonNull View rootView) {
-      super(rootView);
-      btnReload = rootView.findViewById(R.id.btn_reload);
-    }
+    return new LoadingStateView.ViewHolder(view);
   }
 }

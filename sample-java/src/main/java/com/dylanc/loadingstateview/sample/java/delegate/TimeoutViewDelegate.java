@@ -17,7 +17,9 @@
 package com.dylanc.loadingstateview.sample.java.delegate;
 
 import androidx.annotation.NonNull;
+
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.dylanc.loadingstateview.LoadingStateView;
@@ -31,15 +33,12 @@ public class TimeoutViewDelegate extends LoadingStateView.ViewDelegate<LoadingSt
   @NonNull
   @Override
   public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return new LoadingStateView.ViewHolder(inflater.inflate(R.layout.layout_timeout, parent, false));
-  }
-
-  @Override
-  public void onBindViewHolder(@NonNull LoadingStateView.ViewHolder holder) {
-    holder.getRootView().setOnClickListener(v -> {
-      if (holder.getOnReloadListener() != null) {
-        holder.getOnReloadListener().onReload();
+    View view = inflater.inflate(R.layout.layout_timeout, parent, false);
+    view.setOnClickListener(v -> {
+      if (getOnReloadListener() != null) {
+        getOnReloadListener().onReload();
       }
     });
+    return new LoadingStateView.ViewHolder(view);
   }
 }
