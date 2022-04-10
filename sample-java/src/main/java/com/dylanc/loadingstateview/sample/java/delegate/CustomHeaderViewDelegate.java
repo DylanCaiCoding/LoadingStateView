@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.java.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,7 @@ public class CustomHeaderViewDelegate extends LoadingStateView.ViewDelegate<Cust
   public CustomHeaderViewDelegate(View.OnClickListener onMessageClickListener, int firstDrawableId,
                                   View.OnClickListener onFirstBtnClickListener, int secondDrawableId,
                                   View.OnClickListener onSecondBtnClickListener) {
+    super(ViewType.TITLE);
     this.onMessageClickListener = onMessageClickListener;
     this.firstDrawableId = firstDrawableId;
     this.onFirstBtnClickListener = onFirstBtnClickListener;

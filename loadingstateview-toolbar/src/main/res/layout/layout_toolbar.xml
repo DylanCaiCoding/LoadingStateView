@@ -9,22 +9,34 @@
     android:id="@+id/tv_title"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:text="Title"
-    android:textSize="18sp"
     android:textColor="#333"
+    android:textSize="18sp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Title" />
 
   <ImageView
-    android:id="@+id/btn_left"
+    android:id="@+id/iv_left"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.466"
-    app:srcCompat="@drawable/ic_arrow_back_ios" />
+    app:srcCompat="@drawable/ic_arrow_back_ios"
+    tools:visibility="gone" />
+
+  <TextView
+    android:id="@+id/tv_left"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#333"
+    android:textSize="16sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/iv_left"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_goneMarginStart="16dp"
+    tools:text="TextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

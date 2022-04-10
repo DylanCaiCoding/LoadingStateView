@@ -19,12 +19,13 @@ import com.dylanc.loadingstateview.LoadingStateView.ViewDelegate
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import com.dylanc.loadingstateview.LoadingStateView
+import com.dylanc.loadingstateview.ViewType
 import com.dylanc.loadingstateview.sample.kotlin.R
 
 /**
  * @author Dylan Cai
  */
-class LoadingViewDelegate : ViewDelegate<LoadingStateView.ViewHolder>() {
+class LoadingViewDelegate : ViewDelegate<LoadingStateView.ViewHolder>(ViewType.LOADING) {
 
   override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup) =
     LoadingStateView.ViewHolder(inflater.inflate(R.layout.layout_loading, parent, false))

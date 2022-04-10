@@ -43,7 +43,7 @@ public class MultipleHeaderActivity extends AppCompatActivity implements SearchH
     super.onCreate(savedInstanceState);
     setContentView(R.layout.layout_content);
     loadingStateView = new LoadingStateView(this);
-    loadingStateView.register(ViewType.EMPTY, new NothingViewDelegate());
+    loadingStateView.register(new NothingViewDelegate());
     loadingStateView.setDecorHeader(
         new ToolbarViewDelegate("MultipleHeader(search)", NavIconType.BACK),
         new SearchHeaderViewDelegate(this)

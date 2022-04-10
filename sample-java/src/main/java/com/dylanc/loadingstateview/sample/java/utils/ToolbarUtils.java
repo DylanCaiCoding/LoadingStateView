@@ -49,9 +49,8 @@ public class ToolbarUtils {
                                                   int firstDrawableId, View.OnClickListener onFirstBtnClick,
                                                   int secondDrawableId, View.OnClickListener onSecondBtnClick) {
     LoadingStateView loadingStateView = new LoadingStateView(activity);
-    loadingStateView.register(ViewType.TITLE, new CustomHeaderViewDelegate(onMessageClick,
+    loadingStateView.setDecorHeader(new CustomHeaderViewDelegate(onMessageClick,
         firstDrawableId, onFirstBtnClick, secondDrawableId, onSecondBtnClick));
-    loadingStateView.setDecorHeader(ViewType.TITLE);
     return loadingStateView;
   }
 

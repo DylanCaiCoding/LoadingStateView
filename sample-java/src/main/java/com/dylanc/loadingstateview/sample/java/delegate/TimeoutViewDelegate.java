@@ -29,6 +29,11 @@ import com.dylanc.loadingstateview.sample.java.R;
  * @author Dylan Cai
  */
 public class TimeoutViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+  public static final String VIEW_TYPE_TIMEOUT = "timeout";
+
+  public TimeoutViewDelegate() {
+    super(VIEW_TYPE_TIMEOUT);
+  }
 
   @NonNull
   @Override

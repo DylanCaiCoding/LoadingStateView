@@ -88,7 +88,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
       ViewHolder(@NonNull View itemView) {
         super(itemView);
         loadingStateView = new LoadingStateView(itemView.findViewById(R.id.loading_view));
-        loadingStateView.register(ViewType.LOADING, new CoolLoadingViewDelegate());
+        loadingStateView.register(new CoolLoadingViewDelegate());
         loadingStateView.setOnReloadListener(() -> showImage(url));
         imageView = itemView.findViewById(R.id.image_view);
       }

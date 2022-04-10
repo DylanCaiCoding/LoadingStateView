@@ -31,10 +31,7 @@ public class App extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    LoadingStateView.setViewDelegatePool(pool -> {
-      pool.register(ViewType.LOADING, new LoadingViewDelegate());
-      pool.register(ViewType.ERROR, new ErrorViewDelegate());
-      pool.register(ViewType.EMPTY, new EmptyViewDelegate());
-    });
+    LoadingStateView.setViewDelegatePool(pool ->
+        pool.register(new LoadingViewDelegate(), new ErrorViewDelegate(), new EmptyViewDelegate()));
   }
 }

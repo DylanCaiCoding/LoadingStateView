@@ -25,6 +25,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.java.R;
 import com.dylanc.loadingstateview.sample.java.utils.KeyboardUtils;
 
@@ -33,9 +34,11 @@ import com.dylanc.loadingstateview.sample.java.utils.KeyboardUtils;
  */
 public class SearchHeaderViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
 
+  public static final String VIEW_TYPE_SEARCH = "search";
   private final OnSearchListener onSearchListener;
 
   public SearchHeaderViewDelegate(OnSearchListener onSearchListener) {
+    super(VIEW_TYPE_SEARCH);
     this.onSearchListener = onSearchListener;
   }
 

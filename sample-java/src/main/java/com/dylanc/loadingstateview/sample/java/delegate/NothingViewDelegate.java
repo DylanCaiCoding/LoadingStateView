@@ -22,11 +22,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.ViewType;
 
 /**
  * @author Dylan Cai
  */
 public class NothingViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+
+  public NothingViewDelegate() {
+    super(ViewType.EMPTY);
+  }
 
   @NonNull
   @Override

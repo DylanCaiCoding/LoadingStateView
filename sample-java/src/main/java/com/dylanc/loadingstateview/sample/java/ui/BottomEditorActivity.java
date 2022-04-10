@@ -43,7 +43,7 @@ public class BottomEditorActivity extends AppCompatActivity implements BottomEdi
     setContentView(R.layout.layout_content);
     loadingStateView = ToolbarUtils.setToolbar(this, "BottomDecorView(editor)", NavIconType.BACK);
     loadingStateView.addChildDecorView(new BottomEditorDecorViewDelegate(this));
-    loadingStateView.register(ViewType.EMPTY, new NothingViewDelegate());
+    loadingStateView.register(new NothingViewDelegate());
     loadingStateView.showEmptyView();
   }
 

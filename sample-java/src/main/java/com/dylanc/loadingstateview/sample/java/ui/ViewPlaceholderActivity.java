@@ -45,7 +45,7 @@ public class ViewPlaceholderActivity extends AppCompatActivity {
 
     View view = findViewById(R.id.content);
     loadingStateView = new LoadingStateView(view);
-    loadingStateView.register(ViewType.LOADING, new PlaceholderViewDelegate());
+    loadingStateView.register(new PlaceholderViewDelegate());
 
     loadData();
   }

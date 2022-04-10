@@ -23,36 +23,27 @@ import androidx.fragment.app.Fragment
 
 interface LoadingState : LoadingStateView.OnReloadListener {
   val loadingStateView: LoadingStateView?
+  fun Activity.decorateContentView(isDecorated: Boolean = true)
   fun View.decorateWithLoadingState(isDecorated: Boolean = true): View
-  fun registerLoadingState(viewType: Any, viewDelegate: LoadingStateView.ViewDelegate<*>)
+  fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate<*>)
   fun <T : LoadingStateView.ViewHolder> updateView(viewType: Any, block: LoadingStateView.Callback<T>)
+  fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate<*>)
+  fun Fragment.setHeaders(vararg delegates: LoadingStateView.ViewDelegate<*>)
   fun showLoadingView()
   fun showContentView()
   fun showErrorView()
   fun showEmptyView()
   fun showCustomView(viewType: Any)
-
-  companion object {
-    context(LoadingState)
-    fun Activity.decorateWithLoadingState(isDecorated: Boolean = true) =
-      findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
-        .decorateWithLoadingState(isDecorated)
-
-    context(LoadingState)
-    fun Activity.setHeaders(vararg pairs: Pair<Any, LoadingStateView.ViewDelegate<*>>) {
-      loadingStateView?.setDecorHeader(*pairs)
-    }
-
-    context(LoadingState)
-    fun Fragment.setHeaders(vararg pairs: Pair<Any, LoadingStateView.ViewDelegate<*>>) {
-      loadingStateView?.addChildDecorHeader(*pairs)
-    }
-  }
 }
 
 class LoadingStateImpl : LoadingState {
   override var loadingStateView: LoadingStateView? = null
     private set
+
+  override fun Activity.decorateContentView(isDecorated: Boolean) {
+    findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
+      .decorateWithLoadingState(isDecorated)
+  }
 
   override fun View.decorateWithLoadingState(isDecorated: Boolean): View {
     return if (isDecorated) {
@@ -64,12 +55,20 @@ class LoadingStateImpl : LoadingState {
     }
   }
 
-  override fun registerLoadingState(viewType: Any, viewDelegate: LoadingStateView.ViewDelegate<*>) {
-    loadingStateView?.register(viewType, viewDelegate)
+  override fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate<*>) {
+    loadingStateView?.register(*viewDelegates)
   }
 
   override fun <T : LoadingStateView.ViewHolder> updateView(viewType: Any, block: LoadingStateView.Callback<T>) {
     loadingStateView?.updateView(viewType, block)
+  }
+
+  override fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate<*>) {
+    loadingStateView?.setDecorHeader(*delegates)
+  }
+
+  override fun Fragment.setHeaders(vararg delegates: LoadingStateView.ViewDelegate<*>) {
+    loadingStateView?.addChildDecorHeader(*delegates)
   }
 
   override fun showLoadingView() {

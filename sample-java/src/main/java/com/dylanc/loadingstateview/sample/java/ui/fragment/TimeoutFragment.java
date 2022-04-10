@@ -45,7 +45,7 @@ public class TimeoutFragment extends Fragment implements LoadingStateView.OnRelo
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     binding = LayoutContentBinding.inflate(inflater, container, false);
     loadingStateView = new LoadingStateView(binding.getRoot());
-    loadingStateView.register(VIEW_TYPE_TIMEOUT, new TimeoutViewDelegate());
+    loadingStateView.register(new TimeoutViewDelegate());
     loadingStateView.setOnReloadListener(this);
     return loadingStateView.getDecorView();
   }

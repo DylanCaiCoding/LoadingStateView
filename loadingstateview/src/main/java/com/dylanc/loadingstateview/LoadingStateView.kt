@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+@file:Suppress("unused")
 
 package com.dylanc.loadingstateview
 
@@ -52,7 +52,7 @@ class LoadingStateView(private val contentView: View) {
   init {
     viewDelegatePool?.apply { ViewDelegatePool(this@LoadingStateView).invoke() }
     parent = contentView.parent as ViewGroup?
-    register(ViewType.CONTENT, ContentViewDelegate())
+    register(ContentViewDelegate())
     setDecorView(LinearDecorViewDelegate(listOf()))
   }
 
@@ -83,21 +83,13 @@ class LoadingStateView(private val contentView: View) {
   /**
    * Adds one or more views to decorate content in the header.
    *
-   * @param pairs the view delegates of creating view
+   * @param delegates the view delegates of creating view
    */
-  fun setDecorHeader(vararg pairs: Pair<Any, ViewDelegate<*>>) =
-    setDecorHeader(*pairs.map {
-      register(it.first, it.second)
-      it.first
-    }.toTypedArray())
-
-  /**
-   * Adds one or more views to decorate content in the header.
-   *
-   * @param viewType the view type of view delegate
-   */
-  fun setDecorHeader(vararg viewType: Any) =
-    setDecorView(LinearDecorViewDelegate(viewType.map { getViewHolder(it).rootView }))
+  fun setDecorHeader(vararg delegates: ViewDelegate<*>) =
+    setDecorView(LinearDecorViewDelegate(delegates.map {
+      register(it)
+      getViewHolder(it.viewType).rootView
+    }))
 
   /**
    * Adds child decorative view between the content and the decorative view.
@@ -116,21 +108,13 @@ class LoadingStateView(private val contentView: View) {
   /**
    * Adds child decorative header between the content and the decorative view.
    *
-   * @param pairs the view delegates of creating view
+   * @param delegates the view delegates of creating view
    */
-  fun addChildDecorHeader(vararg pairs: Pair<Any, ViewDelegate<*>>) =
-    addChildDecorHeader(*pairs.map {
-      register(it.first, it.second)
-      it.first
-    }.toTypedArray())
-
-  /**
-   * Adds child decorative header between the content and the decorative view.
-   *
-   * @param viewTypes the view type of view delegate
-   */
-  fun addChildDecorHeader(vararg viewTypes: Any) =
-    addChildDecorView(LinearDecorViewDelegate(viewTypes.map { getViewHolder(it).rootView }))
+  fun addChildDecorHeader(vararg delegates: ViewDelegate<*>) =
+    addChildDecorView(LinearDecorViewDelegate(delegates.map {
+      register(it)
+      getViewHolder(it.viewType).rootView
+    }))
 
   private fun DecorViewDelegate.createDecorView() =
     onCreateDecorView(LayoutInflater.from(contentView.context)).also { decorView ->
@@ -140,11 +124,10 @@ class LoadingStateView(private val contentView: View) {
   /**
    * Registers the view delegate of creating view before showing view.
    *
-   * @param viewType the view type of view delegate
    * @param viewDelegate  the view delegate of creating view
    */
-  fun register(viewType: Any, viewDelegate: ViewDelegate<*>) {
-    viewDelegates[viewType] = viewDelegate
+  fun register(vararg delegates: ViewDelegate<*>) {
+    delegates.forEach { viewDelegates[it.viewType] = it }
   }
 
   /**
@@ -242,14 +225,14 @@ class LoadingStateView(private val contentView: View) {
     viewHolders[viewType] = viewHolder
   }
 
-  abstract class ViewDelegate<VH : ViewHolder> {
+  abstract class ViewDelegate<VH : ViewHolder>(val viewType: Any) {
     var onReloadListener: OnReloadListener? = null
       internal set
 
     abstract fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): VH
   }
 
-  private inner class ContentViewDelegate : LoadingStateView.ViewDelegate<ViewHolder>() {
+  private inner class ContentViewDelegate : LoadingStateView.ViewDelegate<ViewHolder>(ViewType.CONTENT) {
     override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup) = ViewHolder(contentView)
   }
 
@@ -279,7 +262,7 @@ class LoadingStateView(private val contentView: View) {
   }
 
   class ViewDelegatePool internal constructor(private val stateView: LoadingStateView) {
-    fun register(viewType: Any, viewDelegate: ViewDelegate<*>) = stateView.register(viewType, viewDelegate)
+    fun register(vararg delegates: ViewDelegate<*>) = stateView.register(*delegates)
   }
 
   fun interface OnReloadListener {

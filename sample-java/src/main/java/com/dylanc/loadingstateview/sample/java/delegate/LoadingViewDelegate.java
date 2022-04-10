@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.java.R;
 
 /**
@@ -30,6 +31,10 @@ import com.dylanc.loadingstateview.sample.java.R;
 public class LoadingViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
 
   public int height = ViewGroup.LayoutParams.MATCH_PARENT;
+
+  public LoadingViewDelegate() {
+    super(ViewType.LOADING);
+  }
 
   @NonNull
   @Override

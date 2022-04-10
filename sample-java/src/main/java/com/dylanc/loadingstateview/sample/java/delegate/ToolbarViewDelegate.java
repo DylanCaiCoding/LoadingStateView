@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.java.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,15 +42,15 @@ public class ToolbarViewDelegate extends LoadingStateView.ViewDelegate<ToolbarVi
 
   private final String title;
   private final NavIconType type;
-  private int menuId;
-  private Function1<? super MenuItem, Boolean> onMenuItemClick;
+  private final int menuId;
+  private final Function1<? super MenuItem, Boolean> onMenuItemClick;
 
   public ToolbarViewDelegate(String title, NavIconType type) {
-    this.title = title;
-    this.type = type;
+    this(title, type, 0, null);
   }
 
   public ToolbarViewDelegate(String title, NavIconType type, int menuId, Function1<? super MenuItem, Boolean> onMenuItemClick) {
+    super(ViewType.TITLE);
     this.title = title;
     this.type = type;
     this.menuId = menuId;

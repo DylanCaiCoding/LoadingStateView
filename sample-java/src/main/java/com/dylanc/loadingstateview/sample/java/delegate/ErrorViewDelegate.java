@@ -22,12 +22,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.java.R;
 
 /**
  * @author Dylan Cai
  */
 public class ErrorViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+
+  public ErrorViewDelegate() {
+    super(ViewType.ERROR);
+  }
 
   @NonNull
   @Override

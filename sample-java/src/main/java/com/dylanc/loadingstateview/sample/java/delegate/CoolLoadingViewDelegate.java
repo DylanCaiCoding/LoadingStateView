@@ -21,12 +21,17 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.java.R;
 
 /**
  * @author Dylan Cai
  */
 public class CoolLoadingViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+
+  public CoolLoadingViewDelegate() {
+    super(ViewType.LOADING);
+  }
 
   @NonNull
   @Override
