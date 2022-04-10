@@ -32,7 +32,7 @@ import com.dylanc.loadingstateview.sample.java.utils.KeyboardUtils;
 /**
  * @author Dylan Cai
  */
-public class SearchHeaderViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+public class SearchHeaderViewDelegate extends LoadingStateView.ViewDelegate{
 
   public static final String VIEW_TYPE_SEARCH = "search";
   private final OnSearchListener onSearchListener;
@@ -44,7 +44,7 @@ public class SearchHeaderViewDelegate extends LoadingStateView.ViewDelegate<Load
 
   @NonNull
   @Override
-  public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+  public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
     View view = inflater.inflate(R.layout.layout_search_header, parent, false);
     EditText edtSearch = view.findViewById(R.id.edt_search);
     edtSearch.setOnEditorActionListener((v, actionId, event) -> {
@@ -57,7 +57,7 @@ public class SearchHeaderViewDelegate extends LoadingStateView.ViewDelegate<Load
       }
       return false;
     });
-    return new LoadingStateView.ViewHolder(view);
+    return view;
   }
 
   public interface OnSearchListener {

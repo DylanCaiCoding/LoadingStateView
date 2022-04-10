@@ -28,7 +28,7 @@ import com.dylanc.loadingstateview.sample.java.R;
 /**
  * @author Dylan Cai
  */
-public class TimeoutViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+public class TimeoutViewDelegate extends LoadingStateView.ViewDelegate {
   public static final String VIEW_TYPE_TIMEOUT = "timeout";
 
   public TimeoutViewDelegate() {
@@ -37,13 +37,13 @@ public class TimeoutViewDelegate extends LoadingStateView.ViewDelegate<LoadingSt
 
   @NonNull
   @Override
-  public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+  public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
     View view = inflater.inflate(R.layout.layout_timeout, parent, false);
     view.setOnClickListener(v -> {
       if (getOnReloadListener() != null) {
         getOnReloadListener().onReload();
       }
     });
-    return new LoadingStateView.ViewHolder(view);
+    return view;
   }
 }

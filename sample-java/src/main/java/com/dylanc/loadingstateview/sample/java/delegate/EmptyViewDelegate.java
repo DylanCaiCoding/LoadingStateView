@@ -18,6 +18,7 @@ package com.dylanc.loadingstateview.sample.java.delegate;
 
 import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.dylanc.loadingstateview.LoadingStateView;
@@ -27,7 +28,7 @@ import com.dylanc.loadingstateview.sample.java.R;
 /**
  * @author Dylan Cai
  */
-public class EmptyViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+public class EmptyViewDelegate extends LoadingStateView.ViewDelegate {
 
   public EmptyViewDelegate() {
     super(ViewType.EMPTY);
@@ -35,7 +36,7 @@ public class EmptyViewDelegate extends LoadingStateView.ViewDelegate<LoadingStat
 
   @NonNull
   @Override
-  public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return new LoadingStateView.ViewHolder(inflater.inflate(R.layout.layout_empty, parent, false));
+  public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    return inflater.inflate(R.layout.layout_empty, parent, false);
   }
 }

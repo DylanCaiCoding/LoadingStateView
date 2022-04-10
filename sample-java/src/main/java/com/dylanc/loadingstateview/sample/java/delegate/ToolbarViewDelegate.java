@@ -38,7 +38,7 @@ import kotlin.jvm.functions.Function1;
 /**
  * @author Dylan Cai
  */
-public class ToolbarViewDelegate extends LoadingStateView.ViewDelegate<ToolbarViewDelegate.ViewHolder> {
+public class ToolbarViewDelegate extends LoadingStateView.ViewDelegate {
 
   private final String title;
   private final NavIconType type;
@@ -57,47 +57,31 @@ public class ToolbarViewDelegate extends LoadingStateView.ViewDelegate<ToolbarVi
     this.onMenuItemClick = onMenuItemClick;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public ViewHolder onCreateViewHolder(@NotNull LayoutInflater inflater, @NotNull ViewGroup parent) {
-    ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.layout_toolbar, parent, false));
-    holder.bind(title, type, menuId, onMenuItemClick);
-    return holder;
-  }
-
-  static class ViewHolder extends LoadingStateView.ViewHolder {
-
-    private final Toolbar toolbar;
-
-    ViewHolder(@NonNull View rootView) {
-      super(rootView);
-      toolbar = (Toolbar) rootView;
+  public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    View view = inflater.inflate(R.layout.layout_toolbar, parent, false);
+    Activity activity = (Activity) view.getContext();
+    Toolbar toolbar = view.findViewById(R.id.toolbar);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
-    public void bind(String title, NavIconType type, int menuId, Function1<? super MenuItem, Boolean> onMenuItemClick) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-      }
-
-      if (!TextUtils.isEmpty(title)) {
-        toolbar.setTitle(title);
-      }
-
-      if (type == NavIconType.BACK) {
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
-        toolbar.setNavigationOnClickListener(v -> getActivity().finish());
-      } else {
-        toolbar.setNavigationIcon(null);
-      }
-
-      if (menuId > 0 && onMenuItemClick != null) {
-        toolbar.inflateMenu(menuId);
-        toolbar.setOnMenuItemClickListener(onMenuItemClick::invoke);
-      }
+    if (!TextUtils.isEmpty(title)) {
+      toolbar.setTitle(title);
     }
 
-    private Activity getActivity() {
-      return (Activity) getRootView().getContext();
+    if (type == NavIconType.BACK) {
+      toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
+      toolbar.setNavigationOnClickListener(v -> activity.finish());
+    } else {
+      toolbar.setNavigationIcon(null);
     }
+
+    if (menuId > 0 && onMenuItemClick != null) {
+      toolbar.inflateMenu(menuId);
+      toolbar.setOnMenuItemClickListener(onMenuItemClick::invoke);
+    }
+    return view;
   }
 }

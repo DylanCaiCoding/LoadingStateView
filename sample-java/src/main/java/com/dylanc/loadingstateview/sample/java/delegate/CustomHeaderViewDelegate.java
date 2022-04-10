@@ -30,12 +30,10 @@ import com.dylanc.loadingstateview.LoadingStateView;
 import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.java.R;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * @author Dylan Cai
  */
-public class CustomHeaderViewDelegate extends LoadingStateView.ViewDelegate<CustomHeaderViewDelegate.ViewHolder> {
+public class CustomHeaderViewDelegate extends LoadingStateView.ViewDelegate {
 
   private final View.OnClickListener onMessageClickListener;
   private final int firstDrawableId;
@@ -54,44 +52,25 @@ public class CustomHeaderViewDelegate extends LoadingStateView.ViewDelegate<Cust
     this.onSecondBtnClickListener = onSecondBtnClickListener;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public ViewHolder onCreateViewHolder(@NotNull LayoutInflater inflater, @NotNull ViewGroup parent) {
-    ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.layout_custom_header, parent, false));
-    holder.bind(onMessageClickListener, firstDrawableId, onFirstBtnClickListener, secondDrawableId, onSecondBtnClickListener);
-    return holder;
-  }
-
-  static class ViewHolder extends LoadingStateView.ViewHolder {
-    private final ImageView btnFirst;
-    private final ImageView btnSecond;
-    private final View btnMessage;
-
-    ViewHolder(@NonNull View rootView) {
-      super(rootView);
-      btnFirst = rootView.findViewById(R.id.btn_first);
-      btnSecond = rootView.findViewById(R.id.btn_second);
-      btnMessage = rootView.findViewById(R.id.btn_message);
+  public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    View view = inflater.inflate(R.layout.layout_custom_header, parent, false);
+    ImageView btnFirst = view.findViewById(R.id.btn_first);
+    ImageView btnSecond = view.findViewById(R.id.btn_second);
+    View btnMessage = view.findViewById(R.id.btn_message);
+    Activity activity = (Activity) view.getContext();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
-    public void bind(View.OnClickListener onMessageClickListener, int firstDrawableId,
-                     View.OnClickListener onFirstBtnClickListener, int secondDrawableId,
-                     View.OnClickListener onSecondBtnClickListener) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-      }
+    btnMessage.setOnClickListener(onMessageClickListener);
 
-      btnMessage.setOnClickListener(onMessageClickListener);
+    btnFirst.setImageDrawable(ContextCompat.getDrawable(activity, firstDrawableId));
+    btnFirst.setOnClickListener(onFirstBtnClickListener);
 
-      btnFirst.setImageDrawable(ContextCompat.getDrawable(getActivity(), firstDrawableId));
-      btnFirst.setOnClickListener(onFirstBtnClickListener);
-
-      btnSecond.setImageDrawable(ContextCompat.getDrawable(getActivity(), secondDrawableId));
-      btnSecond.setOnClickListener(onSecondBtnClickListener);
-    }
-
-    private Activity getActivity() {
-      return (Activity) getRootView().getContext();
-    }
+    btnSecond.setImageDrawable(ContextCompat.getDrawable(activity, secondDrawableId));
+    btnSecond.setOnClickListener(onSecondBtnClickListener);
+    return view;
   }
 }

@@ -19,16 +19,22 @@ package com.dylanc.loadingstateview
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
 interface LoadingState : LoadingStateView.OnReloadListener {
-  val loadingStateView: LoadingStateView?
   fun Activity.decorateContentView(isDecorated: Boolean = true)
   fun View.decorateWithLoadingState(isDecorated: Boolean = true): View
-  fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate<*>)
-  fun <T : LoadingStateView.ViewHolder> updateView(viewType: Any, block: LoadingStateView.Callback<T>)
-  fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate<*>)
-  fun Fragment.setHeaders(vararg delegates: LoadingStateView.ViewDelegate<*>)
+  fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate)
+  fun Activity.setToolbar(@StringRes titleId: Int, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null)
+  fun Activity.setToolbar(title: String? = null, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null)
+  fun Fragment.setToolbar(@StringRes titleId: Int, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null)
+  fun Fragment.setToolbar(title: String? = null, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null)
+  fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate)
+  fun Fragment.setHeaders(vararg delegates: LoadingStateView.ViewDelegate)
+  fun <T : LoadingStateView.ViewDelegate> updateView(viewType: Any, block: T.() -> Unit)
+  fun Activity.updateToolbar(block: ToolbarConfig.() -> Unit)
+  fun Fragment.updateToolbar(block: ToolbarConfig.() -> Unit)
   fun showLoadingView()
   fun showContentView()
   fun showErrorView()
@@ -37,8 +43,7 @@ interface LoadingState : LoadingStateView.OnReloadListener {
 }
 
 class LoadingStateImpl : LoadingState {
-  override var loadingStateView: LoadingStateView? = null
-    private set
+  private var loadingStateView: LoadingStateView? = null
 
   override fun Activity.decorateContentView(isDecorated: Boolean) {
     findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
@@ -47,28 +52,47 @@ class LoadingStateImpl : LoadingState {
 
   override fun View.decorateWithLoadingState(isDecorated: Boolean): View {
     return if (isDecorated) {
-      loadingStateView = LoadingStateView(this)
-        .apply { setOnReloadListener(::onReload) }
-      loadingStateView!!.decorView
+      LoadingStateView(this).apply {
+        setOnReloadListener(::onReload)
+        loadingStateView = this
+      }.decorView
     } else {
       this
     }
   }
 
-  override fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate<*>) {
+  override fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate) {
     loadingStateView?.register(*viewDelegates)
   }
 
-  override fun <T : LoadingStateView.ViewHolder> updateView(viewType: Any, block: LoadingStateView.Callback<T>) {
-    loadingStateView?.updateView(viewType, block)
-  }
+  override fun Activity.setToolbar(@StringRes titleId: Int, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) =
+    setToolbar(getString(titleId), navBtnType, block)
 
-  override fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate<*>) {
+  override fun Activity.setToolbar(title: String?, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) =
+    setHeaders(ToolbarViewDelegate(title, navBtnType, block))
+
+  override fun Fragment.setToolbar(@StringRes titleId: Int, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) =
+    setToolbar(getString(titleId), navBtnType, block)
+
+  override fun Fragment.setToolbar(title: String?, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) =
+    setHeaders(ToolbarViewDelegate(title, navBtnType, block))
+
+  override fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate) {
     loadingStateView?.setDecorHeader(*delegates)
   }
 
-  override fun Fragment.setHeaders(vararg delegates: LoadingStateView.ViewDelegate<*>) {
+  override fun Fragment.setHeaders(vararg delegates: LoadingStateView.ViewDelegate) {
     loadingStateView?.addChildDecorHeader(*delegates)
+  }
+
+  override fun Activity.updateToolbar(block: ToolbarConfig.() -> Unit) =
+    updateView<ToolbarViewDelegate>(ViewType.TITLE) { bind(config.apply(block)) }
+
+  override fun Fragment.updateToolbar(block: ToolbarConfig.() -> Unit) =
+    updateView<ToolbarViewDelegate>(ViewType.TITLE) { bind(config.apply(block)) }
+
+  override fun <T : LoadingStateView.ViewDelegate> updateView(viewType: Any, block: T.() -> Unit) {
+    loadingStateView?.getViewDelegate<T>(viewType)?.apply(block)
   }
 
   override fun showLoadingView() {

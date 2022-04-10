@@ -27,7 +27,7 @@ import com.dylanc.loadingstateview.ViewType;
 /**
  * @author Dylan Cai
  */
-public class NothingViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+public class NothingViewDelegate extends LoadingStateView.ViewDelegate {
 
   public NothingViewDelegate() {
     super(ViewType.EMPTY);
@@ -35,7 +35,7 @@ public class NothingViewDelegate extends LoadingStateView.ViewDelegate<LoadingSt
 
   @NonNull
   @Override
-  public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return new LoadingStateView.ViewHolder(new View(parent.getContext()));
+  public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    return new View(parent.getContext());
   }
 }

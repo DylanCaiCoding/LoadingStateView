@@ -17,6 +17,7 @@
 package com.dylanc.loadingstateview.sample.java.delegate;
 
 import androidx.annotation.NonNull;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import com.dylanc.loadingstateview.sample.java.R;
 /**
  * @author Dylan Cai
  */
-public class ErrorViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+public class ErrorViewDelegate extends LoadingStateView.ViewDelegate {
 
   public ErrorViewDelegate() {
     super(ViewType.ERROR);
@@ -36,13 +37,13 @@ public class ErrorViewDelegate extends LoadingStateView.ViewDelegate<LoadingStat
 
   @NonNull
   @Override
-  public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+  public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
     View view = inflater.inflate(R.layout.layout_error, parent, false);
     view.findViewById(R.id.btn_reload).setOnClickListener(v -> {
       if (getOnReloadListener() != null) {
         getOnReloadListener().onReload();
       }
     });
-    return new LoadingStateView.ViewHolder(view);
+    return view;
   }
 }

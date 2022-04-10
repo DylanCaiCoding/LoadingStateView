@@ -28,7 +28,7 @@ import com.dylanc.loadingstateview.sample.java.R;
 /**
  * @author Dylan Cai
  */
-public class LoadingViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
+public class LoadingViewDelegate extends LoadingStateView.ViewDelegate{
 
   public int height = ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -38,11 +38,11 @@ public class LoadingViewDelegate extends LoadingStateView.ViewDelegate<LoadingSt
 
   @NonNull
   @Override
-  public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+  public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
     View view = inflater.inflate(R.layout.layout_loading, parent, false);
     ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
     layoutParams.height = height;
     view.setLayoutParams(layoutParams);
-    return new LoadingStateView.ViewHolder(view);
+    return view;
   }
 }
