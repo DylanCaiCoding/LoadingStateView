@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.OnReloadListener;
 import com.dylanc.loadingstateview.sample.java.delegate.TimeoutViewDelegate;
 import com.dylanc.loadingstateview.sample.java.databinding.LayoutContentBinding;
 import com.dylanc.loadingstateview.sample.java.utils.HttpUtils;
@@ -34,7 +35,7 @@ import com.dylanc.loadingstateview.sample.java.utils.HttpUtils;
  * @author Dylan Cai
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class TimeoutFragment extends Fragment implements LoadingStateView.OnReloadListener {
+public class TimeoutFragment extends Fragment implements OnReloadListener {
 
   public static final String VIEW_TYPE_TIMEOUT = "timeout";
   private LayoutContentBinding binding;

@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.OnReloadListener;
 import com.dylanc.loadingstateview.sample.java.databinding.LayoutContentBinding;
 import com.dylanc.loadingstateview.sample.java.utils.HttpUtils;
 
@@ -33,7 +34,7 @@ import com.dylanc.loadingstateview.sample.java.utils.HttpUtils;
  * @author Dylan Cai
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class EmptyFragment extends Fragment implements LoadingStateView.OnReloadListener {
+public class EmptyFragment extends Fragment implements OnReloadListener {
 
   private LayoutContentBinding binding;
   private LoadingStateView loadingStateView;

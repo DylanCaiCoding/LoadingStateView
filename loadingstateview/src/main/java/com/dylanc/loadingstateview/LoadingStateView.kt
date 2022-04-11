@@ -32,23 +32,24 @@ import java.util.*
 /**
  * @author Dylan Cai
  */
-class LoadingStateView(private val contentView: View) {
+class LoadingStateView @JvmOverloads constructor(
+  private val contentView: View,
+  var onReloadListener: OnReloadListener? = null
+) {
   lateinit var decorView: View private set
   lateinit var currentViewType: Any private set
   private lateinit var contentParent: ViewGroup
   private val parent: ViewGroup?
   private var currentView: View? = null
-  private var onReloadListener: OnReloadListener? = null
   private var viewDelegates: HashMap<Any, ViewDelegate> = HashMap()
   private val viewCashes: HashMap<Any, View> = HashMap()
 
   /**
-   * Constructs a LoadingStateView with a activity and a content view delegate
-   *
-   * @param activity the activity
+   * Constructs a LoadingStateView with an activity
    */
-  constructor(activity: Activity) :
-      this(activity.findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
+  @JvmOverloads
+  constructor(activity: Activity, listener: OnReloadListener? = null) :
+      this(activity.findViewById<ViewGroup>(android.R.id.content).getChildAt(0), listener)
 
   init {
     viewDelegatePool?.apply { ViewDelegatePool(this@LoadingStateView).invoke() }
@@ -56,6 +57,17 @@ class LoadingStateView(private val contentView: View) {
     register(ContentViewDelegate())
     setDecorView(LinearDecorViewDelegate(emptyList()))
   }
+
+  /**
+   * Adds one or more views to decorate content in the header.
+   *
+   * @param delegates the view delegates of creating view
+   */
+  fun setHeaders(vararg delegates: ViewDelegate) =
+    setDecorView(LinearDecorViewDelegate(delegates.map {
+      register(it)
+      getView(it.viewType)
+    }))
 
   /**
    * Sets an view delegate for decorating content view.
@@ -82,12 +94,12 @@ class LoadingStateView(private val contentView: View) {
   }
 
   /**
-   * Adds one or more views to decorate content in the header.
+   * Adds child decorative header between the content and the decorative view.
    *
    * @param delegates the view delegates of creating view
    */
-  fun setDecorHeader(vararg delegates: ViewDelegate) =
-    setDecorView(LinearDecorViewDelegate(delegates.map {
+  fun addChildHeaders(vararg delegates: ViewDelegate) =
+    addChildDecorView(LinearDecorViewDelegate(delegates.map {
       register(it)
       getView(it.viewType)
     }))
@@ -106,17 +118,6 @@ class LoadingStateView(private val contentView: View) {
     showView(ViewType.CONTENT)
   }
 
-  /**
-   * Adds child decorative header between the content and the decorative view.
-   *
-   * @param delegates the view delegates of creating view
-   */
-  fun addChildDecorHeader(vararg delegates: ViewDelegate) =
-    addChildDecorView(LinearDecorViewDelegate(delegates.map {
-      register(it)
-      getView(it.viewType)
-    }))
-
   private fun DecorViewDelegate.createDecorView() =
     onCreateDecorView(LayoutInflater.from(contentView.context)).also { decorView ->
       contentView.layoutParams?.let { decorView.layoutParams = it }
@@ -125,19 +126,10 @@ class LoadingStateView(private val contentView: View) {
   /**
    * Registers the view delegate of creating view before showing view.
    *
-   * @param viewDelegate  the view delegate of creating view
+   * @param delegates the view delegate of creating view
    */
   fun register(vararg delegates: ViewDelegate) {
     delegates.forEach { viewDelegates[it.viewType] = it }
-  }
-
-  /**
-   * Called if you need to handle reload event, you can get the listener of reloading data from view holder.
-   *
-   * @param onReloadListener the listener of reloading data
-   */
-  fun setOnReloadListener(onReloadListener: OnReloadListener) {
-    this.onReloadListener = onReloadListener
   }
 
   @JvmOverloads
@@ -163,20 +155,24 @@ class LoadingStateView(private val contentView: View) {
     if (currentView == null) {
       addView(viewType)
     } else {
-      viewCashes[viewType]?.let { addView(viewType) }
+      if (viewCashes[viewType] == null) addView(viewType)
       if (viewType != currentViewType) {
-        getView(viewType).visibility = View.VISIBLE
+        val view = getView(viewType)
+        view.visibility = View.VISIBLE
         if (animation != null) {
           animation.onStartHideAnimation(currentView, currentViewType)
-          animation.onStartShowAnimation(getView(viewType), getViewDelegate<ViewDelegate>(viewType).viewType)
+          animation.onStartShowAnimation(view, getViewDelegate<ViewDelegate>(viewType).viewType)
         } else {
           currentView.visibility = View.GONE
         }
-        this.currentView = getView(viewType)
+        this.currentView = view
       }
     }
     currentViewType = viewType
   }
+
+  @Suppress("UNCHECKED_CAST")
+  fun <T : ViewDelegate> getViewDelegate(viewType: Any) = viewDelegates[viewType] as T
 
   private fun addView(viewType: Any) {
     val view = getView(viewType)
@@ -195,19 +191,12 @@ class LoadingStateView(private val contentView: View) {
 
   private fun getView(viewType: Any): View {
     if (viewCashes[viewType] == null) {
-      addViewHolder(viewType)
+      val viewDelegate: ViewDelegate = getViewDelegate(viewType)
+      val view = viewDelegate.onCreateView(LayoutInflater.from(contentParent.context), contentParent)
+      viewDelegate.onReloadListener = onReloadListener
+      viewCashes[viewType] = view
     }
     return viewCashes[viewType]!!
-  }
-
-  @Suppress("UNCHECKED_CAST")
-  fun <T : ViewDelegate> getViewDelegate(viewType: Any) = viewDelegates[viewType] as T
-
-  private fun addViewHolder(viewType: Any) {
-    val viewDelegate: ViewDelegate = getViewDelegate(viewType)
-    val view = viewDelegate.onCreateView(LayoutInflater.from(contentParent.context), contentParent)
-    viewDelegate.onReloadListener = onReloadListener
-    viewCashes[viewType] = view
   }
 
   abstract class ViewDelegate(val viewType: Any) {
@@ -223,7 +212,6 @@ class LoadingStateView(private val contentView: View) {
 
   abstract class DecorViewDelegate {
     abstract fun onCreateDecorView(inflater: LayoutInflater): View
-
     abstract fun getContentParent(decorView: View): ViewGroup
   }
 
@@ -246,17 +234,12 @@ class LoadingStateView(private val contentView: View) {
     fun register(vararg delegates: ViewDelegate) = stateView.register(*delegates)
   }
 
-  fun interface OnReloadListener {
-    fun onReload()
-  }
-
   fun interface Callback<in T> {
     fun T.invoke()
   }
 
   interface Animation {
     fun onStartShowAnimation(view: View, viewType: Any)
-
     fun onStartHideAnimation(view: View, viewType: Any)
   }
 
@@ -268,6 +251,10 @@ class LoadingStateView(private val contentView: View) {
       this.viewDelegatePool = viewDelegatePool
     }
   }
+}
+
+fun interface OnReloadListener {
+  fun onReload()
 }
 
 enum class ViewType {

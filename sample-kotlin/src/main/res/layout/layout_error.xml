@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <TextView
+    android:id="@+id/tv_error_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:text=" Failured to load"
+    android:textColor="@color/loading_error_text"
+    android:textSize="16sp"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginTop="8dp"
+    app:layout_constraintTop_toBottomOf="@+id/imageView3"
+    android:layout_marginEnd="8dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/btn_reload"/>
+
+  <TextView
+    android:id="@+id/btn_reload"
+    android:layout_width="72dp"
+    android:layout_height="24dp"
+    android:gravity="center"
+    android:text="Retry"
+    android:textColor="#999"
+    android:textSize="14sp"
+    android:background="@drawable/bg_reload_btn"
+    android:layout_marginBottom="8dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_marginStart="8dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tv_error_text"
+    android:layout_marginEnd="8dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="8dp"/>
+
+  <ImageView
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    app:srcCompat="@drawable/ic_error"
+    android:id="@+id/imageView3"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginEnd="8dp"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
+    app:layout_constraintBottom_toTopOf="@+id/tv_error_text"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

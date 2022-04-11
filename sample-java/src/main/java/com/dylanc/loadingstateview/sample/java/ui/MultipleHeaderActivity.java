@@ -23,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.loadingstateview.LoadingStateView;
-import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.java.R;
 import com.dylanc.loadingstateview.sample.java.delegate.NothingViewDelegate;
 import com.dylanc.loadingstateview.sample.java.delegate.SearchHeaderViewDelegate;
@@ -44,7 +43,7 @@ public class MultipleHeaderActivity extends AppCompatActivity implements SearchH
     setContentView(R.layout.layout_content);
     loadingStateView = new LoadingStateView(this);
     loadingStateView.register(new NothingViewDelegate());
-    loadingStateView.setDecorHeader(
+    loadingStateView.setHeaders(
         new ToolbarViewDelegate("MultipleHeader(search)", NavIconType.BACK),
         new SearchHeaderViewDelegate(this)
     );

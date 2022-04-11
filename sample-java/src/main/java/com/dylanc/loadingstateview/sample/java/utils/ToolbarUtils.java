@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dylanc.loadingstateview.LoadingStateView;
-import com.dylanc.loadingstateview.ViewType;
 import com.dylanc.loadingstateview.sample.java.delegate.CustomHeaderViewDelegate;
 import com.dylanc.loadingstateview.sample.java.delegate.ScrollingDecorViewDelegate;
 import com.dylanc.loadingstateview.sample.java.delegate.ToolbarViewDelegate;
@@ -41,7 +40,7 @@ public class ToolbarUtils {
   public static LoadingStateView setToolbar(Activity activity, String title, NavIconType type, int menuId,
                                             Function1<? super MenuItem, Boolean> onMenuItemClick) {
     LoadingStateView loadingStateView = new LoadingStateView(activity);
-    loadingStateView.setDecorHeader(new ToolbarViewDelegate(title, type, menuId, onMenuItemClick));
+    loadingStateView.setHeaders(new ToolbarViewDelegate(title, type, menuId, onMenuItemClick));
     return loadingStateView;
   }
 
@@ -49,7 +48,7 @@ public class ToolbarUtils {
                                                   int firstDrawableId, View.OnClickListener onFirstBtnClick,
                                                   int secondDrawableId, View.OnClickListener onSecondBtnClick) {
     LoadingStateView loadingStateView = new LoadingStateView(activity);
-    loadingStateView.setDecorHeader(new CustomHeaderViewDelegate(onMessageClick,
+    loadingStateView.setHeaders(new CustomHeaderViewDelegate(onMessageClick,
         firstDrawableId, onFirstBtnClick, secondDrawableId, onSecondBtnClick));
     return loadingStateView;
   }
