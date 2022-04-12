@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
-
 package com.dylanc.loadingstateview
 
 import android.app.Activity
@@ -45,7 +43,7 @@ class LoadingStateView @JvmOverloads constructor(
   private val viewCashes: HashMap<Any, View> = HashMap()
 
   /**
-   * Constructs a LoadingStateView with an activity
+   * Constructs a LoadingStateView with an activity and listener.
    */
   @JvmOverloads
   constructor(activity: Activity, listener: OnReloadListener? = null) :
@@ -63,11 +61,7 @@ class LoadingStateView @JvmOverloads constructor(
    *
    * @param delegates the view delegates of creating view
    */
-  fun setHeaders(vararg delegates: ViewDelegate) =
-    setDecorView(LinearDecorViewDelegate(delegates.map {
-      register(it)
-      getView(it.viewType)
-    }))
+  fun setHeaders(vararg delegates: ViewDelegate) = setDecorView(LinearDecorViewDelegate(*delegates))
 
   /**
    * Sets an view delegate for decorating content view.
@@ -98,11 +92,7 @@ class LoadingStateView @JvmOverloads constructor(
    *
    * @param delegates the view delegates of creating view
    */
-  fun addChildHeaders(vararg delegates: ViewDelegate) =
-    addChildDecorView(LinearDecorViewDelegate(delegates.map {
-      register(it)
-      getView(it.viewType)
-    }))
+  fun addChildHeaders(vararg delegates: ViewDelegate) = addChildDecorView(LinearDecorViewDelegate(*delegates))
 
   /**
    * Adds child decorative view between the content and the decorative view.
@@ -128,9 +118,7 @@ class LoadingStateView @JvmOverloads constructor(
    *
    * @param delegates the view delegate of creating view
    */
-  fun register(vararg delegates: ViewDelegate) {
-    delegates.forEach { viewDelegates[it.viewType] = it }
-  }
+  fun register(vararg delegates: ViewDelegate) = delegates.forEach { viewDelegates[it.viewType] = it }
 
   @JvmOverloads
   fun showLoadingView(animation: Animation? = null) = showView(ViewType.LOADING, animation)
@@ -215,8 +203,13 @@ class LoadingStateView @JvmOverloads constructor(
     abstract fun getContentParent(decorView: View): ViewGroup
   }
 
-  private class LinearDecorViewDelegate(private val views: List<View>) : DecorViewDelegate() {
+  private inner class LinearDecorViewDelegate(private val views: List<View>) : DecorViewDelegate() {
     private lateinit var contentParent: FrameLayout
+
+    constructor(vararg delegates: ViewDelegate) : this(delegates.map {
+      register(it)
+      getView(it.viewType)
+    })
 
     override fun onCreateDecorView(inflater: LayoutInflater) =
       LinearLayout(inflater.context).apply {

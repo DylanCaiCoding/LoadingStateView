@@ -32,6 +32,8 @@ interface LoadingState {
   fun Fragment.setToolbar(title: String? = null, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null)
   fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate)
   fun Fragment.setHeaders(vararg delegates: LoadingStateView.ViewDelegate)
+  fun Activity.setDecorView(delegate: LoadingStateView.DecorViewDelegate)
+  fun Fragment.setDecorView(delegate: LoadingStateView.DecorViewDelegate)
   fun showLoadingView()
   fun showContentView()
   fun showErrorView()
@@ -81,6 +83,14 @@ class LoadingStateImpl : LoadingState {
 
   override fun Fragment.setHeaders(vararg delegates: LoadingStateView.ViewDelegate) {
     loadingStateView?.addChildHeaders(*delegates)
+  }
+
+  override fun Activity.setDecorView(delegate: LoadingStateView.DecorViewDelegate) {
+    loadingStateView?.setDecorView(delegate)
+  }
+
+  override fun Fragment.setDecorView(delegate: LoadingStateView.DecorViewDelegate) {
+    loadingStateView?.addChildDecorView(delegate)
   }
 
   override fun showLoadingView() {
