@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    setToolbar("LoadingHelper", NavIconType.NONE, R.menu.menu_about);
+    setToolbar(getString(R.string.app_name), NavIconType.NONE, R.menu.menu_about);
   }
 
   @Override

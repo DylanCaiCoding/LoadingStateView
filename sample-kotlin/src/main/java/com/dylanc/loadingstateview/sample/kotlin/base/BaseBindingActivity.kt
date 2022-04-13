@@ -17,20 +17,23 @@
 package com.dylanc.loadingstateview.sample.kotlin.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import com.dylanc.loadingstateview.LoadingState
 import com.dylanc.loadingstateview.LoadingStateImpl
 import com.dylanc.loadingstateview.OnReloadListener
+import com.dylanc.viewbinding.base.ViewBindingUtil
 
-abstract class BaseFragment(private val layoutRes: Int) : Fragment(),
+abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
   LoadingState by LoadingStateImpl(), OnReloadListener {
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    val root = inflater.inflate(layoutRes, container, false)
-    return root.decorate(this, isDecorated)
+  lateinit var binding: VB private set
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
+    setContentView(binding.root)
+    binding.root.decorate(this, isDecorated)
   }
 
   open val isDecorated = true

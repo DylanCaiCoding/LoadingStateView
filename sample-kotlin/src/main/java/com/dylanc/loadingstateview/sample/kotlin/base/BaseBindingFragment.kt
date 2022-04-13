@@ -21,16 +21,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.dylanc.loadingstateview.LoadingState
 import com.dylanc.loadingstateview.LoadingStateImpl
 import com.dylanc.loadingstateview.OnReloadListener
+import com.dylanc.viewbinding.base.ViewBindingUtil
 
-abstract class BaseFragment(private val layoutRes: Int) : Fragment(),
+abstract class BaseBindingFragment<VB : ViewBinding> : Fragment(),
   LoadingState by LoadingStateImpl(), OnReloadListener {
 
+  lateinit var binding: VB private set
+
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    val root = inflater.inflate(layoutRes, container, false)
-    return root.decorate(this, isDecorated)
+    binding = ViewBindingUtil.inflateWithGeneric(this, inflater, container, false)
+    return binding.root.decorate(this, isDecorated)
   }
 
   open val isDecorated = true

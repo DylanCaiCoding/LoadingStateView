@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.dylanc.loadingstateview.sample.kotlin.delegate
 
 import com.dylanc.loadingstateview.LoadingStateView.ViewDelegate

@@ -248,8 +248,8 @@ class LoadingStateView @JvmOverloads constructor(
   }
 }
 
-fun interface OnReloadListener {
-  fun onReload()
+interface OnReloadListener {
+  fun onReload() = Unit
 }
 
 enum class ViewType {

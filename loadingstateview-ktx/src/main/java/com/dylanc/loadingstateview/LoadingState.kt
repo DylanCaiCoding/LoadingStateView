@@ -23,24 +23,46 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
 interface LoadingState {
-  fun Activity.decorateContentView(listener: OnReloadListener, isDecorated: Boolean = true)
-  fun View.decorate(listener: OnReloadListener, isDecorated: Boolean = true): View
+
+  fun Activity.decorateContentView(listener: OnReloadListener, isDecorated: Boolean)
+
+  fun View.decorate(listener: OnReloadListener, isDecorated: Boolean): View
+
   fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate)
+
   fun Activity.setToolbar(@StringRes titleId: Int, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null)
+
   fun Activity.setToolbar(title: String? = null, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null)
+
   fun Fragment.setToolbar(@StringRes titleId: Int, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null)
+
   fun Fragment.setToolbar(title: String? = null, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null)
+
   fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate)
+
   fun Fragment.setHeaders(vararg delegates: LoadingStateView.ViewDelegate)
+
   fun Activity.setDecorView(delegate: LoadingStateView.DecorViewDelegate)
+
   fun Fragment.setDecorView(delegate: LoadingStateView.DecorViewDelegate)
+
   fun showLoadingView()
+
   fun showContentView()
+
   fun showErrorView()
+
   fun showEmptyView()
+
   fun showCustomView(viewType: Any)
+
   fun updateToolbar(block: ToolbarConfig.() -> Unit)
+
   fun <T : LoadingStateView.ViewDelegate> updateView(viewType: Any, block: T.() -> Unit)
+
+  fun ToolbarViewDelegate(
+    title: String? = null, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null
+  ): ToolbarViewDelegate
 }
 
 class LoadingStateImpl : LoadingState {
@@ -66,7 +88,7 @@ class LoadingStateImpl : LoadingState {
   }
 
   override fun Activity.setToolbar(title: String?, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) {
-    setHeaders(ToolbarViewDelegate(title, navBtnType, block))
+    loadingStateView?.setHeaders(ToolbarViewDelegate(title, navBtnType, block))
   }
 
   override fun Fragment.setToolbar(@StringRes titleId: Int, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) {
@@ -74,7 +96,7 @@ class LoadingStateImpl : LoadingState {
   }
 
   override fun Fragment.setToolbar(title: String?, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) {
-    setHeaders(ToolbarViewDelegate(title, navBtnType, block))
+    loadingStateView?.setHeaders(ToolbarViewDelegate(title, navBtnType, block))
   }
 
   override fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate) {
@@ -120,4 +142,11 @@ class LoadingStateImpl : LoadingState {
   override fun <T : LoadingStateView.ViewDelegate> updateView(viewType: Any, block: T.() -> Unit) {
     loadingStateView?.getViewDelegate<T>(viewType)?.apply(block)
   }
+
+  override fun ToolbarViewDelegate(title: String?, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) =
+    requireNotNull(loadingStateView?.getViewDelegate<ToolbarViewDelegate>(ViewType.TITLE)) {
+      "ToolbarViewDelegate must be registered before."
+    }.apply {
+      config = ToolbarConfig(title, navBtnType).apply { block?.invoke(this) }
+    }
 }

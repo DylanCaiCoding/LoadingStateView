@@ -5,15 +5,13 @@ import com.dylanc.loadingstateview.LoadingStateView
 import com.dylanc.loadingstateview.sample.kotlin.delegate.ErrorViewDelegate
 import com.dylanc.loadingstateview.sample.kotlin.delegate.LoadingViewDelegate
 import com.dylanc.loadingstateview.toolbar.SimpleToolbarViewDelegate
-import com.dylanc.loadingstateview.toolbarFactory
 
 class App : Application() {
 
   override fun onCreate() {
     super.onCreate()
     LoadingStateView.setViewDelegatePool {
-      register(LoadingViewDelegate(), ErrorViewDelegate())
+      register(SimpleToolbarViewDelegate(), LoadingViewDelegate(), ErrorViewDelegate())
     }
-    toolbarFactory = { SimpleToolbarViewDelegate() }
   }
 }

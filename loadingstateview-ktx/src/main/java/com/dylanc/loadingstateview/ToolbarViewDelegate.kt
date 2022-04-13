@@ -22,13 +22,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-typealias ToolbarFactory = () -> ToolbarViewDelegate
-
-lateinit var toolbarFactory: ToolbarFactory
-
-fun ToolbarViewDelegate(title: String? = null, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null) =
-  toolbarFactory().apply { config = ToolbarConfig(title, navBtnType).apply { block?.invoke(this) } }
-
 abstract class ToolbarViewDelegate : LoadingStateView.ViewDelegate(ViewType.TITLE) {
   internal lateinit var config: ToolbarConfig
 

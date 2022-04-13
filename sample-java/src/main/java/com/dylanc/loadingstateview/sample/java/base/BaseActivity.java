@@ -20,6 +20,7 @@ import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.OnReloadListener;
 import com.dylanc.loadingstateview.sample.java.delegate.NavIconType;
 import com.dylanc.loadingstateview.sample.java.delegate.ToolbarViewDelegate;
 
@@ -33,7 +34,7 @@ import com.dylanc.loadingstateview.sample.java.delegate.ToolbarViewDelegate;
  * @author Dylan Cai
  */
 @SuppressWarnings("unused")
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements OnReloadListener {
 
   private LoadingStateView loadingStateView;
 
@@ -45,7 +46,7 @@ public class BaseActivity extends AppCompatActivity {
   public void setContentView(int layoutResID, @IdRes int contentViewId) {
     super.setContentView(layoutResID);
     if (contentViewId == 0) {
-      loadingStateView = new LoadingStateView(this, this::onReload);
+      loadingStateView = new LoadingStateView(this, this);
     } else {
       loadingStateView = new LoadingStateView(findViewById(contentViewId));
     }
@@ -86,6 +87,7 @@ public class BaseActivity extends AppCompatActivity {
     loadingStateView.showView(viewType);
   }
 
-  protected void onReload() {
+  @Override
+  public void onReload() {
   }
 }
