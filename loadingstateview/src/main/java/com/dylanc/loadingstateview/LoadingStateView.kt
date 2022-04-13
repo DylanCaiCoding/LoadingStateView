@@ -110,7 +110,9 @@ class LoadingStateView @JvmOverloads constructor(
 
   private fun DecorViewDelegate.createDecorView() =
     onCreateDecorView(LayoutInflater.from(contentView.context)).also { decorView ->
-      contentView.layoutParams?.let { decorView.layoutParams = it }
+      contentView.layoutParams?.let {
+        decorView.layoutParams = if (it is ConstraintLayout.LayoutParams) ConstraintLayout.LayoutParams(it) else it
+      }
     }
 
   /**
