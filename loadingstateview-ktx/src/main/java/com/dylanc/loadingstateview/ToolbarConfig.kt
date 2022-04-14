@@ -20,85 +20,55 @@ package com.dylanc.loadingstateview
 
 import android.app.Activity
 import android.view.View
-import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 enum class NavBtnType {
   ICON, TEXT, ICON_TEXT, NONE
 }
 
-open class ToolbarConfig(
+class ToolbarConfig(
   var title: String? = null,
   var navBtnType: NavBtnType = NavBtnType.ICON,
+  @DrawableRes var navIcon: Int? = null,
   var navText: String? = null,
-  @DrawableRes var navIcon: Int = ToolbarUI.navIcon,
-  var navClickListener: View.OnClickListener = View.OnClickListener {
-    if (it.context is Activity) (it.context as Activity).finish()
+  var onNavClickListener: View.OnClickListener = View.OnClickListener {
+    val context = it.context
+    if (context is Activity) context.finish()
   },
-  @DrawableRes var rightIcon: Int = -1,
+  @DrawableRes var rightIcon: Int? = null,
   var rightText: String? = null,
-  var rightClickListener: View.OnClickListener? = null,
-  @DrawableRes var rightSecondIcon: Int = -1,
-  var rightSecondClickListener: View.OnClickListener? = null,
-  var height: Float = ToolbarUI.height,
-  var titleTextSize: Float = ToolbarUI.titleTextSize,
-  var rightTextSize: Float = ToolbarUI.rightTextSize,
-  var rightSecondTextSize: Float = ToolbarUI.rightSecondTextSize,
-  @ColorInt var titleTextColor: Int = ToolbarUI.titleTextColor,
-  @ColorInt var navTextColor: Int = ToolbarUI.navTextColor,
-  @ColorInt var rightTextColor: Int = ToolbarUI.rightTextColor,
-  @ColorInt var backgroundColor: Int = ToolbarUI.backgroundColor,
-  var navIconSize: Float = ToolbarUI.navIconSize,
-  var rightIconSize: Float = ToolbarUI.rightIconSize,
-  var rightSecondIconSize: Float = ToolbarUI.rightSecondIconSize,
+  var onRightClickListener: View.OnClickListener? = null,
+  val extras: HashMap<String, Any?> = HashMap()
 )
-
-fun ToolbarConfig.navText(text: String, listener: View.OnClickListener) {
-  navText = text
-  navClickListener = listener
-}
 
 fun ToolbarConfig.navIcon(@DrawableRes icon: Int, listener: View.OnClickListener) {
   navIcon = icon
-  navClickListener = listener
+  onNavClickListener = listener
+}
+
+fun ToolbarConfig.navText(text: String, listener: View.OnClickListener) {
+  navText = text
+  onNavClickListener = listener
 }
 
 fun ToolbarConfig.rightIcon(@DrawableRes icon: Int, listener: View.OnClickListener) {
   rightIcon = icon
-  rightClickListener = listener
+  onRightClickListener = listener
 }
 
 fun ToolbarConfig.rightText(text: String, listener: View.OnClickListener) {
   rightText = text
-  rightClickListener = listener
+  onRightClickListener = listener
 }
 
-fun ToolbarConfig.rightSecondIcon(@DrawableRes icon: Int, listener: View.OnClickListener) {
-  rightSecondIcon = icon
-  rightSecondClickListener = listener
-}
+fun <T> toolbarExtras() = object : ReadWriteProperty<ToolbarConfig, T?> {
+  @Suppress("UNCHECKED_CAST")
+  override fun getValue(thisRef: ToolbarConfig, property: KProperty<*>): T? =
+    thisRef.extras[property.name] as? T
 
-object ToolbarUI {
-  var height = -1f
-  var titleTextSize = -1f
-  var rightTextSize = -1f
-  var rightSecondTextSize = -1f
-
-  @ColorInt
-  var titleTextColor = -1
-
-  @ColorInt
-  var navTextColor = -1
-
-  @ColorInt
-  var rightTextColor = -1
-
-  @ColorInt
-  var backgroundColor = -1
-
-  @DrawableRes
-  var navIcon: Int = -1
-  var navIconSize = -1f
-  var rightIconSize = -1f
-  var rightSecondIconSize = -1f
+  override fun setValue(thisRef: ToolbarConfig, property: KProperty<*>, value: T?) {
+    thisRef.extras[property.name] = value
+  }
 }

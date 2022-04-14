@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
-
 package com.dylanc.loadingstateview
 
 import android.view.LayoutInflater

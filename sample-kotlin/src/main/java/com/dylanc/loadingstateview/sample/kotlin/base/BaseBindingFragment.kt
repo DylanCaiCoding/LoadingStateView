@@ -32,10 +32,12 @@ abstract class BaseBindingFragment<VB : ViewBinding> : Fragment(),
 
   lateinit var binding: VB private set
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    binding = ViewBindingUtil.inflateWithGeneric(this, inflater, container, false)
-    return binding.root.decorate(this, isDecorated)
-  }
+  open val contentView get() = binding.root
 
   open val isDecorated = true
+
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    binding = ViewBindingUtil.inflateWithGeneric(this, inflater, container, false)
+    return contentView.decorate(this, isDecorated)
+  }
 }

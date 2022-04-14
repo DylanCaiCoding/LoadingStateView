@@ -59,21 +59,10 @@
     android:layout_height="24dp"
     android:layout_marginEnd="16dp"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/iv_right_second"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_goneMarginEnd="16dp"
     app:srcCompat="@android:drawable/ic_media_pause"
-    tools:visibility="gone" />
-
-  <ImageView
-    android:id="@+id/iv_right_second"
-    android:layout_width="24dp"
-    android:layout_height="24dp"
-    android:layout_marginEnd="16dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@android:drawable/ic_media_ff"
     tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

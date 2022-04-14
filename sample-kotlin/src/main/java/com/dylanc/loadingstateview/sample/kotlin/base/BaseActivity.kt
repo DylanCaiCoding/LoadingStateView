@@ -25,11 +25,11 @@ import com.dylanc.loadingstateview.OnReloadListener
 abstract class BaseActivity(private val layoutRes: Int) : AppCompatActivity(),
   LoadingState by LoadingStateImpl(), OnReloadListener {
 
+  open val isDecorated = true
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(layoutRes)
     decorateContentView(this, isDecorated)
   }
-
-  open val isDecorated = true
 }

@@ -28,10 +28,10 @@ import com.dylanc.loadingstateview.OnReloadListener
 abstract class BaseFragment(private val layoutRes: Int) : Fragment(),
   LoadingState by LoadingStateImpl(), OnReloadListener {
 
+  open val isDecorated = true
+
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val root = inflater.inflate(layoutRes, container, false)
     return root.decorate(this, isDecorated)
   }
-
-  open val isDecorated = true
 }

@@ -29,12 +29,14 @@ abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
 
   lateinit var binding: VB private set
 
+  open val contentView get() = binding.root
+
+  open val isDecorated = true
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
-    setContentView(binding.root)
-    binding.root.decorate(this, isDecorated)
+    setContentView(contentView)
+    contentView.decorate(this, isDecorated)
   }
-
-  open val isDecorated = true
 }

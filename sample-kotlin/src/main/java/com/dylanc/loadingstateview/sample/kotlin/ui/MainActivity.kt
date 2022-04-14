@@ -16,6 +16,7 @@
 
 package com.dylanc.loadingstateview.sample.kotlin.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -24,14 +25,16 @@ import com.dylanc.loadingstateview.rightText
 import com.dylanc.loadingstateview.sample.kotlin.R
 import com.dylanc.loadingstateview.sample.kotlin.base.BaseBindingActivity
 import com.dylanc.loadingstateview.sample.kotlin.databinding.ActivityMainBinding
+import com.dylanc.loadingstateview.sample.kotlin.delegate.rightTextColor
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setToolbar(R.string.app_name) {
-      rightText("Add") {
-        Toast.makeText(this@MainActivity, "Add", Toast.LENGTH_SHORT).show()
+      rightTextColor = Color.RED
+      rightText("Delete") {
+        Toast.makeText(this@MainActivity, "Delete", Toast.LENGTH_SHORT).show()
       }
     }
     showErrorView()
