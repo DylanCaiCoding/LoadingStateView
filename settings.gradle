@@ -1,6 +1,5 @@
 rootProject.name = "LoadingStateView"
 include ':loadingstateview'
 include ':loadingstateview-ktx'
-include ':loadingstateview-toolbar'
 include ':sample-java'
 include ':sample-kotlin'
