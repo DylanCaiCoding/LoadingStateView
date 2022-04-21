@@ -20,7 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-abstract class ToolbarViewDelegate : LoadingStateView.ViewDelegate(ViewType.TITLE) {
+abstract class BaseToolbarViewDelegate : LoadingStateView.ViewDelegate(ViewType.TITLE) {
   internal lateinit var config: ToolbarConfig
 
   override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup) =

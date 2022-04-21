@@ -31,36 +31,47 @@ enum class NavBtnType {
 class ToolbarConfig(
   var title: String? = null,
   var navBtnType: NavBtnType = NavBtnType.ICON,
-  @DrawableRes var navIcon: Int? = null,
-  var navText: String? = null,
-  var onNavClickListener: View.OnClickListener = View.OnClickListener {
-    val context = it.context
-    if (context is Activity) context.finish()
-  },
-  @DrawableRes var rightIcon: Int? = null,
-  var rightText: String? = null,
-  var onRightClickListener: View.OnClickListener? = null,
-  val extras: HashMap<String, Any?> = HashMap()
-)
+  val extras: HashMap<String, Any?> = HashMap(),
+) {
+  @DrawableRes
+  var navIcon: Int? = null
+    private set
+  var navText: String? = null
+    private set
+  var onNavClickListener = View.OnClickListener {
+    if (it.context is Activity) {
+      (it.context as Activity).finish()
+    }
+  }
+    private set
 
-fun ToolbarConfig.navIcon(@DrawableRes icon: Int, listener: View.OnClickListener) {
-  navIcon = icon
-  onNavClickListener = listener
-}
+  @DrawableRes
+  var rightIcon: Int? = null
+    private set
+  var rightText: String? = null
+    private set
+  var onRightClickListener: View.OnClickListener? = null
+    private set
 
-fun ToolbarConfig.navText(text: String, listener: View.OnClickListener) {
-  navText = text
-  onNavClickListener = listener
-}
+  fun navIcon(@DrawableRes icon: Int, listener: View.OnClickListener) {
+    navIcon = icon
+    onNavClickListener = listener
+  }
 
-fun ToolbarConfig.rightIcon(@DrawableRes icon: Int, listener: View.OnClickListener) {
-  rightIcon = icon
-  onRightClickListener = listener
-}
+  fun navText(text: String, listener: View.OnClickListener) {
+    navText = text
+    onNavClickListener = listener
+  }
 
-fun ToolbarConfig.rightText(text: String, listener: View.OnClickListener) {
-  rightText = text
-  onRightClickListener = listener
+  fun rightIcon(@DrawableRes icon: Int, listener: View.OnClickListener) {
+    rightIcon = icon
+    onRightClickListener = listener
+  }
+
+  fun rightText(text: String, listener: View.OnClickListener) {
+    rightText = text
+    onRightClickListener = listener
+  }
 }
 
 fun <T> toolbarExtras() = object : ReadWriteProperty<ToolbarConfig, T?> {

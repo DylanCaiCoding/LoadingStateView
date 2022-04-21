@@ -21,13 +21,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.dylanc.loadingstateview.NavBtnType
 import com.dylanc.loadingstateview.ToolbarConfig
-import com.dylanc.loadingstateview.ToolbarViewDelegate
+import com.dylanc.loadingstateview.BaseToolbarViewDelegate
 import com.dylanc.loadingstateview.sample.kotlin.databinding.LayoutToolbarBinding
 import com.dylanc.loadingstateview.toolbarExtras
 
 var ToolbarConfig.rightTextColor: Int? by toolbarExtras()
 
-class DefaultToolbarViewDelegate : ToolbarViewDelegate() {
+class ToolbarViewDelegate : BaseToolbarViewDelegate() {
   private lateinit var binding: LayoutToolbarBinding
 
   override fun onCreateToolbar(inflater: LayoutInflater, parent: ViewGroup): View {

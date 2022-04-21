@@ -13,21 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.dylanc.loadingstateview.sample.kotlin.delegate
 
+import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import com.dylanc.loadingstateview.LoadingStateView
-import com.dylanc.loadingstateview.ViewType
 import com.dylanc.loadingstateview.sample.kotlin.R
 
 /**
  * @author Dylan Cai
  */
-class LoadingViewDelegate : LoadingStateView.ViewDelegate(ViewType.LOADING) {
+class ScrollingDecorViewDelegate(private val title: String) : LoadingStateView.DecorViewDelegate() {
 
-  override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup): View =
-    inflater.inflate(R.layout.layout_loading, parent, false)
+  override fun onCreateDecorView(context: Context, inflater: LayoutInflater): View {
+    val view = inflater.inflate(R.layout.layout_scrolling_toolbar, null)
+    val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+    toolbar.title = title
+    toolbar.setNavigationOnClickListener {
+      if (context is Activity) context.finish()
+    }
+    return view
+  }
+
+  override fun getContentParent(decorView: View): ViewGroup {
+    return decorView.findViewById(R.id.content_parent)
+  }
 }

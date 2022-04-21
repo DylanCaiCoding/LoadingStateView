@@ -17,6 +17,7 @@
 package com.dylanc.loadingstateview
 
 import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,7 +110,7 @@ class LoadingStateView @JvmOverloads constructor(
   }
 
   private fun DecorViewDelegate.createDecorView() =
-    onCreateDecorView(LayoutInflater.from(contentView.context)).also { decorView ->
+    onCreateDecorView(contentView.context, LayoutInflater.from(contentView.context)).also { decorView ->
       contentView.layoutParams?.let {
         decorView.layoutParams = if (it is ConstraintLayout.LayoutParams) ConstraintLayout.LayoutParams(it) else it
       }
@@ -201,7 +202,7 @@ class LoadingStateView @JvmOverloads constructor(
   }
 
   abstract class DecorViewDelegate {
-    abstract fun onCreateDecorView(inflater: LayoutInflater): View
+    abstract fun onCreateDecorView(context: Context, inflater: LayoutInflater): View
     abstract fun getContentParent(decorView: View): ViewGroup
   }
 
@@ -213,7 +214,7 @@ class LoadingStateView @JvmOverloads constructor(
       getView(it.viewType)
     })
 
-    override fun onCreateDecorView(inflater: LayoutInflater) =
+    override fun onCreateDecorView(context: Context, inflater: LayoutInflater) =
       LinearLayout(inflater.context).apply {
         orientation = LinearLayout.VERTICAL
         contentParent = FrameLayout(context)

@@ -18,7 +18,6 @@ package com.dylanc.loadingstateview
 
 import android.app.Activity
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
@@ -62,5 +61,5 @@ interface LoadingState {
 
   fun ToolbarViewDelegate(
     title: String? = null, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null
-  ): ToolbarViewDelegate
+  ): BaseToolbarViewDelegate
 }

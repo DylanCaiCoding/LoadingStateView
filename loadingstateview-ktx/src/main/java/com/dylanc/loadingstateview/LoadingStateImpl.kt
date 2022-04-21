@@ -93,7 +93,7 @@ class LoadingStateImpl : LoadingState {
   }
 
   override fun updateToolbar(block: ToolbarConfig.() -> Unit) {
-    updateView<ToolbarViewDelegate>(ViewType.TITLE) { bind(config.apply(block)) }
+    updateView<BaseToolbarViewDelegate>(ViewType.TITLE) { bind(config.apply(block)) }
   }
 
   override fun <T : LoadingStateView.ViewDelegate> updateView(viewType: Any, block: T.() -> Unit) {
@@ -101,7 +101,7 @@ class LoadingStateImpl : LoadingState {
   }
 
   override fun ToolbarViewDelegate(title: String?, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) =
-    requireNotNull(loadingStateView?.getViewDelegate<ToolbarViewDelegate>(ViewType.TITLE)) {
+    requireNotNull(loadingStateView?.getViewDelegate<BaseToolbarViewDelegate>(ViewType.TITLE)) {
       "ToolbarViewDelegate must be registered before."
     }.apply {
       config = ToolbarConfig(title, navBtnType).apply { block?.invoke(this) }
