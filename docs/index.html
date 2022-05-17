@@ -14,9 +14,24 @@
     window.$docsify = {
       name: 'LoadingStateView',
       repo: 'https://github.com/DylanCaiCoding/LoadingStateView',
+      themeColor: '#1E88E5',
       loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      tabs: {
+        persist    : true,
+        sync       : true,
+        theme      : 'classic',
+        tabComments: true,
+        tabHeadings: true
+      }
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-groovy.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
 </body>
 </html>

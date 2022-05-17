@@ -1,13 +1,5 @@
 * [介绍](/)
-
-* Kotlin
-  * [基础用法](/kotlin/basicusage)
-  * [Kotlin 委托用法](/kotlin/delegate)
-  * [结合 ViewBinding 使用](/kotlin/viewbinding)
-
-* Java
-  * [基础用法](/java/basicusage)
-  * [结合 ViewBinding 使用](/kotlin/viewbinding)
-
-* 其它
-  * [Q&A](/others/q&a)
+* [基础用法](/zh/basic-usage)
+* [Kotlin 委托用法](/zh/delegate)
+* [结合 ViewBinding 使用](/zh/viewbinding)
+* [Q&A](/zh/q&a)
