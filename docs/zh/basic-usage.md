@@ -128,7 +128,7 @@ loadingStateView.showEmptyView(); // 对应视图类型 ViewType.EMPTY
 
 ## 更新视图样式
 
-需要在 `ViewDelegate` 自行实行更新的方法，然后获取到对应的 `ViewDelegate` 进行更新。
+需要在 `ViewDelegate` 自行增加更新的方法，然后获取到对应的 `ViewDelegate` 进行更新。
 
 比如在 `ErrorViewDelegate` 增加了 `updateMsg(msg)` 方法修改请求失败的文字：
 

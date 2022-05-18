@@ -17,7 +17,7 @@
 
 点击或者扫描二维码下载
 
-[![QR code](https://github.com/DylanCaiCoding/LoadingStateView/img/app_download_qr_code.png)](https://www.pgyer.com/loadinghelper)
+[![QR code](img/app_download_qr_code.png)](https://www.pgyer.com/loadinghelper)
 
 动态添加加载状态的布局：
 
