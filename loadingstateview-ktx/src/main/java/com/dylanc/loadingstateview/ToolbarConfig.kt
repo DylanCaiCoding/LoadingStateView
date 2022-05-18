@@ -19,6 +19,8 @@
 package com.dylanc.loadingstateview
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.view.View
 import androidx.annotation.DrawableRes
 import kotlin.properties.ReadWriteProperty
@@ -35,12 +37,16 @@ class ToolbarConfig(
 ) {
   @DrawableRes
   var navIcon: Int? = null
-    private set
   var navText: String? = null
     private set
   var onNavClickListener = View.OnClickListener {
-    if (it.context is Activity) {
-      (it.context as Activity).finish()
+    var context: Context? = it.context
+    while (context is ContextWrapper) {
+      if (context is Activity) {
+        context.finish()
+        return@OnClickListener
+      }
+      context = context.baseContext
     }
   }
     private set
@@ -53,7 +59,7 @@ class ToolbarConfig(
   var onRightClickListener: View.OnClickListener? = null
     private set
 
-  fun navIcon(@DrawableRes icon: Int, listener: View.OnClickListener) {
+  fun navIcon(@DrawableRes icon: Int? = navIcon, listener: View.OnClickListener) {
     navIcon = icon
     onNavClickListener = listener
   }

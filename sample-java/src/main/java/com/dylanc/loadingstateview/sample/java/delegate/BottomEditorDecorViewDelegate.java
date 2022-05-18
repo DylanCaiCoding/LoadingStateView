@@ -17,10 +17,13 @@
 package com.dylanc.loadingstateview.sample.java.delegate;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
 
 import com.dylanc.loadingstateview.LoadingStateView;
 import com.dylanc.loadingstateview.sample.java.R;
@@ -41,7 +44,7 @@ public class BottomEditorDecorViewDelegate extends LoadingStateView.DecorViewDel
   @NotNull
   @Override
   @SuppressLint("InflateParams")
-  public View onCreateDecorView(@NotNull LayoutInflater inflater) {
+  public View onCreateDecorView(@NonNull Context context, @NotNull LayoutInflater inflater) {
     View view = inflater.inflate(R.layout.layout_bottom_editor, null);
     EditText edtContent = view.findViewById(R.id.edt_content);
     view.findViewById(R.id.btn_send).setOnClickListener(v -> {

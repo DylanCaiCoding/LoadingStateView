@@ -17,6 +17,7 @@
 package com.dylanc.loadingstateview.sample.java.delegate;
 
 import androidx.annotation.NonNull;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import com.dylanc.loadingstateview.sample.java.R;
 /**
  * @author Dylan Cai
  */
-public class LoadingViewDelegate extends LoadingStateView.ViewDelegate{
+public class LoadingViewDelegate extends LoadingStateView.ViewDelegate {
 
   public int height = ViewGroup.LayoutParams.MATCH_PARENT;
 

@@ -19,8 +19,6 @@ package com.dylanc.loadingstateview.sample.java;
 import android.app.Application;
 
 import com.dylanc.loadingstateview.LoadingStateView;
-import com.dylanc.loadingstateview.ViewType;
-import com.dylanc.loadingstateview.sample.java.animation.FadeAnimation;
 import com.dylanc.loadingstateview.sample.java.delegate.EmptyViewDelegate;
 import com.dylanc.loadingstateview.sample.java.delegate.ErrorViewDelegate;
 import com.dylanc.loadingstateview.sample.java.delegate.LoadingViewDelegate;

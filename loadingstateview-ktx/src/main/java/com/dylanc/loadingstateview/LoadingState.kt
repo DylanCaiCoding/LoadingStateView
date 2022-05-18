@@ -23,9 +23,9 @@ import androidx.fragment.app.Fragment
 
 interface LoadingState {
 
-  fun Activity.decorateContentView(listener: OnReloadListener, isDecorated: Boolean = true)
+  fun Activity.decorateContentView(listener: OnReloadListener? = null, isDecorated: Boolean = true)
 
-  fun View.decorate(listener: OnReloadListener, isDecorated: Boolean = true): View
+  fun View.decorate(listener: OnReloadListener? = null, isDecorated: Boolean = true): View
 
   fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate)
 
@@ -59,6 +59,7 @@ interface LoadingState {
 
   fun <T : LoadingStateView.ViewDelegate> updateView(viewType: Any, block: T.() -> Unit)
 
+  @Suppress("FunctionName")
   fun ToolbarViewDelegate(
     title: String? = null, navBtnType: NavBtnType = NavBtnType.ICON, block: (ToolbarConfig.() -> Unit)? = null
   ): BaseToolbarViewDelegate

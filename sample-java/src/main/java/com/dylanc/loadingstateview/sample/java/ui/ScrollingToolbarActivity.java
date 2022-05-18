@@ -41,8 +41,8 @@ public class ScrollingToolbarActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_scrolling);
     loadingStateView = ToolbarUtils.setScrollingToolbar(this, "SpecialDecorView(scrolling)");
-    LoadingViewDelegate viewDelegate = loadingStateView.getViewDelegate(ViewType.LOADING);
-    viewDelegate.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+    loadingStateView.updateViewDelegate(ViewType.LOADING, (LoadingViewDelegate delegate) ->
+        delegate.height = ViewGroup.LayoutParams.WRAP_CONTENT);
     loadData();
   }
 

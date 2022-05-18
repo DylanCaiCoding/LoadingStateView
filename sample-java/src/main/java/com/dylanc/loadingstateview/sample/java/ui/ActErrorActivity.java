@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.OnReloadListener;
 import com.dylanc.loadingstateview.sample.java.R;
 import com.dylanc.loadingstateview.sample.java.delegate.NavIconType;
 import com.dylanc.loadingstateview.sample.java.animation.FadeAnimation;
@@ -31,7 +32,7 @@ import com.dylanc.loadingstateview.sample.java.utils.ToolbarUtils;
 /**
  * @author Dylan Cai
  */
-public class ActErrorActivity extends AppCompatActivity {
+public class ActErrorActivity extends AppCompatActivity implements OnReloadListener {
 
   private LoadingStateView loadingStateView;
 
@@ -40,7 +41,7 @@ public class ActErrorActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.layout_content);
     loadingStateView = ToolbarUtils.setToolbar(this, "Activity(error)", NavIconType.BACK);
-    loadingStateView.setOnReloadListener(this::onReload);
+    loadingStateView.setOnReloadListener(this);
     loadData();
   }
 
@@ -59,6 +60,7 @@ public class ActErrorActivity extends AppCompatActivity {
     });
   }
 
+  @Override
   public void onReload() {
     loadingStateView.showLoadingView(new FadeAnimation());
     HttpUtils.requestSuccess(new HttpUtils.Callback() {

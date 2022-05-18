@@ -25,16 +25,12 @@ import androidx.fragment.app.Fragment
 class LoadingStateImpl : LoadingState {
   private var loadingStateView: LoadingStateView? = null
 
-  override fun Activity.decorateContentView(listener: OnReloadListener, isDecorated: Boolean) {
+  override fun Activity.decorateContentView(listener: OnReloadListener?, isDecorated: Boolean) {
     findViewById<ViewGroup>(android.R.id.content).getChildAt(0).decorate(listener, isDecorated)
   }
 
-  override fun View.decorate(listener: OnReloadListener, isDecorated: Boolean): View =
-    if (isDecorated) {
-      LoadingStateView(this, listener).also { loadingStateView = it }.decorView
-    } else {
-      this
-    }
+  override fun View.decorate(listener: OnReloadListener?, isDecorated: Boolean): View =
+    if (isDecorated) LoadingStateView(this, listener).also { loadingStateView = it }.decorView else this
 
   override fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate) {
     loadingStateView?.register(*viewDelegates)
@@ -93,11 +89,11 @@ class LoadingStateImpl : LoadingState {
   }
 
   override fun updateToolbar(block: ToolbarConfig.() -> Unit) {
-    updateView<BaseToolbarViewDelegate>(ViewType.TITLE) { bind(config.apply(block)) }
+    updateView<BaseToolbarViewDelegate>(ViewType.TITLE) { onBindToolbar(config.apply(block)) }
   }
 
   override fun <T : LoadingStateView.ViewDelegate> updateView(viewType: Any, block: T.() -> Unit) {
-    loadingStateView?.getViewDelegate<T>(viewType)?.apply(block)
+    loadingStateView?.updateViewDelegate(viewType, block)
   }
 
   override fun ToolbarViewDelegate(title: String?, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) =

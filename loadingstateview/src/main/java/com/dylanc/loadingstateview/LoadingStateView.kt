@@ -51,7 +51,7 @@ class LoadingStateView @JvmOverloads constructor(
       this(activity.findViewById<ViewGroup>(android.R.id.content).getChildAt(0), listener)
 
   init {
-    viewDelegatePool?.apply { ViewDelegatePool(this@LoadingStateView).invoke() }
+    poolInitializer?.apply { PoolInitializer(this@LoadingStateView).invoke() }
     parent = contentView.parent as ViewGroup?
     register(ContentViewDelegate())
     setDecorView(LinearDecorViewDelegate(emptyList()))
@@ -62,7 +62,7 @@ class LoadingStateView @JvmOverloads constructor(
    *
    * @param delegates the view delegates of creating view
    */
-  fun setHeaders(vararg delegates: ViewDelegate) = setDecorView(LinearDecorViewDelegate(*delegates))
+  fun setHeaders(vararg delegates: ViewDelegate) = setDecorView(LinearDecorViewDelegate(delegates))
 
   /**
    * Sets an view delegate for decorating content view.
@@ -93,7 +93,7 @@ class LoadingStateView @JvmOverloads constructor(
    *
    * @param delegates the view delegates of creating view
    */
-  fun addChildHeaders(vararg delegates: ViewDelegate) = addChildDecorView(LinearDecorViewDelegate(*delegates))
+  fun addChildHeaders(vararg delegates: ViewDelegate) = addChildDecorView(LinearDecorViewDelegate(delegates))
 
   /**
    * Adds child decorative view between the content and the decorative view.
@@ -152,7 +152,7 @@ class LoadingStateView @JvmOverloads constructor(
         view.visibility = View.VISIBLE
         if (animation != null) {
           animation.onStartHideAnimation(currentView, currentViewType)
-          animation.onStartShowAnimation(view, getViewDelegate<ViewDelegate>(viewType).viewType)
+          animation.onStartShowAnimation(view, getViewDelegate<ViewDelegate>(viewType)!!.viewType)
         } else {
           currentView.visibility = View.GONE
         }
@@ -162,14 +162,15 @@ class LoadingStateView @JvmOverloads constructor(
     currentViewType = viewType
   }
 
+  fun <T : ViewDelegate> updateViewDelegate(viewType: Any, callback: Callback<T>) =
+    callback.apply { getViewDelegate<T>(viewType)?.invoke() }
+
   @Suppress("UNCHECKED_CAST")
-  fun <T : ViewDelegate> getViewDelegate(viewType: Any) = viewDelegates[viewType] as T
+  fun <T : ViewDelegate> getViewDelegate(viewType: Any) = viewDelegates[viewType] as? T
 
   private fun addView(viewType: Any) {
     val view = getView(viewType)
-    if (view.parent != null) {
-      (view.parent as ViewGroup).removeView(view)
-    }
+    (view.parent as? ViewGroup)?.removeView(view)
     if (parent is ConstraintLayout && viewType == ViewType.CONTENT) {
       view.updateLayoutParams {
         if (view.measuredWidth == 0) width = MATCH_PARENT
@@ -182,7 +183,7 @@ class LoadingStateView @JvmOverloads constructor(
 
   private fun getView(viewType: Any): View {
     if (viewCashes[viewType] == null) {
-      val viewDelegate: ViewDelegate = getViewDelegate(viewType)
+      val viewDelegate = requireNotNull(getViewDelegate(viewType)) { "Please register view delegate for $viewType type." }
       val view = viewDelegate.onCreateView(LayoutInflater.from(contentParent.context), contentParent)
       viewDelegate.onReloadListener = onReloadListener
       viewCashes[viewType] = view
@@ -209,7 +210,7 @@ class LoadingStateView @JvmOverloads constructor(
   private inner class LinearDecorViewDelegate(private val views: List<View>) : DecorViewDelegate() {
     private lateinit var contentParent: FrameLayout
 
-    constructor(vararg delegates: ViewDelegate) : this(delegates.map {
+    constructor(delegates: Array<out ViewDelegate>) : this(delegates.map {
       register(it)
       getView(it.viewType)
     })
@@ -226,7 +227,7 @@ class LoadingStateView @JvmOverloads constructor(
     override fun getContentParent(decorView: View) = contentParent
   }
 
-  class ViewDelegatePool internal constructor(private val stateView: LoadingStateView) {
+  class PoolInitializer internal constructor(private val stateView: LoadingStateView) {
     fun register(vararg delegates: ViewDelegate) = stateView.register(*delegates)
   }
 
@@ -240,11 +241,11 @@ class LoadingStateView @JvmOverloads constructor(
   }
 
   companion object {
-    private var viewDelegatePool: Callback<ViewDelegatePool>? = null
+    private var poolInitializer: Callback<PoolInitializer>? = null
 
     @JvmStatic
-    fun setViewDelegatePool(viewDelegatePool: Callback<ViewDelegatePool>) {
-      this.viewDelegatePool = viewDelegatePool
+    fun setViewDelegatePool(poolInitializer: Callback<PoolInitializer>) {
+      this.poolInitializer = poolInitializer
     }
   }
 }

@@ -30,7 +30,9 @@ abstract class BaseFragment(private val layoutRes: Int) : Fragment(),
 
   open val isDecorated = true
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+  ): View? {
     val root = inflater.inflate(layoutRes, container, false)
     return root.decorate(this, isDecorated)
   }

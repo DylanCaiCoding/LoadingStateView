@@ -19,6 +19,7 @@ package com.dylanc.loadingstateview.sample.kotlin.delegate
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toolbar
 import com.dylanc.loadingstateview.NavBtnType
 import com.dylanc.loadingstateview.ToolbarConfig
 import com.dylanc.loadingstateview.BaseToolbarViewDelegate
@@ -35,7 +36,7 @@ class ToolbarViewDelegate : BaseToolbarViewDelegate() {
     return binding.root
   }
 
-  override fun bind(config: ToolbarConfig) {
+  override fun onBindToolbar(config: ToolbarConfig) {
     binding.apply {
       tvTitle.text = config.title
 

@@ -18,11 +18,13 @@ package com.dylanc.loadingstateview.sample.java.delegate;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.dylanc.loadingstateview.LoadingStateView;
@@ -43,7 +45,7 @@ public class ScrollingDecorViewDelegate extends LoadingStateView.DecorViewDelega
   @NotNull
   @Override
   @SuppressLint("InflateParams")
-  public View onCreateDecorView(@NotNull LayoutInflater inflater) {
+  public View onCreateDecorView(@NonNull Context context, @NotNull LayoutInflater inflater) {
     View view = inflater.inflate(R.layout.layout_scrolling_toolbar, null);
     Activity activity = (Activity) inflater.getContext();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

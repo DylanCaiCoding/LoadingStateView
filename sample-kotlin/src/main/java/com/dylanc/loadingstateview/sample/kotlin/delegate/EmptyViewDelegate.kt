@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.dylanc.loadingstateview
+package com.dylanc.loadingstateview.sample.kotlin.delegate
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dylanc.loadingstateview.LoadingStateView.ViewDelegate
+import com.dylanc.loadingstateview.ViewType
+import com.dylanc.loadingstateview.sample.kotlin.R
 
-abstract class BaseToolbarViewDelegate : LoadingStateView.ViewDelegate(ViewType.TITLE) {
-  internal lateinit var config: ToolbarConfig
+/**
+ * @author Dylan Cai
+ */
+class EmptyViewDelegate : ViewDelegate(ViewType.EMPTY) {
 
-  override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup) =
-    onCreateToolbar(inflater, parent).apply { onBindToolbar(config) }
-
-  abstract fun onCreateToolbar(inflater: LayoutInflater, parent: ViewGroup): View
-
-  abstract fun onBindToolbar(config: ToolbarConfig)
+  override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup): View =
+    inflater.inflate(R.layout.layout_empty, parent, false)
 }
