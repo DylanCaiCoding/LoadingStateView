@@ -2,4 +2,5 @@
 * [基础用法](/zh/basic-usage)
 * [Kotlin 委托用法](/zh/delegate)
 * [结合 ViewBinding 使用](/zh/viewbinding)
+* [老版本迁移指南](/zh/migration-guide)
 * [Q&A](/zh/q&a)

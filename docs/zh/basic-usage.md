@@ -1,6 +1,6 @@
 # 基础用法
 
-使用 Kotlin 开发的话推荐用委托的用法，不过建议先把基础的 `LoadingStateView` 用法看了。
+使用 Kotlin 开发推荐用[委托用法](/zh/delegate)。
 
 ## 显示加载中、加载失败等缺省页
 
@@ -128,9 +128,7 @@ loadingStateView.showEmptyView(); // 对应视图类型 ViewType.EMPTY
 
 ## 更新视图样式
 
-需要在 `ViewDelegate` 自行增加更新的方法，然后获取到对应的 `ViewDelegate` 进行更新。
-
-比如在 `ErrorViewDelegate` 增加了 `updateMsg(msg)` 方法修改请求失败的文字：
+需要在 `ViewDelegate` 自行增加更新的方法，然后更新对应的 `ViewDelegate`。比如在 `ErrorViewDelegate` 增加了 `updateMsg(msg)` 方法修改请求失败的文字：
 
 <!-- tabs:start -->
 
@@ -171,11 +169,11 @@ loadingStateView.setHeaders(new ToolbarViewDelegate("消息"), new SearchViewDel
 
 <!-- tabs:end -->
 
-## 给内容的外层增加装饰布局
+## 给内容增加装饰
 
-可以给内容布局添加一层装饰，实现更复杂的样式，非简单地在头部增加控件，比如带联动效果的标题栏、DrawerLayout、底部输入框等布局。
+可以给内容布局外层添加一层装饰，实现更复杂的样式，非简单地在内容上方增加控件，比如带联动效果的标题栏、DrawerLayout、底部输入框等布局。
 
-我们来实现滑动隐藏标题栏的效果，写一个带联动效果的标题栏布局，其中有个 FragmentLayout 是用于填充内容和切换缺省页。
+接下来以滑动隐藏标题栏的效果为例，先写一个带联动效果的标题栏布局，其中有个 FragmentLayout 是用于填充内容和显示缺省页。
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -218,15 +216,16 @@ loadingStateView.setHeaders(new ToolbarViewDelegate("消息"), new SearchViewDel
 #### **Kotlin**
 
 ```kotlin
-class ScrollingDecorViewDelegate(private val title: String) : LoadingStateView.DecorViewDelegate() {
+class ScrollingDecorViewDelegate(
+  private val activity: Activity,
+  private val title: String
+) : LoadingStateView.DecorViewDelegate() {
 
   override fun onCreateDecorView(context: Context, inflater: LayoutInflater): View {
     val view = inflater.inflate(R.layout.layout_scrolling_toolbar, null)
     val toolbar: Toolbar = view.findViewById(R.id.toolbar)
     toolbar.title = title
-    toolbar.setNavigationOnClickListener {
-      if (context is Activity) context.finish()
-    }
+    toolbar.setNavigationOnClickListener { activity.finish() }
     return view
   }
 
@@ -240,9 +239,11 @@ class ScrollingDecorViewDelegate(private val title: String) : LoadingStateView.D
 
 ```java
 public class ScrollingDecorViewDelegate extends LoadingStateView.DecorViewDelegate {
+  private final Activity activity;
   private final String title;
 
-  public ScrollingDecorViewDelegate(String title) {
+  public ScrollingDecorViewDelegate(Activity activity, String title) {
+    this.activity = activity;
     this.title = title;
   }
 
@@ -250,7 +251,6 @@ public class ScrollingDecorViewDelegate extends LoadingStateView.DecorViewDelega
   @Override
   public View onCreateDecorView(@NonNull Context context, @NotNull LayoutInflater inflater) {
     View view = inflater.inflate(R.layout.layout_scrolling_toolbar, null);
-    Activity activity = (Activity) inflater.getContext();
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     toolbar.setTitle(title);
     toolbar.setNavigationOnClickListener(v -> activity.finish());
@@ -277,13 +277,13 @@ public class ScrollingDecorViewDelegate extends LoadingStateView.DecorViewDelega
 #### **Kotlin**
 
 ```kotlin
-loadingStateView.setDecorView(ScrollingDecorViewDelegate("Test"))
+loadingStateView.setDecorView(ScrollingDecorViewDelegate(this, "title"))
 ```
 
 #### **Java**
 
 ```java
-loadingStateView.setDecorView(new ScrollingDecorViewDelegate("Test"));
+loadingStateView.setDecorView(new ScrollingDecorViewDelegate(this, "title"));
 ```
 
 <!-- tabs:end -->
