@@ -20,6 +20,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.Toast
 import com.dylanc.loadingstateview.NavBtnType
 import com.dylanc.loadingstateview.sample.kotlin.R
@@ -39,13 +40,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
       }
     }
     showErrorView()
-    setHeaders(
-      ToolbarViewDelegate("title") {
-        rightIcon(R.drawable.ic_error){
-
-        }
-      }
-    )
   }
 
   override fun onReload() {
@@ -54,4 +48,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
       showContentView()
     }, 2000)
   }
+
+  override val isDecorated = false
 }

@@ -22,15 +22,15 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
-class LoadingStateImpl : LoadingState {
+class LoadingStateDelegate : LoadingState {
   private var loadingStateView: LoadingStateView? = null
 
-  override fun Activity.decorateContentView(listener: OnReloadListener?, isDecorated: Boolean) {
-    findViewById<ViewGroup>(android.R.id.content).getChildAt(0).decorate(listener, isDecorated)
+  override fun Activity.decorateContentView(listener: OnReloadListener?, decorative: Decorative?) {
+    findViewById<ViewGroup>(android.R.id.content).getChildAt(0).decorate(listener, decorative)
   }
 
-  override fun View.decorate(listener: OnReloadListener?, isDecorated: Boolean): View =
-    if (isDecorated) LoadingStateView(this, listener).also { loadingStateView = it }.decorView else this
+  override fun View.decorate(listener: OnReloadListener?, decorative: Decorative?): View =
+    if (decorative?.isDecorated != false) LoadingStateView(this, listener).also { loadingStateView = it }.decorView else this
 
   override fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate) {
     loadingStateView?.register(*viewDelegates)

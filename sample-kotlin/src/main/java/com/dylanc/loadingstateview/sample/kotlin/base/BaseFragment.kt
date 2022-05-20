@@ -21,19 +21,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.dylanc.loadingstateview.Decorative
 import com.dylanc.loadingstateview.LoadingState
-import com.dylanc.loadingstateview.LoadingStateImpl
+import com.dylanc.loadingstateview.LoadingStateDelegate
 import com.dylanc.loadingstateview.OnReloadListener
 
 abstract class BaseFragment(private val layoutRes: Int) : Fragment(),
-  LoadingState by LoadingStateImpl(), OnReloadListener {
-
-  open val isDecorated = true
+  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View? {
     val root = inflater.inflate(layoutRes, container, false)
-    return root.decorate(this, isDecorated)
+    return root.decorate(this, this)
   }
 }

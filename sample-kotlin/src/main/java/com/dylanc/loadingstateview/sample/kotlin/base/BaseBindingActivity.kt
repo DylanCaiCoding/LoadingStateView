@@ -19,24 +19,23 @@ package com.dylanc.loadingstateview.sample.kotlin.base
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.dylanc.loadingstateview.Decorative
 import com.dylanc.loadingstateview.LoadingState
-import com.dylanc.loadingstateview.LoadingStateImpl
+import com.dylanc.loadingstateview.LoadingStateDelegate
 import com.dylanc.loadingstateview.OnReloadListener
 import com.dylanc.viewbinding.base.ViewBindingUtil
 
 abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
-  LoadingState by LoadingStateImpl(), OnReloadListener {
+  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
 
   lateinit var binding: VB private set
 
   open val contentView get() = binding.root
 
-  open val isDecorated = true
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
-    setContentView(contentView)
-    contentView.decorate(this, isDecorated)
+    setContentView(binding.root)
+    contentView.decorate(this, this)
   }
 }

@@ -18,18 +18,17 @@ package com.dylanc.loadingstateview.sample.kotlin.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.dylanc.loadingstateview.Decorative
 import com.dylanc.loadingstateview.LoadingState
-import com.dylanc.loadingstateview.LoadingStateImpl
+import com.dylanc.loadingstateview.LoadingStateDelegate
 import com.dylanc.loadingstateview.OnReloadListener
 
 abstract class BaseActivity(private val layoutRes: Int) : AppCompatActivity(),
-  LoadingState by LoadingStateImpl(), OnReloadListener {
-
-  open val isDecorated = true
+  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(layoutRes)
-    decorateContentView(this, isDecorated)
+    decorateContentView(this, this)
   }
 }

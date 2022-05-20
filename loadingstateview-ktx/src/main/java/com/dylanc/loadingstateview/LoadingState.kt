@@ -23,9 +23,9 @@ import androidx.fragment.app.Fragment
 
 interface LoadingState {
 
-  fun Activity.decorateContentView(listener: OnReloadListener? = null, isDecorated: Boolean = true)
+  fun Activity.decorateContentView(listener: OnReloadListener? = null, decorative: Decorative? = null)
 
-  fun View.decorate(listener: OnReloadListener? = null, isDecorated: Boolean = true): View
+  fun View.decorate(listener: OnReloadListener? = null, decorative: Decorative? = null): View
 
   fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate)
 

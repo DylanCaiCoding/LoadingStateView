@@ -22,22 +22,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.dylanc.loadingstateview.Decorative
 import com.dylanc.loadingstateview.LoadingState
-import com.dylanc.loadingstateview.LoadingStateImpl
+import com.dylanc.loadingstateview.LoadingStateDelegate
 import com.dylanc.loadingstateview.OnReloadListener
 import com.dylanc.viewbinding.base.ViewBindingUtil
 
 abstract class BaseBindingFragment<VB : ViewBinding> : Fragment(),
-  LoadingState by LoadingStateImpl(), OnReloadListener {
+  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
 
-  lateinit var binding: VB private set
+  private var _binding: VB? = null
+  val binding get() = _binding!!
 
-  open val contentView get() = binding.root
+  open val contentView: View? get() = null
 
-  open val isDecorated = true
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+  ): View? {
+    _binding = ViewBindingUtil.inflateWithGeneric(this, inflater, container, false)
+    return if (contentView != null) {
+      contentView!!.decorate(this, this)
+      binding.root
+    } else {
+      binding.root.decorate(this, this)
+    }
+  }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    binding = ViewBindingUtil.inflateWithGeneric(this, inflater, container, false)
-    return contentView.decorate(this, isDecorated)
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }
