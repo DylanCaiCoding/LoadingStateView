@@ -2,13 +2,10 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion buildConfig.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion buildConfig.minSdkVersion
     }
 
     buildTypes {
@@ -29,12 +26,10 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
-        freeCompilerArgs += ['-module-name', "loading_state_view",]
+        freeCompilerArgs += ['-module-name', "loading_state_view"]
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 }

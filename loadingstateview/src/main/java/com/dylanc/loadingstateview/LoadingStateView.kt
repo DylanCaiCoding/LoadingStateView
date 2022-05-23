@@ -25,8 +25,6 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.updateLayoutParams
-import java.util.*
 
 /**
  * @author Dylan Cai
@@ -172,10 +170,10 @@ class LoadingStateView @JvmOverloads constructor(
     val view = getView(viewType)
     (view.parent as? ViewGroup)?.removeView(view)
     if (parent is ConstraintLayout && viewType == ViewType.CONTENT) {
-      view.updateLayoutParams {
-        if (view.measuredWidth == 0) width = MATCH_PARENT
-        if (view.measuredHeight == 0) height = MATCH_PARENT
-      }
+      val params = view.layoutParams
+      if (view.measuredWidth == 0) params.width = MATCH_PARENT
+      if (view.measuredHeight == 0) params.width = MATCH_PARENT
+      view.layoutParams = params
     }
     contentParent.addView(view)
     currentView = view

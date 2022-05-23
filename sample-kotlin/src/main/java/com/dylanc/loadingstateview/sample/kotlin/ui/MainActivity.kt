@@ -48,6 +48,4 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
       showContentView()
     }, 2000)
   }
-
-  override val isDecorated = false
 }
