@@ -1,16 +1,19 @@
 # LoadingStateView
 
-English | [中文](README_ZH_CN.md)
+English | [中文](README_ZH.md)
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/LoadingStateView.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingLoadingStateView) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/LICENSE)
 
-`LoadingStateView` is a highly expandable Android library for showing loading status view on the low-coupling way, it is implemented with a Kotlin code of less than 300 lines without comment statement . it not only **shows different view like loading, content, error, empty and customized view** when loading network data, but also **manages title bar.**
+`LoadingStateView` is a highly expandable Android library for showing loading status view on the low-coupling way, the core function is implemented with a [Kotlin file](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/loadingstateview/src/main/java/com/dylanc/loadingstateview/LoadingStateView.kt) of about 200 lines without comment statement . it not only shows different view like loading, content, error, empty and customized view when loading network data, but also manages title bar.
+
+**Major update: With the Kotlin feature, you can quickly add all functionality to the base class without affecting existing code. The overall usage is further simplified with removing the `ViewHolder`. It is recommended to upgrade!**
 
 ## Feature
 
 - No need to add view code to the layout.
-- Support for show custom views.
+- Quickly add all functionality to the base class without affecting existing code. (Kotlin)
 - Support for use for Activity, Fragment, RecyclerView, View.
+- Support for show custom views.
 - Support for managing the title bar and add multiple headers.
 - Support for set reload event.
 - Support for update views anytime.
@@ -20,25 +23,28 @@ English | [中文](README_ZH_CN.md)
 
 Click or scan QR code to download
 
-[![QR code](img/app_download_qr_code.png)](https://www.pgyer.com/loadinghelper)
+[![QR code](docs/img/app_download_qr_code.png)](https://www.pgyer.com/loadinghelper)
 
-| [Activity(error)](app/src/main/java/com/dylanc/loadingstateview/sample/ui/ActErrorActivity.java) | [View(placeholder)](app/src/main/java/com/dylanc/loadingstateview/sample/ui/ViewPlaceholderActivity.java) | [ViewPager(timeout)](app/src/main/java/com/dylanc/loadingstateview/sample/ui/ViewPagerActivity.java) | [RecyclerView(cool loading)](app/src/main/java/com/dylanc/loadingstateview/sample/ui/RecyclerViewActivity.java) |
+| [Activity(error)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/sample-java/src/main/java/com/dylanc/loadingstateview/sample/java/ui/ActErrorActivity.java) | [View(placeholder)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/sample-java/src/main/java/com/dylanc/loadingstateview/sample/java/ui/ViewPlaceholderActivity.java) | [ViewPager(timeout)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/sample-java/src/main/java/com/dylanc/loadingstateview/sample/java/ui/ViewPagerActivity.java) | [RecyclerView(cool loading)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/sample-java/src/main/java/com/dylanc/loadingstateview/sample/java/ui/RecyclerViewActivity.java) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                 ![](gif/activity_error.gif)                  |                ![](gif/view_placeholder.gif)                 |                ![](gif/viewpager_timeout.gif)                |              ![](gif/recyclerview_loading.gif)               |
+|                 ![](docs/gif/activity_error.gif)                  |                ![](docs/gif/view_placeholder.gif)                 |                ![](docs/gif/viewpager_timeout.gif)                |              ![](docs/gif/recyclerview_loading.gif)               |
 
-| [SpecialHeader(custom)](app/src/main/java/com/dylanc/loadingstateview/sample/ui/CustomHeaderActivity.java) | [MultipleHeader(search)](app/src/main/java/com/dylanc/loadingstateview/sample/ui/MultipleHeaderActivity.java) | [SpecialDecorView(scrolling)](app/src/main/java/com/dylanc/loadingstateview/sample/ui/ScrollingToolbarActivity.java) | [BottomDecorView(editor)](app/src/main/java/com/dylanc/loadingstateview/sample/ui/BottomEditorActivity.java) |
+| [SpecialHeader(custom)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/sample-java/src/main/java/com/dylanc/loadingstateview/sample/java/ui/CustomHeaderActivity.java) | [MultipleHeader(search)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/sample-java/src/main/java/com/dylanc/loadingstateview/sample/java/ui/MultipleHeaderActivity.java) | [SpecialDecorView(scrolling)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/sample-java/src/main/java/com/dylanc/loadingstateview/sample/java/ui/ScrollingToolbarActivity.java) | [BottomDecorView(editor)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/sample-java/src/main/java/com/dylanc/loadingstateview/sample/java/ui/BottomEditorActivity.java) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|              ![](gif/special_header_custom.gif)              |             ![](gif/multiple_header_search.gif)              |             ![](gif/special_decor_scrolling.gif)             |               ![](gif/bottom_decor_editor.gif)               |
+|              ![](docs/gif/special_header_custom.gif)              |             ![](docs/gif/multiple_header_search.gif)              |             ![](docs/gif/special_decor_scrolling.gif)             |               ![](docs/gif/bottom_decor_editor.gif)               |
 
+## Usage
 
-## Getting started
+:pencil: **[>> Usage documentation <<](https://dylancaicoding.github.io/LoadingStateView)**
+
+## Gradle
 
 Add it in your root `build.gradle` at the end of repositories:
 
 ```groovy
 allprojects {
     repositories {
-        ...
+        // ...
         maven { url 'https://www.jitpack.io' }
     }
 }
@@ -48,124 +54,27 @@ Add dependencies in your module `build.gradle` :
 
 ```groovy
 dependencies {
-  implementation 'com.github.DylanCaiCoding:LoadingStateView:3.0.1'
+    // java
+    implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview:4.0.0'
+
+    // kotlin
+    implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview-ktx:4.0.0'
 }
 ```
 
-### Usage
 
-#### Step 1. Create a class extends `LoadingStateView.ViewDelegate<VH extends ViewHolder>`, for example:
+## Change log
 
-```java
-public class LoadingViewDelegate extends LoadingStateView.ViewDelegate<LoadingStateView.ViewHolder> {
-
-  @NonNull
-  @Override
-  public LoadingStateView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    return new LoadingStateView.ViewHolder(inflater.inflate(R.layout.layout_loading_view, parent, false));
-  }
-
-  @Override
-  public void onBindViewHolder(@NonNull LoadingStateView.ViewHolder holder) {
-  }
-}
-```
-
-#### Step 2. Register `ViewDelegate` with a view type, for example:
-
-```java
-LoadingStateView loadingStateView = new LoadingStateView(this);
-loadingStateView.register(ViewType.LOADING, new LoadingViewDelegate());
-```
-
-##### Or if you want to register a global `ViewDelegate`.
-
-```java
-loadingStateView.setViewDelegatePool(pool -> {
-  pool.register(ViewType.LOADING, new LoadingViewDelegate());
-});
-```
-
-#### Step 3. Show view by view type, for example:
-
-```java
-loadingStateView.showView(viewType);
-loadingStateView.showLoadingView(); // view type is ViewType.LOADING
-loadingStateView.showContentView(); // view type is ViewType.CONTENT
-loadingStateView.showErrorView(); // view type is ViewType.ERROR
-loadingStateView.showEmptyView(); // view type is ViewType.EMPTY
-```
-
-#### When you need to reload data.
-
-```java
-loadingStateView.setOnReloadListener(new LoadingStateView.OnReloadListener() {
-  @Override
-  public void onReload() {
-    // request data again
-  }
-});
-
-//In the adapter
-holder.getOnReloadListener.onReload();
-```
-
-#### When you need to change view after view showed.
-
-```java
-loadingStateView.updateView(ViewType.ERROR, (ErrorViewDelegate delegate) -> {
-   delegate.msg = "Fail to load, please wait";
-});
-```
-
-### Advanced usage
-
-#### Add title view
-
-If you want to add an ordinary title bar above the content.
-
-Similar to the previous usage, create a class extends `LoadingStateView.ViewDelegate<VH extends ViewHolder>`  and set header.
-
-```java
-loadingStateView.setDecorHeader(new TitleViewDelegate("title"), new SearchHeaderViewDelegate());
-```
-
-If you want to add an special title bar with linkage effect.
-
-Create a class extends `LoadingStateView.DecorViewDelegate` to create a decorated view and specify a loading container.
-
-```java
-class ScrollingDecorViewDelegate : LoadingStateView.DecorViewDelegate() {
-  @NotNull
-  override fun onCreateDecorView(@NotNull inflater: LayoutInflater): View {
-    return inflater.inflate(R.layout.layout_scrolling, null)
-  }
-
-  @NotNull
-  fun getContentParent(@NotNull decorView: View): ViewGroup {
-    return decorView.findViewById(R.id.content_parent)
-  }
-}
-```
-
-Then set it up.
-
-```java
-loadingStateView.setDecorView(new ScrollingDecorViewDelegate());
-```
-
-## LoadingHelper's migration Guide
-
-The original name of this library is `LoadingHelper`, and some class and method names should be changed later. Old users can check the [migration guide](https://github.com/DylanCaiCoding/LoadingHelper) and change it to the latest usage. If you feel troublesome and are not obsessive-compulsive, you can also not migrate.
+[Releases](https://github.com/DylanCaiCoding/LoadingStateView/releases)
 
 ## Author's other libraries
 
 | Library                                                      | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Longan](https://github.com/DylanCaiCoding/Longan)           | A collection of Kotlin utils which makes Android application development faster and easier. |
+| [Longan](https://github.com/DylanCaiCoding/Longan)           | Probably the best Kotlin utils library for Android.  |
 | [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) | The most comprehensive utils of ViewBinding.                 |
-| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Easier to use the MMKV.                                      |
-| [ActivityResultLauncher](https://github.com/DylanCaiCoding/ActivityResultLauncher) | Perfect replacement for `startActivityForResult()`           |
+| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Use MMKV with property delegates.                                      |
+| [Tracker](https://github.com/DylanCaiCoding/Tracker)       | A lightweight tracking framework based on the tracking idea of Buzzvideo.|
 
 ## Thanks
 
