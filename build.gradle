@@ -17,7 +17,7 @@ buildscript {
         junitExtVersion = '1.1.3'
         junitVersion = '4.13.2'
         materialVersion = '1.4.0'
-        viewBindingKTXVersion = '2.0.6'
+        viewBindingKTXVersion = '2.1.0'
     }
     repositories {
         google()
