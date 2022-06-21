@@ -8,7 +8,7 @@
 
 ```groovy
 dependencies {
-  implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview-ktx:4.0.0'
+  implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview-ktx:4.0.1'
 }
 ```
 
@@ -23,9 +23,44 @@ dependencies {
 
 ![img.png](../img/base_activity_code.png)
 
+<details>
+  <summary>查看代码</summary>
+
+```kotlin
+abstract class BaseActivity(private val layoutRes: Int) : AppCompatActivity(),
+  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(layoutRes)
+    decorateContentView(this, this)
+  }
+}
+```
+
+</details>
+
 #### **Fragment**
 
 ![img.png](../img/base_fragment_code.png)
+
+<details>
+  <summary>查看代码</summary>
+
+```kotlin
+abstract class BaseFragment(private val layoutRes: Int) : Fragment(),
+  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
+
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+  ): View? {
+    val root = inflater.inflate(layoutRes, container, false)
+    return root.decorate(this, this)
+  }
+}
+```
+
+</details>
 
 <!-- tabs:end -->
 
@@ -173,13 +208,13 @@ class ToolbarViewDelegate : BaseToolbarViewDelegate() {
 var ToolbarConfig.rightTextColor: Int? by toolbarExtras() // 增加 rightTextColor 扩展属性
 
 class ToolbarViewDelegate : BaseToolbarViewDelegate() {
-   
-   // ...
-   
-   override fun onBindToolbar(config: ToolbarConfig) {
-     // ... 
-     config.rightTextColor?.let { tvRight.setTextColor(it) } // 处理扩展属性
-   }
+
+  // ...
+
+  override fun onBindToolbar(config: ToolbarConfig) {
+    // ... 
+    config.rightTextColor?.let { tvRight.setTextColor(it) } // 处理扩展属性
+  }
 }
 ```
 
@@ -282,7 +317,7 @@ setHeaders(
 
 ```kotlin
 class ScrollingDecorViewDelegate(
-  private val activity: Activity, 
+  private val activity: Activity,
   private val title: String
 ) : LoadingStateView.DecorViewDelegate() {
 

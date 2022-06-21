@@ -26,8 +26,9 @@ import com.dylanc.loadingstateview.OnReloadListener
 import com.dylanc.viewbinding.base.ActivityBinding
 import com.dylanc.viewbinding.base.ActivityBindingDelegate
 
-abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(), OnReloadListener, Decorative,
-  LoadingState by LoadingStateDelegate(), ActivityBinding<VB> by ActivityBindingDelegate() {
+abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
+  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative,
+  ActivityBinding<VB> by ActivityBindingDelegate() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
