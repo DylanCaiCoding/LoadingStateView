@@ -23,19 +23,15 @@ import com.dylanc.loadingstateview.Decorative
 import com.dylanc.loadingstateview.LoadingState
 import com.dylanc.loadingstateview.LoadingStateDelegate
 import com.dylanc.loadingstateview.OnReloadListener
-import com.dylanc.viewbinding.base.ViewBindingUtil
+import com.dylanc.viewbinding.base.ActivityBinding
+import com.dylanc.viewbinding.base.ActivityBindingDelegate
 
-abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
-  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
-
-  lateinit var binding: VB private set
-
-  open val contentView get() = binding.root
+abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(), OnReloadListener, Decorative,
+  LoadingState by LoadingStateDelegate(), ActivityBinding<VB> by ActivityBindingDelegate() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = ViewBindingUtil.inflateWithGeneric(this, layoutInflater)
-    setContentView(binding.root)
-    contentView.decorate(this, this)
+    setContentViewWithBinding()
+    binding.root.decorate(this, this)
   }
 }

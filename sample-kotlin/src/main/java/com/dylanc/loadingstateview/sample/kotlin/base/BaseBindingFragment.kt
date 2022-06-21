@@ -18,7 +18,6 @@ package com.dylanc.loadingstateview.sample.kotlin.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -26,30 +25,12 @@ import com.dylanc.loadingstateview.Decorative
 import com.dylanc.loadingstateview.LoadingState
 import com.dylanc.loadingstateview.LoadingStateDelegate
 import com.dylanc.loadingstateview.OnReloadListener
-import com.dylanc.viewbinding.base.ViewBindingUtil
+import com.dylanc.viewbinding.base.FragmentBinding
+import com.dylanc.viewbinding.base.FragmentBindingDelegate
 
-abstract class BaseBindingFragment<VB : ViewBinding> : Fragment(),
-  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
+abstract class BaseBindingFragment<VB : ViewBinding> : Fragment(), OnReloadListener, Decorative,
+  LoadingState by LoadingStateDelegate(), FragmentBinding<VB> by FragmentBindingDelegate() {
 
-  private var _binding: VB? = null
-  val binding get() = _binding!!
-
-  open val contentView: View? get() = null
-
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-  ): View? {
-    _binding = ViewBindingUtil.inflateWithGeneric(this, inflater, container, false)
-    return if (contentView != null) {
-      contentView!!.decorate(this, this)
-      binding.root
-    } else {
-      binding.root.decorate(this, this)
-    }
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-  }
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    createViewWithBinding(inflater, container).decorate(this, this)
 }

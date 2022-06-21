@@ -30,7 +30,15 @@ class LoadingStateDelegate : LoadingState {
   }
 
   override fun View.decorate(listener: OnReloadListener?, decorative: Decorative?): View =
-    if (decorative?.isDecorated != false) LoadingStateView(this, listener).also { loadingStateView = it }.decorView else this
+    when {
+      decorative?.isDecorated == false -> this
+      decorative?.contentView == null ->
+        LoadingStateView(this, listener).also { loadingStateView = it }.decorView
+      else -> {
+        loadingStateView = LoadingStateView(decorative.contentView!!, listener)
+        this
+      }
+    }
 
   override fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate) {
     loadingStateView?.register(*viewDelegates)
