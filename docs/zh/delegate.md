@@ -260,6 +260,14 @@ setToolbar("title")
 updateToolbar { title = "Loading..." }
 ```
 
+如果有扩展属性不好配置的需求，比如开启或关闭动画，可以在 `ToolbarViewDelegate` 自行增加对应功能的函数，然后在更新的时候调用。
+
+```kotlin
+updateView<ToolbarViewDelegate>(ViewType.TITLE) {
+  startAnimation()
+}
+```
+
 ## 在顶部添加控件
 
 可添加多个控件，比如添加标题栏和搜索栏，搜索栏需要另写一个类继承 `LoadingStateView.ViewDelegate`。
