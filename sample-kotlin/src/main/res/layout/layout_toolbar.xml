@@ -65,4 +65,10 @@
     app:srcCompat="@android:drawable/ic_media_pause"
     tools:visibility="gone" />
 
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="#999"
+    app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
