@@ -4,7 +4,7 @@
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/LoadingStateView.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingLoadingStateView) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/LICENSE)
 
-`LoadingStateView` 是一个深度解耦缺省页和标题栏的工具，核心功能的实现代码只有一个 200 行左右（不算注释）的 [Kotlin 文件](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/loadingstateview/src/main/java/com/dylanc/loadingstateview/LoadingStateView.kt)。不仅能在请求网络数据时显示加载中、加载成功、加载失败、无数据的视图或自定义视图，还可以对标题栏进行解耦。 
+`LoadingStateView` 是一个深度解耦缺省页和标题栏的工具，核心功能的实现代码只有一个 200 多行的 [Kotlin 文件](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/loadingstateview/src/main/java/com/dylanc/loadingstateview/LoadingStateView.kt)。不仅能在请求网络数据时显示加载中、加载成功、加载失败、无数据的视图或自定义视图，还可以对标题栏进行解耦。 
 
 **重大更新：结合 Kotlin 语法特性能快速将所有功能集成到基类，不会影响已有代码。移除了 `ViewHolder`，整体用法得到进一步简化，建议升级！**
 
