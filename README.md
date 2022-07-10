@@ -4,7 +4,7 @@ English | [中文](README_ZH.md)
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/LoadingStateView.svg)](https://www.jitpack.io/#DylanCaiCoding/LoadingLoadingStateView) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/LICENSE)
 
-`LoadingStateView` is a highly expandable Android library for showing loading status view on the low-coupling way, the core function is implemented with a [Kotlin file](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/loadingstateview/src/main/java/com/dylanc/loadingstateview/LoadingStateView.kt) of about 200 lines without comment statement . it not only shows different view like loading, content, error, empty and customized view when loading network data, but also manages title bar.
+`LoadingStateView` is a highly expandable Android library for showing loading status view on the low-coupling way, the core function is implemented with a [Kotlin file](https://github.com/DylanCaiCoding/LoadingStateView/blob/master/loadingstateview/src/main/java/com/dylanc/loadingstateview/LoadingStateView.kt) of over 200 lines. it not only shows different view like loading, content, error, empty and customized view when loading network data, but also manages title bar.
 
 **Major update: With the Kotlin feature, you can quickly add all functionality to the base class without affecting existing code. The overall usage is further simplified with removing the `ViewHolder`. It is recommended to upgrade!**
 
