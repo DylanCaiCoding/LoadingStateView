@@ -172,7 +172,7 @@ class LoadingStateView @JvmOverloads constructor(
     if (parent is ConstraintLayout && viewType == ViewType.CONTENT) {
       val params = view.layoutParams
       if (view.measuredWidth == 0) params.width = MATCH_PARENT
-      if (view.measuredHeight == 0) params.width = MATCH_PARENT
+      if (view.measuredHeight == 0) params.height = MATCH_PARENT
       view.layoutParams = params
     }
     contentParent.addView(view)
