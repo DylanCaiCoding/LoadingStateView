@@ -76,20 +76,20 @@ class LoadingStateDelegate : LoadingState {
     loadingStateView?.addChildDecorView(delegate)
   }
 
-  override fun showLoadingView() {
-    loadingStateView?.showLoadingView()
+  override fun showLoadingView(animation: LoadingStateView.Animation?) {
+    loadingStateView?.showLoadingView(animation)
   }
 
-  override fun showContentView() {
-    loadingStateView?.showContentView()
+  override fun showContentView(animation: LoadingStateView.Animation?) {
+    loadingStateView?.showContentView(animation)
   }
 
-  override fun showErrorView() {
-    loadingStateView?.showErrorView()
+  override fun showErrorView(animation: LoadingStateView.Animation?) {
+    loadingStateView?.showErrorView(animation)
   }
 
-  override fun showEmptyView() {
-    loadingStateView?.showEmptyView()
+  override fun showEmptyView(animation: LoadingStateView.Animation?) {
+    loadingStateView?.showEmptyView(animation)
   }
 
   override fun showCustomView(viewType: Any) {

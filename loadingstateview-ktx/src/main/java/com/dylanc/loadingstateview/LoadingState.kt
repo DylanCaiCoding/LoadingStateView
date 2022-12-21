@@ -45,13 +45,13 @@ interface LoadingState {
 
   fun Fragment.setDecorView(delegate: LoadingStateView.DecorViewDelegate)
 
-  fun showLoadingView()
+  fun showLoadingView(animation: LoadingStateView.Animation? = null)
 
-  fun showContentView()
+  fun showContentView(animation: LoadingStateView.Animation? = null)
 
-  fun showErrorView()
+  fun showErrorView(animation: LoadingStateView.Animation? = null)
 
-  fun showEmptyView()
+  fun showEmptyView(animation: LoadingStateView.Animation? = null)
 
   fun showCustomView(viewType: Any)
 
