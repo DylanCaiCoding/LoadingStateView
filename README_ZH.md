@@ -74,7 +74,7 @@ dependencies {
 | ------------------------------------------------------------ | ---------------------------------------------- |
 | [Longan](https://github.com/DylanCaiCoding/Longan)           | 可能是最好用的 Kotlin 工具库                  |
 | [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) | 最全面的 ViewBinding 工具                      |
-| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | 用属性委托的方式使用 MMKV                              |
+| [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | 最灵活易用的 MMKV 工具                              |
 | [Tracker](https://github.com/DylanCaiCoding/Tracker)         | 基于西瓜视频的责任链埋点思路实现的轻量级埋点框架          |
 
 ## 感谢
