@@ -8,14 +8,14 @@
 
 ```groovy
 dependencies {
-  implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview-ktx:4.0.2'
+  implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview-ktx:4.1.0'
 }
 ```
 
 修改步骤如下：
 
-1. 实现 `LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative` 接口，其中 `LoadingState` 接口委托给了 `LoadingStateDelegate` 代理类。
-2. 在 Activity 的 `setContentView()` 方法后执行 `decorateContentView(this, this)`。在 Fragment 的 `onCreateView()` 返回 `view.decorate(this, this)`。
+1. 实现 `LoadingState by LoadingStateDelegate()` 。
+2. 在 Activity 的 `setContentView()` 方法后执行 `decorateContentView(this)`。在 Fragment 的 `onCreateView()` 返回 `view.decorate(this)`。
 
 <!-- tabs:start -->
 
@@ -28,12 +28,12 @@ dependencies {
 
 ```kotlin
 abstract class BaseActivity(private val layoutRes: Int) : AppCompatActivity(),
-  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
+  LoadingState by LoadingStateDelegate() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(layoutRes)
-    decorateContentView(this, this)
+    decorateContentView(this)
   }
 }
 ```
@@ -49,13 +49,13 @@ abstract class BaseActivity(private val layoutRes: Int) : AppCompatActivity(),
 
 ```kotlin
 abstract class BaseFragment(private val layoutRes: Int) : Fragment(),
-  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative {
+  LoadingState by LoadingStateDelegate() {
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View? {
     val root = inflater.inflate(layoutRes, container, false)
-    return root.decorate(this, this)
+    return root.decorate(this)
   }
 }
 ```

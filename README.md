@@ -55,10 +55,10 @@ Add dependencies in your module `build.gradle` :
 ```groovy
 dependencies {
     // java
-    implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview:4.0.2'
+    implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview:4.1.0'
 
     // kotlin
-    implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview-ktx:4.0.2'
+    implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview-ktx:4.1.0'
 }
 ```
 

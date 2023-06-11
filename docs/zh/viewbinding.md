@@ -43,13 +43,12 @@ implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.1.0'
 
 ```kotlin
 abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
-  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative,
-  ActivityBinding<VB> by ActivityBindingDelegate() {
+  LoadingState by LoadingStateDelegate(), ActivityBinding<VB> by ActivityBindingDelegate() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentViewWithBinding()
-    binding.root.decorate(this, this)
+    binding.root.decorate(this)
   }
 }
 ```
@@ -65,13 +64,12 @@ abstract class BaseBindingActivity<VB : ViewBinding> : AppCompatActivity(),
 
 ```kotlin
 abstract class BaseBindingFragment<VB : ViewBinding> : Fragment(),
-  LoadingState by LoadingStateDelegate(), OnReloadListener, Decorative,
-  FragmentBinding<VB> by FragmentBindingDelegate() {
+  LoadingState by LoadingStateDelegate(), FragmentBinding<VB> by FragmentBindingDelegate() {
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View? {
-    return createViewWithBinding(inflater, container).decorate(this, this)
+    return createViewWithBinding(inflater, container).decorate(this)
   }
 }
 ```
