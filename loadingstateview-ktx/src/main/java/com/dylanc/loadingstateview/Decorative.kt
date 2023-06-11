@@ -18,7 +18,7 @@ package com.dylanc.loadingstateview
 
 import android.view.View
 
-interface Decorative {
+interface Decorative : OnReloadListener {
   val isDecorated: Boolean get() = true
   val contentView: View? get() = null
 }

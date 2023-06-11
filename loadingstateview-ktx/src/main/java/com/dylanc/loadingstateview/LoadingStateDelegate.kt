@@ -25,17 +25,17 @@ import androidx.fragment.app.Fragment
 class LoadingStateDelegate : LoadingState {
   private var loadingStateView: LoadingStateView? = null
 
-  override fun Activity.decorateContentView(listener: OnReloadListener?, decorative: Decorative?) {
-    findViewById<ViewGroup>(android.R.id.content).getChildAt(0).decorate(listener, decorative)
+  override fun Activity.decorateContentView(decorative: Decorative) {
+    findViewById<ViewGroup>(android.R.id.content).getChildAt(0).decorate(decorative)
   }
 
-  override fun View.decorate(listener: OnReloadListener?, decorative: Decorative?): View =
+  override fun View.decorate(decorative: Decorative): View =
     when {
-      decorative?.isDecorated == false -> this
-      decorative?.contentView == null ->
-        LoadingStateView(this, listener).also { loadingStateView = it }.decorView
+      !decorative.isDecorated -> this
+      decorative.contentView == null ->
+        LoadingStateView(this, decorative).also { loadingStateView = it }.decorView
       else -> {
-        loadingStateView = LoadingStateView(decorative.contentView!!, listener)
+        loadingStateView = LoadingStateView(decorative.contentView!!, decorative)
         this
       }
     }
@@ -57,7 +57,7 @@ class LoadingStateDelegate : LoadingState {
   }
 
   override fun Fragment.setToolbar(title: String?, navBtnType: NavBtnType, block: (ToolbarConfig.() -> Unit)?) {
-    loadingStateView?.setHeaders(ToolbarViewDelegate(title, navBtnType, block))
+    loadingStateView?.addChildHeaders(ToolbarViewDelegate(title, navBtnType, block))
   }
 
   override fun Activity.setHeaders(vararg delegates: LoadingStateView.ViewDelegate) {

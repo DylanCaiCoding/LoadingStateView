@@ -21,11 +21,17 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
-interface LoadingState {
+interface LoadingState : Decorative, OnReloadListener {
 
-  fun Activity.decorateContentView(listener: OnReloadListener? = null, decorative: Decorative? = null)
+  @Deprecated("Use Activity.decorateContentView(this) instead", ReplaceWith("decorateContentView(decorative)"))
+  fun Activity.decorateContentView(listener: OnReloadListener, decorative: Decorative) = decorateContentView(decorative)
 
-  fun View.decorate(listener: OnReloadListener? = null, decorative: Decorative? = null): View
+  fun Activity.decorateContentView(decorative: Decorative)
+
+  @Deprecated("Use View.decorate(this) instead", ReplaceWith("decorate(decorative)"))
+  fun View.decorate(listener: OnReloadListener, decorative: Decorative): View = decorate(decorative)
+
+  fun View.decorate(decorative: Decorative): View
 
   fun registerView(vararg viewDelegates: LoadingStateView.ViewDelegate)
 
