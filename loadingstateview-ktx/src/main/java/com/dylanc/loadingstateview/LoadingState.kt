@@ -22,6 +22,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
 interface LoadingState : Decorative, OnReloadListener {
+  val loadingStateViewType: Any?
 
   @Deprecated("Use Activity.decorateContentView(this) instead", ReplaceWith("decorateContentView(decorative)"))
   fun Activity.decorateContentView(listener: OnReloadListener, decorative: Decorative) = decorateContentView(decorative)

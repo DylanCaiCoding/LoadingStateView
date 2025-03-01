@@ -25,6 +25,9 @@ import androidx.fragment.app.Fragment
 class LoadingStateDelegate : LoadingState {
   private var loadingStateView: LoadingStateView? = null
 
+  override val loadingStateViewType: Any?
+    get() = loadingStateView?.currentViewType
+
   override fun Activity.decorateContentView(decorative: Decorative) {
     findViewById<ViewGroup>(android.R.id.content).getChildAt(0).decorate(decorative)
   }
