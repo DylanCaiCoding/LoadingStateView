@@ -148,12 +148,14 @@ class LoadingStateView @JvmOverloads constructor(
       if (viewType != currentViewType) {
         val view = getView(viewType)
         view.visibility = View.VISIBLE
+        getViewDelegate<ViewDelegate>(viewType)?.onViewAttached(view)
         if (animation != null) {
           animation.onStartHideAnimation(currentView, currentViewType)
           animation.onStartShowAnimation(view, getViewDelegate<ViewDelegate>(viewType)!!.viewType)
         } else {
           currentView.visibility = View.GONE
         }
+        getViewDelegate<ViewDelegate>(currentViewType)?.onViewDetached(view)
         this.currentView = view
       }
     }
@@ -190,10 +192,11 @@ class LoadingStateView @JvmOverloads constructor(
   }
 
   abstract class ViewDelegate(val viewType: Any) {
+    abstract fun onCreateView(inflater: LayoutInflater, parent: ViewGroup): View
+    open fun onViewAttached(view: View) = Unit
+    open fun onViewDetached(view: View) = Unit
     var onReloadListener: OnReloadListener? = null
       internal set
-
-    abstract fun onCreateView(inflater: LayoutInflater, parent: ViewGroup): View
   }
 
   private inner class ContentViewDelegate : LoadingStateView.ViewDelegate(ViewType.CONTENT) {

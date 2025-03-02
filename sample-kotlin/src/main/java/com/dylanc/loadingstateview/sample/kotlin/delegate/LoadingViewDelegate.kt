@@ -30,4 +30,15 @@ class LoadingViewDelegate : LoadingStateView.ViewDelegate(ViewType.LOADING) {
 
   override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup): View =
     inflater.inflate(R.layout.layout_loading, parent, false)
+
+  override fun onViewAttached(view: View) {
+    view.animate().rotationBy(360f)
+      .setDuration(800)
+      .withEndAction { onViewAttached(view) }
+      .start()
+  }
+
+  override fun onViewDetached(view: View) {
+    view.animate().cancel()
+  }
 }
