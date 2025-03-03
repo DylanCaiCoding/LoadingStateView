@@ -111,6 +111,7 @@ class LoadingStateView @JvmOverloads constructor(
     onCreateDecorView(contentView.context, LayoutInflater.from(contentView.context)).also { decorView ->
       contentView.layoutParams?.let {
         decorView.layoutParams = if (it is ConstraintLayout.LayoutParams) ConstraintLayout.LayoutParams(it) else it
+        (it as? ViewGroup.MarginLayoutParams)?.setMargins(0, 0, 0, 0)
       }
     }
 
@@ -199,7 +200,7 @@ class LoadingStateView @JvmOverloads constructor(
       internal set
   }
 
-  private inner class ContentViewDelegate : LoadingStateView.ViewDelegate(ViewType.CONTENT) {
+  private inner class ContentViewDelegate : ViewDelegate(ViewType.CONTENT) {
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup) = contentView
   }
 
