@@ -6,6 +6,7 @@ import com.dylanc.loadingstateview.sample.kotlin.delegate.ErrorViewDelegate
 import com.dylanc.loadingstateview.sample.kotlin.delegate.LoadingViewDelegate
 import com.dylanc.loadingstateview.sample.kotlin.delegate.ToolbarViewDelegate
 import com.dylanc.loadingstateview.sample.kotlin.delegate.EmptyViewDelegate
+import com.dylanc.loadingstateview.sample.kotlin.delegate.FadeAnimatable
 
 class App : Application() {
 
@@ -14,5 +15,6 @@ class App : Application() {
     LoadingStateView.setViewDelegatePool {
       register(ToolbarViewDelegate(), LoadingViewDelegate(), ErrorViewDelegate(), EmptyViewDelegate())
     }
+    LoadingStateView.defaultAnimatable = FadeAnimatable()
   }
 }

@@ -37,6 +37,7 @@ class LoadingStateDelegate : LoadingState {
       !decorative.isDecorated -> this
       decorative.contentView == null ->
         LoadingStateView(this, decorative).also { loadingStateView = it }.decorView
+
       else -> {
         loadingStateView = LoadingStateView(decorative.contentView!!, decorative)
         this
@@ -79,24 +80,24 @@ class LoadingStateDelegate : LoadingState {
     loadingStateView?.addChildDecorView(delegate)
   }
 
-  override fun showLoadingView(animation: LoadingStateView.Animation?) {
-    loadingStateView?.showLoadingView(animation)
+  override fun showLoadingView(animatable: LoadingStateView.Animatable?) {
+    loadingStateView?.showLoadingView(animatable)
   }
 
-  override fun showContentView(animation: LoadingStateView.Animation?) {
-    loadingStateView?.showContentView(animation)
+  override fun showContentView(animatable: LoadingStateView.Animatable?) {
+    loadingStateView?.showContentView(animatable)
   }
 
-  override fun showErrorView(animation: LoadingStateView.Animation?) {
-    loadingStateView?.showErrorView(animation)
+  override fun showErrorView(animatable: LoadingStateView.Animatable?) {
+    loadingStateView?.showErrorView(animatable)
   }
 
-  override fun showEmptyView(animation: LoadingStateView.Animation?) {
-    loadingStateView?.showEmptyView(animation)
+  override fun showEmptyView(animatable: LoadingStateView.Animatable?) {
+    loadingStateView?.showEmptyView(animatable)
   }
 
-  override fun showCustomView(viewType: Any) {
-    loadingStateView?.showView(viewType)
+  override fun showCustomView(viewType: Any, animatable: LoadingStateView.Animatable?) {
+    loadingStateView?.showView(viewType, animatable)
   }
 
   override fun updateToolbar(block: ToolbarConfig.() -> Unit) {

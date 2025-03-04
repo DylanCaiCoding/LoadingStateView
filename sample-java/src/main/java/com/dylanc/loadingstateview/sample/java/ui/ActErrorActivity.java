@@ -25,7 +25,6 @@ import com.dylanc.loadingstateview.LoadingStateView;
 import com.dylanc.loadingstateview.OnReloadListener;
 import com.dylanc.loadingstateview.sample.java.R;
 import com.dylanc.loadingstateview.sample.java.delegate.NavIconType;
-import com.dylanc.loadingstateview.sample.java.animation.FadeAnimation;
 import com.dylanc.loadingstateview.sample.java.utils.HttpUtils;
 import com.dylanc.loadingstateview.sample.java.utils.ToolbarUtils;
 
@@ -50,28 +49,28 @@ public class ActErrorActivity extends AppCompatActivity implements OnReloadListe
     HttpUtils.requestFailure(new HttpUtils.Callback() {
       @Override
       public void onSuccess() {
-        loadingStateView.showContentView(new FadeAnimation());
+        loadingStateView.showContentView();
       }
 
       @Override
       public void onFailure() {
-        loadingStateView.showErrorView(new FadeAnimation());
+        loadingStateView.showErrorView();
       }
     });
   }
 
   @Override
   public void onReload() {
-    loadingStateView.showLoadingView(new FadeAnimation());
+    loadingStateView.showLoadingView();
     HttpUtils.requestSuccess(new HttpUtils.Callback() {
       @Override
       public void onSuccess() {
-        loadingStateView.showContentView(new FadeAnimation());
+        loadingStateView.showContentView();
       }
 
       @Override
       public void onFailure() {
-        loadingStateView.showErrorView(new FadeAnimation());
+        loadingStateView.showErrorView();
       }
     });
   }
