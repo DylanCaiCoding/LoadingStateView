@@ -8,7 +8,7 @@
 
 ```groovy
 dependencies {
-  implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview-ktx:4.1.0'
+  implementation 'com.github.DylanCaiCoding.LoadingStateView:loadingstateview-ktx:5.0.0'
 }
 ```
 
