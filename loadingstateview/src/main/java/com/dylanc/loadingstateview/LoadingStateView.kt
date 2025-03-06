@@ -39,7 +39,7 @@ class LoadingStateView @JvmOverloads constructor(
   private val parent: ViewGroup?
   private var currentView: View? = null
   private var viewDelegates: HashMap<Any, ViewDelegate> = HashMap()
-  private val viewCashes: HashMap<Any, View> = HashMap()
+  private val viewCaches: HashMap<Any, View> = HashMap()
 
   /**
    * Constructs a LoadingStateView with an activity and listener.
@@ -111,6 +111,7 @@ class LoadingStateView @JvmOverloads constructor(
     onCreateDecorView(contentView.context, LayoutInflater.from(contentView.context)).also { decorView ->
       contentView.layoutParams?.let {
         decorView.layoutParams = if (it is ConstraintLayout.LayoutParams) ConstraintLayout.LayoutParams(it) else it
+        (it as? ViewGroup.MarginLayoutParams)?.setMargins(0, 0, 0, 0)
       }
     }
 
@@ -122,16 +123,16 @@ class LoadingStateView @JvmOverloads constructor(
   fun register(vararg delegates: ViewDelegate) = delegates.forEach { viewDelegates[it.viewType] = it }
 
   @JvmOverloads
-  fun showLoadingView(animation: Animation? = null) = showView(ViewType.LOADING, animation)
+  fun showLoadingView(animatable: Animatable? = defaultAnimatable) = showView(ViewType.LOADING, animatable)
 
   @JvmOverloads
-  fun showContentView(animation: Animation? = null) = showView(ViewType.CONTENT, animation)
+  fun showContentView(animatable: Animatable? = defaultAnimatable) = showView(ViewType.CONTENT, animatable)
 
   @JvmOverloads
-  fun showErrorView(animation: Animation? = null) = showView(ViewType.ERROR, animation)
+  fun showErrorView(animatable: Animatable? = defaultAnimatable) = showView(ViewType.ERROR, animatable)
 
   @JvmOverloads
-  fun showEmptyView(animation: Animation? = null) = showView(ViewType.EMPTY, animation)
+  fun showEmptyView(animatable: Animatable? = defaultAnimatable) = showView(ViewType.EMPTY, animatable)
 
   /**
    * Shows the view by view type
@@ -139,22 +140,24 @@ class LoadingStateView @JvmOverloads constructor(
    * @param viewType the view type of view delegate
    */
   @JvmOverloads
-  fun showView(viewType: Any, animation: Animation? = null) {
+  fun showView(viewType: Any, animatable: Animatable? = defaultAnimatable) {
     val currentView = currentView
     if (currentView == null) {
       addView(viewType)
     } else {
-      if (viewCashes[viewType] == null) addView(viewType)
+      if (viewCaches[viewType] == null) addView(viewType)
       if (viewType != currentViewType) {
-        val view = getView(viewType)
-        view.visibility = View.VISIBLE
-        if (animation != null) {
-          animation.onStartHideAnimation(currentView, currentViewType)
-          animation.onStartShowAnimation(view, getViewDelegate<ViewDelegate>(viewType)!!.viewType)
+        val nextView = getOrCreateView(viewType)
+        nextView.visibility = View.VISIBLE
+        val nextViewDelegate = getViewDelegate<ViewDelegate>(viewType)
+        nextViewDelegate?.onViewAttached(nextView)
+        getViewDelegate<ViewDelegate>(currentViewType)?.onViewDetached(nextView)
+        if (animatable != null && nextViewDelegate != null) {
+          animatable.toggleViewsAnimation(nextView, currentView, viewType, currentViewType)
         } else {
           currentView.visibility = View.GONE
         }
-        this.currentView = view
+        this.currentView = nextView
       }
     }
     currentViewType = viewType
@@ -167,7 +170,7 @@ class LoadingStateView @JvmOverloads constructor(
   fun <T : ViewDelegate> getViewDelegate(viewType: Any) = viewDelegates[viewType] as? T
 
   private fun addView(viewType: Any) {
-    val view = getView(viewType)
+    val view = getOrCreateView(viewType)
     (view.parent as? ViewGroup)?.removeView(view)
     if (parent is ConstraintLayout && viewType == ViewType.CONTENT) {
       val params = view.layoutParams
@@ -179,24 +182,25 @@ class LoadingStateView @JvmOverloads constructor(
     currentView = view
   }
 
-  private fun getView(viewType: Any): View {
-    if (viewCashes[viewType] == null) {
+  private fun getOrCreateView(viewType: Any): View {
+    if (viewCaches[viewType] == null) {
       val viewDelegate = requireNotNull(getViewDelegate(viewType)) { "Please register view delegate for $viewType type." }
       val view = viewDelegate.onCreateView(LayoutInflater.from(contentParent.context), contentParent)
       viewDelegate.onReloadListener = onReloadListener
-      viewCashes[viewType] = view
+      viewCaches[viewType] = view
     }
-    return viewCashes[viewType]!!
+    return viewCaches[viewType]!!
   }
 
   abstract class ViewDelegate(val viewType: Any) {
+    abstract fun onCreateView(inflater: LayoutInflater, parent: ViewGroup): View
+    open fun onViewAttached(view: View) = Unit
+    open fun onViewDetached(view: View) = Unit
     var onReloadListener: OnReloadListener? = null
       internal set
-
-    abstract fun onCreateView(inflater: LayoutInflater, parent: ViewGroup): View
   }
 
-  private inner class ContentViewDelegate : LoadingStateView.ViewDelegate(ViewType.CONTENT) {
+  private inner class ContentViewDelegate : ViewDelegate(ViewType.CONTENT) {
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup) = contentView
   }
 
@@ -210,7 +214,7 @@ class LoadingStateView @JvmOverloads constructor(
 
     constructor(delegates: Array<out ViewDelegate>) : this(delegates.map {
       register(it)
-      getView(it.viewType)
+      getOrCreateView(it.viewType)
     })
 
     override fun onCreateDecorView(context: Context, inflater: LayoutInflater) =
@@ -233,13 +237,15 @@ class LoadingStateView @JvmOverloads constructor(
     fun T.invoke()
   }
 
-  interface Animation {
-    fun onStartShowAnimation(view: View, viewType: Any)
-    fun onStartHideAnimation(view: View, viewType: Any)
+  interface Animatable {
+    fun toggleViewsAnimation(showView: View, hideView: View, showViewType: Any, hideViewType: Any)
   }
 
   companion object {
     private var poolInitializer: Callback<PoolInitializer>? = null
+
+    @JvmStatic
+    var defaultAnimatable: Animatable? = null
 
     @JvmStatic
     fun setViewDelegatePool(poolInitializer: Callback<PoolInitializer>) {

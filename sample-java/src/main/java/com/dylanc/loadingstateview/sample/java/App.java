@@ -19,6 +19,7 @@ package com.dylanc.loadingstateview.sample.java;
 import android.app.Application;
 
 import com.dylanc.loadingstateview.LoadingStateView;
+import com.dylanc.loadingstateview.sample.java.animation.FadeAnimatable;
 import com.dylanc.loadingstateview.sample.java.delegate.EmptyViewDelegate;
 import com.dylanc.loadingstateview.sample.java.delegate.ErrorViewDelegate;
 import com.dylanc.loadingstateview.sample.java.delegate.LoadingViewDelegate;
@@ -32,5 +33,6 @@ public class App extends Application {
     super.onCreate();
     LoadingStateView.setViewDelegatePool(pool ->
         pool.register(new LoadingViewDelegate(), new ErrorViewDelegate(), new EmptyViewDelegate()));
+    LoadingStateView.setDefaultAnimatable(new FadeAnimatable());
   }
 }

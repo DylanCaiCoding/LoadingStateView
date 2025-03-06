@@ -22,6 +22,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
 interface LoadingState : Decorative, OnReloadListener {
+  val loadingStateViewType: Any?
 
   @Deprecated("Use Activity.decorateContentView(this) instead", ReplaceWith("decorateContentView(decorative)"))
   fun Activity.decorateContentView(listener: OnReloadListener, decorative: Decorative) = decorateContentView(decorative)
@@ -51,15 +52,15 @@ interface LoadingState : Decorative, OnReloadListener {
 
   fun Fragment.setDecorView(delegate: LoadingStateView.DecorViewDelegate)
 
-  fun showLoadingView(animation: LoadingStateView.Animation? = null)
+  fun showLoadingView(animatable: LoadingStateView.Animatable? = LoadingStateView.defaultAnimatable)
 
-  fun showContentView(animation: LoadingStateView.Animation? = null)
+  fun showContentView(animatable: LoadingStateView.Animatable? = LoadingStateView.defaultAnimatable)
 
-  fun showErrorView(animation: LoadingStateView.Animation? = null)
+  fun showErrorView(animatable: LoadingStateView.Animatable? = LoadingStateView.defaultAnimatable)
 
-  fun showEmptyView(animation: LoadingStateView.Animation? = null)
+  fun showEmptyView(animatable: LoadingStateView.Animatable? = LoadingStateView.defaultAnimatable)
 
-  fun showCustomView(viewType: Any)
+  fun showCustomView(viewType: Any, animatable: LoadingStateView.Animatable? = LoadingStateView.defaultAnimatable)
 
   fun updateToolbar(block: ToolbarConfig.() -> Unit)
 

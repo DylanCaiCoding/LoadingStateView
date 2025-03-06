@@ -33,7 +33,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
       rightTextColor = Color.BLUE
       rightText("Edit") { onEdit() }
     }
-    showErrorView()
+    showLoadingView()
+    Handler(Looper.getMainLooper()).postDelayed({
+      showErrorView()
+    }, 2000)
   }
 
   private fun onEdit() {
