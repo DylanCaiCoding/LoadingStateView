@@ -74,6 +74,7 @@ dependencies {
 | [Longan](https://github.com/DylanCaiCoding/Longan)           | Probably the best Kotlin utils library for Android.  |
 | [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) | The most comprehensive utils of ViewBinding.                 |
 | [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Use MMKV with property delegates.                                      |
+| [MultiBaseUrls](https://github.com/DylanCaiCoding/MultiBaseUrls) | Use annotation to allow Retrofit to support multiple baseUrl and dynamically change baseUrl |
 | [Tracker](https://github.com/DylanCaiCoding/Tracker)       | A lightweight tracking framework based on the tracking idea of Buzzvideo.|
 
 ## Thanks
